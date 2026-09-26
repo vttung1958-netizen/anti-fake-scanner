@@ -1,0 +1,16 @@
+{
+  "name": "QuetHangGia",
+  "short_name": "QHG",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#27ae60",
+  "description": "Ứng dụng quét mã xác thực hàng chính hãng",
+  "icons": [
+    {
+      "src": "/static/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
