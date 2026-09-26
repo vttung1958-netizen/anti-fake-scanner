@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quét Mã Chống Hàng Giả</title>
+    
+    <!-- Khai báo tệp cấu hình PWA để đưa ra màn hình chính điện thoại -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#27ae60">
+
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; }
+        .scanner-box { width: 100%; height: 220px; background: #222; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; position: relative; overflow: hidden; }
+        input[type="text"] { width: 80%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px; }
+        button { background-color: #27ae60; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; }
+        button:hover { background-color: #219653; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 6px; text-align: left; background: #e8f8f5; border-left: 5px solid #27ae60; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🛡️ Quét Mã Chống Hàng Giả</h2>
+        <p>Sử dụng camera hoặc nhập mã để xác thực sản phẩm</p>
+        
+        <div class="scanner-box">
+            <span id="cam-status">📷 Đang bật camera quét thời gian thực...</span>
+        </div>
+
+        <form method="POST">
+            <input type="text" name="code" id="code-input" placeholder="Nhập mã sản phẩm (VD: SP001)" required>
+            <button type="submit">🔍 Xác Thực Ngay</button>
+        </form>
+    </div>
+
+    <script>
+        window.onload = function() {
+            document.getElementById('code-input').focus();
+        }
+    </script>
+</body>
+</html>
