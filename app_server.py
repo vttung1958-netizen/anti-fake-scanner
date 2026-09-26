@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, jsonify
-import datetime
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -23,7 +22,6 @@ def home():
                 "maker": "Không rõ nguồn gốc hoặc mã sai",
                 "date": "N/A"
             }
-    # Gọi tệp index.html nằm trong thư mục templates
     return render_template('index.html', result=result)
 
 if __name__ == '__main__':
