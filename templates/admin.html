@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Quản Trị Sản Phẩm - Vuongtung.com.vn</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        h2 { color: #2c3e50; margin: 0; }
+        .logout-btn { background: #e74c3c; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; }
+        .logout-btn:hover { background: #c0392b; }
+        
+        .form-section { background: #f8f9fa; padding: 20px; border-radius: 6px; margin-bottom: 25px; border: 1px solid #ddd; }
+        .form-section h3 { margin-top: 0; color: #34495e; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 15px; }
+        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        button { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 15px; }
+        button:hover { background: #219653; }
+
+        /* Style cho phần Import Excel */
+        .excel-section { background: #e8f8f5; border: 1px dashed #27ae60; padding: 15px; border-radius: 6px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .excel-section h3 { margin: 0 0 5px 0; color: #16a085; font-size: 16px; }
+        .excel-form { display: flex; gap: 10px; align-items: center; width: 100%; }
+        .excel-form input[type="file"] { background: white; flex: 1; padding: 6px; }
+        .excel-btn { background: #2980b9; }
+        .excel-btn:hover { background: #2471a3; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; font-size: 14px; }
+        th { background-color: #2c3e50; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        .delete-btn { background: #e74c3c; color: white; padding: 6px 10px; border-radius: 4px; text-decoration: none; font-size: 13px; }
+        .delete-btn:hover { background: #c0392b; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>📦 Quản Lý Danh Sách Sản Phẩm Chống Hàng Giả</h2>
+        <a href="/admin/logout" class="logout-btn">Đăng Xuất</a>
+    </div>
+
+    <!-- KHUNG MỚI: Nhập danh sách tự động hàng loạt từ File Excel -->
+    <div class="excel-section">
+        <div>
+            <h3>🚀 Nhập Dữ Liệu Tự Động Hàng Loạt</h3>
+            <p style="margin: 0; font-size: 13px; color: #555;">Tải lên file Excel (.xlsx) chứa danh sách sản phẩm để hệ thống tự động cập nhật.</p>
+        </div>
+        <form action="/admin/import_excel" method="POST" enctype="multipart/form-data" class="excel-form">
+            <input type="file" name="excel_file" accept=".xlsx, .xls" required>
+            <button type="submit" class="excel-btn">Tải Lên & Nhập Tự Động</button>
+        </form>
+    </div>
+
+    <!-- Form thêm sản phẩm thủ công lẻ -->
+    <div class="form-section">
+        <h3>➕ Thêm Lẻ Mã Sản Phẩm / Tem Mới</h3>
+        <form action="/admin/add" method="POST">
+            <div class="form-grid">
+                <input type="text" name="code" placeholder="Mã sản phẩm (VD: SP003)" required>
+                <input type="text" name="name" placeholder="Tên sản phẩm" required>
+                <input type="text" name="manufacturer" placeholder="Nhà sản xuất" required>
+                <input type="text" name="mfg_date" placeholder="Ngày sản xuất (VD: 2026-03-01)" required>
+                <input type="text" name="price" placeholder="Giá niêm yết (VD: 1.500.000 VNĐ)" required>
+                <select name="status">
+                    <option value="Hàng thật">Hàng thật</option>
+                    <option value="Cảnh báo giả">Cảnh báo giả</option>
+                </select>
+            </div>
+            <button type="submit">Lưu Sản Phẩm Vào Hệ Thống</button>
+        </form>
+    </div>
+
+    <!-- Bảng danh sách sản phẩm -->
+    <h3>📋 Danh Sách Sản Phẩm Đang Hoạt Động</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã Code</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Nhà Sản Xuất</th>
+                <th>Ngày SX</th>
+                <th>Giá Niêm Yết</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in products %}
+            <tr>
+                <td><strong>{{ p.code }}</strong></td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.manufacturer }}</td>
+                <td>{{ p.mfg_date }}</td>
+                <td>{{ p.price }}</td>
+                <td><span style="color: #27ae60; font-weight: bold;">{{ p.status }}</span></td>
+                <td>
+                    <a href="/admin/delete/{{ p.code }}" class="delete-btn" onclick="return confirm('Bạn có chắc chắn muốn xóa mã sản phẩm này không?')">Xóa</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
