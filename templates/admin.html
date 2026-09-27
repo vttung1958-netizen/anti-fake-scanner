@@ -21,7 +21,7 @@
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 14px; }
         th { background-color: #2c3e50; color: white; }
-        .contact-box { background: #e8f4fd; border: 1px solid #bbe1fa; padding: 15px; border-radius: 6px; margin-top: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .contact-box { background: #e8f4fd; border: 1px solid #bbe1fa; padding: 20px; border-radius: 6px; margin-top: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
     </style>
 </head>
 <body>
@@ -33,24 +33,24 @@
     </div>
 
     <!-- KHU VỰC 1: TẠO VÀ XUẤT LÔ MÃ QR CHO NHÀ SẢN XUẤT -->
-    <div class="section-box">
-        <h3>📦 Tạo & Xuất Lô Mã QR Độc Quyền Cho Nhà Sản Xuất</h3>
-        <p style="font-size: 13px; color: #666;">Hệ thống sẽ tự động sinh mã định danh (Token bảo mật) chống làm giả và tải về file Excel chứa danh sách tem để in ấn.</p>
+    <div class="section-box" style="border-left: 5px solid #27ae60;">
+        <h3 style="margin-top: 0;">📦 Tạo & Xuất Lô Mã QR Độc Quyền Cho Nhà Sản Xuất</h3>
+        <p style="font-size: 13px; color: #666;">Hệ thống sẽ tự động sinh mã định danh (Token bảo mật) chống làm giả và tải về file Excel chứa danh sách tem để gửi nhà in.</p>
         <form action="/admin/generate_batch" method="POST">
             <div class="form-row">
                 <div class="form-group">
                     <label>Tên sản phẩm:</label>
-                    <input type="text" name="prod_name" placeholder="VD: Sâm Ngọc Linh" required>
+                    <input type="text" name="prod_name" placeholder="VD: Đông trùng hạ thảo" required>
                 </div>
                 <div class="form-group">
                     <label>Tên nhà sản xuất / Công ty:</label>
-                    <input type="text" name="manufacturer" placeholder="VD: Công ty Dược VN" required>
+                    <input type="text" name="manufacturer" placeholder="VD: Công ty Dược liệu VN" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label>Giá niêm yết / Thị trường:</label>
-                    <input type="text" name="price" placeholder="VD: 2.500.000 VNĐ" required>
+                    <input type="text" name="price" placeholder="VD: 1.800.000 VNĐ" required>
                 </div>
                 <div class="form-group">
                     <label>Số lượng mã cần tạo (Tem):</label>
@@ -91,15 +91,15 @@
     <!-- KHU VỰC 3: THÔNG TIN THANH TOÁN & LIÊN HỆ -->
     <div class="contact-box">
         <div>
-            <h4 style="margin: 0 0 5px 0; color: #2c3e50;">📞 Thông Tin Hợp Tác & Thanh Toán Dịch Vụ</h4>
-            <p style="margin: 3px 0; font-size: 14px;"><b>Chủ tài khoản:</b> VƯƠNG THANH TÙNG</p>
-            <p style="margin: 3px 0; font-size: 14px;"><b>Ngân hàng:</b> Agribank - Chi nhánh TP Hà Nội</p>
-            <p style="margin: 3px 0; font-size: 14px;"><b>Số tài khoản:</b> <span style="color: #c0392b; font-size: 16px; font-weight: bold;">1500215038690</span></p>
-            <p style="margin: 3px 0; font-size: 14px;"><b>Email liên hệ:</b> <a href="mailto:vttung1958@gmail.com" style="color: #2980b9;">vttung1958@gmail.com</a></p>
+            <h4 style="margin: 0 0 8px 0; color: #2c3e50; font-size: 16px;">📞 Thông Tin Hợp Tác & Thanh Toán Dịch Vụ</h4>
+            <p style="margin: 4px 0; font-size: 14px;"><b>Chủ tài khoản:</b> VƯƠNG THANH TÙNG</p>
+            <p style="margin: 4px 0; font-size: 14px;"><b>Ngân hàng:</b> Agribank - Chi nhánh TP Hà Nội</p>
+            <p style="margin: 4px 0; font-size: 14px;"><b>Số tài khoản:</b> <span style="color: #c0392b; font-size: 16px; font-weight: bold;">1500215038690</span></p>
+            <p style="margin: 4px 0; font-size: 14px;"><b>Email liên hệ:</b> <a href="mailto:vttung1958@gmail.com" style="color: #2980b9; font-weight: bold;">vttung1958@gmail.com</a></p>
         </div>
         <div style="text-align: center;">
-            <p style="font-size: 12px; margin: 0 0 5px 0; font-weight: bold;">Quét QR Chuyển Khoản</p>
-            <img src="/static/agribank_qr.jpg" alt="QR Agribank" style="width: 120px; height: 120px; border-radius: 6px; border: 1px solid #ccc;">
+            <p style="font-size: 12px; margin: 0 0 5px 0; font-weight: bold; color: #555;">Quét QR Chuyển Khoản</p>
+            <img src="/static/agribank_qr.jpg" alt="QR Agribank" style="width: 130px; height: 130px; border-radius: 6px; border: 1px solid #ccc; background: white; padding: 3px;">
         </div>
     </div>
 </div>
