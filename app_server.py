@@ -2,9 +2,8 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Kích hoạt CORS cho toàn bộ ứng dụng
+CORS(app)
 
-# Cơ sở dữ liệu mẫu về sản phẩm chống hàng giả
 PRODUCT_DB = {
     "SP001": {
         "name": "Đông trùng hạ thảo chính hãng",
