@@ -2,6 +2,8 @@ import os
 import uuid
 import qrcode
 import pandas as pd
+from openpyxl import Workbook
+from openpyxl.drawing.image import Image as XLImage
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 
 app = Flask(__name__)
@@ -84,14 +86,25 @@ def generate_batch():
         price = request.form.get('price')
         quantity = int(request.form.get('quantity', 100))
         
-        batch_data = []
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "DanhSachTemQR"
+        
+        # Tạo tiêu đề bảng
+        ws.append(["Mã Code", "Token Bảo Mật", "Link Xác Thực", "Hình Ảnh QR Code"])
+        
+        # Định dạng chiều rộng cột
+        ws.column_dimensions['A'].width = 12
+        ws.column_dimensions['B'].width = 16
+        ws.column_dimensions['C'].width = 65
+        ws.column_dimensions['D'].width = 20
         
         for i in range(1, quantity + 1):
             code = f"SP{len(products_db) + i:03d}"
             token = uuid.uuid4().hex[:12]
-            
             verify_url = f"https://anti-fake-scanner-2026.onrender.com/verify?code={code}&token={token}"
             
+            # Tạo và lưu ảnh QR Code
             img = qrcode.make(verify_url)
             img_path = os.path.join(QR_OUTPUT_DIR, f"{code}.png")
             img.save(img_path)
@@ -107,15 +120,28 @@ def generate_batch():
                 "status": "Hàng thật"
             }
             products_db.append(new_prod)
-            batch_data.append({"Mã Code": code, "Token": token, "Link Xác Thực": verify_url})
             
-        df = pd.DataFrame(batch_data)
+            row_idx = i + 1
+            ws.row_dimensions[row_idx].height = 65  # Chiều cao dòng để chứa ảnh QR
+            ws.cell(row=row_idx, column=1, value=code)
+            ws.cell(row=row_idx, column=2, value=token)
+            ws.cell(row=row_idx, column=3, value=verify_url)
+            
+            # Chèn ảnh QR trực tiếp vào file Excel
+            try:
+                xl_img = XLImage(img_path)
+                xl_img.width = 80
+                xl_img.height = 80
+                ws.add_image(xl_img, f"D{row_idx}")
+            except Exception:
+                pass
+            
         export_file = "static/Danh_Sach_Tem_QR.xlsx"
-        df.to_excel(export_file, index=False)
+        wb.save(export_file)
         
         return send_file(export_file, as_attachment=True)
     except Exception as e:
-        return f"<h3>Lỗi hệ thống:</h3><p>{str(e)}</p><a href='/admin'>Quay lại</a>", 500
+        return f"<h3>Lỗi hệ thống khi tạo file Excel kèm ảnh:</h3><p>{str(e)}</p><a href='/admin'>Quay lại</a>", 500
 
 @app.route('/super_admin')
 def super_admin():
