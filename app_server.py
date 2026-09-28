@@ -7,9 +7,10 @@ from flask import Flask, render_template, request, redirect, url_for, session, s
 app = Flask(__name__)
 app.secret_key = 'vuong_thanh_tung_secret_key_2026'
 
-# Đảm bảo thư mục lưu trữ ảnh QR tồn tại
+# Đảm bảo thư mục lưu trữ ảnh QR và file tồn tại
 QR_OUTPUT_DIR = "static/qrs"
 os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
+os.makedirs("static", exist_ok=True)
 
 # Cơ sở dữ liệu mẫu lưu trên bộ nhớ tạm của server
 products_db = [
@@ -33,17 +34,14 @@ def index():
     if not code:
         return render_template('index.html', status="error", message="Vui lòng quét mã QR hợp lệ trên sản phẩm.")
     
-    # Tìm sản phẩm theo mã Code
     product = next((p for p in products_db if p["code"] == code), None)
     
     if not product:
         return render_template('index.html', status="fake", message="CẢNH BÁO: Mã sản phẩm không tồn tại trên hệ thống!")
     
-    # Kiểm tra Token bảo mật chống làm giả
     if product["token"] != token:
         return render_template('index.html', status="fake", message="CẢNH BÁO NGUY HIỂM: Phát hiện tem giả mạo (Sai mã Token bảo mật)!", product=product)
     
-    # Tăng số lượt quét để kiểm tra chống sao chép (Quá 3 lần cảnh báo đỏ)
     product["scan_count"] += 1
     
     if product["scan_count"] > 3:
@@ -94,7 +92,6 @@ def generate_batch():
             
             verify_url = f"https://anti-fake-scanner-2026.onrender.com/verify?code={code}&token={token}"
             
-            # Tạo ảnh QR Code
             img = qrcode.make(verify_url)
             img_path = os.path.join(QR_OUTPUT_DIR, f"{code}.png")
             img.save(img_path)
@@ -118,7 +115,7 @@ def generate_batch():
         
         return send_file(export_file, as_attachment=True)
     except Exception as e:
-        return f"Lỗi xử lý hệ thống: {str(e)}", 500
+        return f"<h3>Lỗi hệ thống:</h3><p>{str(e)}</p><a href='/admin'>Quay lại</a>", 500
 
 @app.route('/super_admin')
 def super_admin():
