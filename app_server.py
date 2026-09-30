@@ -7,7 +7,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font
 from openpyxl.utils import get_column_letter
 from openpyxl.drawing.image import Image as XLImage
-from flask import Flask, render_template, request, redirect, url_for, session, send_file, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, send_file
 from fpdf import FPDF
 
 app = Flask(__name__)
@@ -18,7 +18,7 @@ os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
 os.makedirs("static", exist_ok=True)
 os.makedirs("templates", exist_ok=True)
 
-# Quản lý mật khẩu quản trị đọc/ghi qua file để đồng bộ hoàn hảo giữa các tiến trình Gunicorn trên Render
+# Quản lý mật khẩu quản trị đồng bộ qua file
 ADMIN_PASS_FILE = "admin_pass.txt"
 
 def get_admin_password():
@@ -33,7 +33,6 @@ def save_admin_password(new_pw):
     with open(ADMIN_PASS_FILE, "w", encoding="utf-8") as f:
         f.write(new_pw)
 
-orders_db = {}
 products_db = [
     {
         "code": "SP001",
@@ -71,83 +70,25 @@ def index():
     
     return render_template('index.html', status="success", message="XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100%.", product=product)
 
-# Trang Khách hàng đặt mua gói QR tự động
-@app.route('/buy', methods=['GET', 'POST'])
-def buy():
-    if request.method == 'POST':
-        prod_name = request.form.get('prod_name')
-        manufacturer = request.form.get('manufacturer')
-        quantity = int(request.form.get('quantity', 1000))
-        price_per_tem = 500 # 500 VNĐ / tem
-        total_price = quantity * price_per_tem
-        
-        order_id = f"DH{uuid.uuid4().hex[:6].upper()}"
-        
-        orders_db[order_id] = {
-            "prod_name": prod_name,
-            "manufacturer": manufacturer,
-            "quantity": quantity,
-            "total_price": total_price,
-            "status": "pending"
-        }
-        
-        return redirect(url_for('checkout', order_id=order_id))
-        
-    return render_template('buy.html')
-
-# Trang Thanh toán VietQR động
-@app.route('/checkout/<order_id>')
-def checkout(order_id):
-    order = orders_db.get(order_id)
-    if not order:
-        return "Đơn hàng không tồn tại!", 404
-        
-    bank_id = "AGRIBANK"
-    account_no = "1500215038690" # Tài khoản Agribank: VƯƠNG THANH TÙNG
-    amount = order["total_price"]
-    add_info = f"AFQR {order_id}"
-    
-    vietqr_url = f"https://img.vietqr.io/image/{bank_id}-{account_no}-compact2.png?amount={amount}&addInfo={add_info}"
-    
-    return render_template('checkout.html', order=order, order_id=order_id, vietqr_url=vietqr_url)
-
-# API kiểm tra trạng thái thanh toán thời gian thực
-@app.route('/api/check_status/<order_id>')
-def check_status(order_id):
-    order = orders_db.get(order_id)
-    if not order:
-        return jsonify({"status": "not_found"})
-    return jsonify({"status": order["status"]})
-
-# Quản trị viên duyệt đơn hàng nhanh
-@app.route('/admin/approve/<order_id>')
-def approve_order(order_id):
+# Quản trị viên tạo lô tem, xuất file Excel và PDF trực tiếp từ trang quản lý chung
+@app.route('/admin/generate_batch', methods=['POST'])
+def generate_batch():
     if not session.get('logged_in'):
         return redirect(url_for('admin_login'))
-    if order_id in orders_db:
-        orders_db[order_id]["status"] = "paid"
-    return redirect(url_for('admin'))
-
-# Tự động sinh và tải gói dữ liệu (.zip gồm Excel, PDF A4 ngang và kho ảnh)
-@app.route('/success/<order_id>')
-def success_download(order_id):
-    order = orders_db.get(order_id)
-    if not order:
-        return "Đơn hàng không tồn tại hoặc chưa thanh toán!", 404
-        
-    prod_name = order["prod_name"]
-    manufacturer = order["manufacturer"]
-    quantity = order["quantity"]
-    price_str = f"{order['total_price']:,} VNĐ"
     
     try:
+        prod_name = request.form.get('prod_name')
+        manufacturer = request.form.get('manufacturer')
+        price = request.form.get('price')
+        quantity = int(request.form.get('quantity', 100))
+        
         wb = Workbook()
         ws = wb.active
         ws.title = "ThongKe_DanhSach"
         
         ws.append(["--- THÔNG TIN LÔ HÀNG & DANH SÁCH MÃ QR ĐẶC QUYỀN ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
-        ws.append(["Số lượng mã:", quantity, "Đơn giá:", price_str])
+        ws.append(["Số lượng mã:", quantity, "Đơn giá niêm yết:", price])
         ws.append([])
         
         header_row = 5
@@ -178,6 +119,7 @@ def success_download(order_id):
             img.save(batch_img_path)
             generated_qr_files.append(batch_img_path)
             
+            # Lấy đúng 12 mã đầu tiên (SP001 - SP012) cho trang PDF A4 ngang
             if len(sample_qr_data) < 12:
                 sample_qr_data.append((code, batch_img_path))
             
@@ -187,7 +129,7 @@ def success_download(order_id):
                 "name": prod_name,
                 "manufacturer": manufacturer,
                 "mfg_date": "2026-03-01",
-                "price": price_str,
+                "price": price,
                 "scan_count": 0,
                 "status": "Hàng thật"
             }
@@ -237,7 +179,7 @@ def success_download(order_id):
                 
         pdf.output(pdf_path)
         
-        zip_path = f"static/Goi_Tem_{order_id}.zip"
+        zip_path = "static/Goi_Tem_QR_DoanhNghiep.zip"
         with zipfile.ZipFile(zip_path, 'w') as zipf:
             zipf.write(excel_path, arcname="1_ThongKe_DanhSach_MaQR.xlsx")
             zipf.write(pdf_path, arcname="2_TrangInThu_MauA4.pdf")
@@ -248,7 +190,6 @@ def success_download(order_id):
     except Exception as e:
         return f"Lỗi tạo gói dữ liệu: {str(e)}", 500
 
-# Quản lý đăng nhập và đổi mật khẩu quản trị đồng bộ qua file
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     current_password = get_admin_password()
@@ -281,7 +222,7 @@ def admin_logout():
 def admin():
     if not session.get('logged_in'):
         return redirect(url_for('admin_login'))
-    return render_template('admin.html', products=products_db, orders=orders_db)
+    return render_template('admin.html', products=products_db)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
