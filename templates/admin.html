@@ -2,151 +2,92 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Trị Hệ Thống Chống Hàng Giả - Vuongtung.com.vn</title>
+    <title>Quản Trị Hệ Thống Chống Hàng Giả</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
-        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2, h3 { color: #2c3e50; }
-        .header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
-        .logout-btn { background: #e74c3c; color: white; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-weight: bold; }
-        .logout-btn:hover { background: #c0392b; }
-        .section-box { background: #f8f9fa; border: 1px solid #dee2e6; padding: 20px; border-radius: 6px; margin-bottom: 20px; }
-        .form-row { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
-        .form-group { flex: 1; min-width: 200px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #34495e; font-size: 14px; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #219653; }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2, h3 { color: #1a365d; }
+        .logout-btn { float: right; background: #e53e3e; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; font-weight: bold; }
+        .section { margin-top: 30px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 14px; }
-        th { background-color: #2c3e50; color: white; }
-        .contact-box { background: #e8f4fd; border: 1px solid #bbe1fa; padding: 20px; border-radius: 6px; margin-top: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        th, td { border: 1px solid #cbd5e0; padding: 10px; text-align: left; font-size: 14px; }
+        th { background: #2b6cb0; color: white; }
+        .btn-approve { background: #38a169; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-weight: bold; }
+        .btn-approve:hover { background: #2f855a; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="header-bar">
-        <h2>🛡️ Quản Trị Hệ Thống Chống Hàng Giả & Phát Hành Mã QR</h2>
+    <div class="container">
         <a href="/admin/logout" class="logout-btn">Đăng Xuất</a>
-    </div>
-
-    <!-- KHU VỰC 1: TẠO VÀ XUẤT LÔ MÃ QR CHO NHÀ SẢN XUẤT -->
-    <div class="section-box" style="border-left: 5px solid #27ae60;">
-        <h3 style="margin-top: 0;">📦 Tạo & Xuất Lô Mã QR Độc Quyền Cho Nhà Sản Xuất</h3>
-        <p style="font-size: 13px; color: #666;">Hệ thống sẽ tự động sinh mã định danh (Token bảo mật) chống làm giả và tải về file Excel chứa danh sách tem để gửi nhà in.</p>
-        <form action="/admin/generate_batch" method="POST">
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Tên sản phẩm:</label>
-                    <input type="text" name="prod_name" placeholder="VD: Sâm Ngọc Linh" required>
-                </div>
-                <div class="form-group">
-                    <label>Tên nhà sản xuất / Công ty:</label>
-                    <input type="text" name="manufacturer" placeholder="VD: Công ty Dược VN" required>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Giá niêm yết / Thị trường:</label>
-                    <input type="text" name="price" placeholder="VD: 2.500.000 VNĐ" required>
-                </div>
-                <div class="form-group">
-                    <label>Số lượng mã cần tạo (Tem):</label>
-                    <input type="number" name="quantity" value="100" min="1" max="5000" required>
-                </div>
-            </div>
-            <button type="submit">⚙️ Tạo Lô & Tải File Excel Chứa Mã QR</button>
-        </form>
-    </div>
-
-    <!-- KHU VỰC 2: BẢNG GIÁ DỊCH VỤ PHÁT HÀNH TEM -->
-    <div class="section-box" style="border-left: 5px solid #e67e22; background: #fffdf9;">
-        <h3 style="margin-top: 0; color: #d35400;">💰 Bảng Giá Dịch Vụ Phát Hành Tem & Cấp Hạn Mức</h3>
-        <p style="font-size: 13px; color: #666;">Doanh nghiệp đối tác lựa chọn gói dịch vụ và thanh toán để được cấp hạn mức tạo tem tự động trên hệ thống:</p>
-        <table style="background: white;">
-            <thead>
+        <h2>Quản Trị Hệ Thống Chống Hàng Giả & Phát Hành Mã QR</h2>
+        
+        <!-- Khu vực quản lý đơn hàng chờ duyệt -->
+        <div class="section">
+            <h3>📦 Danh Sách Đơn Hàng Mua Gói QR Cần Duyệt</h3>
+            {% if orders %}
+            <table>
                 <tr>
-                    <th>Gói Dịch Vụ</th>
-                    <th>Số Lượng Tem</th>
-                    <th>Đơn Giá / 1 Tem</th>
-                    <th>Tổng Chi Phí</th>
-                    <th>Quyền Lợi Chính</th>
+                    <th>Mã Đơn</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Nhà Sản Xuất</th>
+                    <th>Số Lượng</th>
+                    <th>Tổng Tiền</th>
+                    <th>Trạng Thái</th>
+                    <th>Thao Tác</th>
                 </tr>
-            </thead>
-            <tbody>
+                {% for oid, ord in orders.items() %}
                 <tr>
-                    <td><b>Gói Trải Nghiệm</b></td>
-                    <td>5.000 tem</td>
-                    <td>~ 500 VNĐ</td>
-                    <td><b>2.500.000 VNĐ</b></td>
-                    <td>Tạo lô QR tự động, xuất file Excel, chống quét giả (>3 lần).</td>
+                    <td><b>{{ oid }}</b></td>
+                    <td>{{ ord.prod_name }}</td>
+                    <td>{{ ord.manufacturer }}</td>
+                    <td>{{ ord.quantity }} tem</td>
+                    <td>{{ "{:,.0f}".format(ord.total_price) }} VNĐ</td>
+                    <td>
+                        {% if ord.status == 'paid' %}
+                            <span style="color: green; font-weight: bold;">Đã thanh toán</span>
+                        {% else %}
+                            <span style="color: orange; font-weight: bold;">Chờ thanh toán</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if ord.status != 'paid' %}
+                            <a href="/admin/approve/{{ oid }}" class="btn-approve">Duyệt & Gửi File</a>
+                        {% else %}
+                            <a href="/success/{{ oid }}" target="_blank" style="color: #2b6cb0; font-weight: bold;">Tải Lại File</a>
+                        {% endif %}
+                    </td>
                 </tr>
-                <tr style="background: #fcf3cf;">
-                    <td><b>Gói Doanh Nghiệp</b></td>
-                    <td>20.000 tem</td>
-                    <td>~ 350 VNĐ</td>
-                    <td><b>7.000.000 VNĐ</b></td>
-                    <td>Tài khoản quản trị riêng, hỗ trợ cấu hình và tích hợp sâu.</td>
-                </tr>
-                <tr>
-                    <td><b>Gói Độc Quyền Lớn</b></td>
-                    <td>50.000+ tem</td>
-                    <td>~ 200 VNĐ</td>
-                    <td><b>Liên hệ trực tiếp</b></td>
-                    <td>Tối ưu chi phí tối đa, quản lý nhiều dòng sản phẩm lớn.</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- KHU VỰC 3: DANH SÁCH SẢN PHẨM TRÊN HỆ THỐNG -->
-    <h3>📋 Danh Sách Sản Phẩm & Tem Đang Hoạt Động</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Mã Code</th>
-                <th>Tên Sản Phẩm</th>
-                <th>Nhà Sản Xuất</th>
-                <th>Giá Niêm Yết</th>
-                <th>Số Lượt Quét</th>
-                <th>Trạng Thái</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for p in products %}
-            <tr>
-                <td><b>{{ p.code }}</b></td>
-                <td>{{ p.name }}</td>
-                <td>{{ p.manufacturer }}</td>
-                <td>{{ p.price }}</td>
-                <td style="text-align: center; color: {% if p.scan_count > 3 %}red{% else %}green{% endif %}; font-weight: bold;">{{ p.scan_count }}</td>
-                <td><span style="color: green; font-weight: bold;">{{ p.status }}</span></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <!-- KHU VỰC 4: THÔNG TIN THANH TOÁN & LIÊN HỆ -->
-    <div class="contact-box">
-        <div>
-            <h4 style="margin: 0 0 8px 0; color: #2c3e50; font-size: 16px;">📞 Thông Tin Hợp Tác & Thanh Toán Dịch Vụ</h4>
-            <p style="margin: 4px 0; font-size: 14px;"><b>Chủ tài khoản:</b> VƯƠNG THANH TÙNG</p>
-            <p style="margin: 4px 0; font-size: 14px;"><b>Ngân hàng:</b> Agribank - Chi nhánh TP Hà Nội</p>
-            <p style="margin: 4px 0; font-size: 14px;"><b>Số tài khoản:</b> <span style="color: #c0392b; font-size: 16px; font-weight: bold;">1500215038690</span></p>
-            <p style="margin: 4px 0; font-size: 14px;"><b>Email liên hệ:</b> <a href="mailto:vttung1958@gmail.com" style="color: #2980b9; font-weight: bold;">vttung1958@gmail.com</a></p>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p style="color: #718096; font-style: italic;">Chưa có đơn hàng nào được đặt.</p>
+            {% endif %}
         </div>
-        <div style="text-align: center;">
-            <p style="font-size: 12px; margin: 0 0 5px 0; font-weight: bold; color: #555;">Thanh Toán Chuyển Khoản</p>
-            <div style="width: 140px; height: 130px; border: 2px dashed #27ae60; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: #f9fff9; font-size: 11px; font-weight: bold; color: #27ae60; padding: 5px;">
-                AGRIBANK<br>
-                <span style="color: #c0392b; font-size: 13px;">1500215038690</span><br>
-                VƯƠNG THANH TÙNG
-            </div>
+
+        <!-- Bảng danh sách sản phẩm & tem đang hoạt động -->
+        <div class="section" style="margin-top: 40px;">
+            <h3>📋 Kho Dữ Liệu Sản Phẩm & Tem Đang Hoạt Động</h3>
+            <table>
+                <tr>
+                    <th>Mã Code</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Nhà Sản Xuất</th>
+                    <th>Giá Niêm Yết</th>
+                    <th>Lượt Quét</th>
+                    <th>Trạng Thái</th>
+                </tr>
+                {% for p in products %}
+                <tr>
+                    <td><b>{{ p.code }}</b></td>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.manufacturer }}</td>
+                    <td>{{ p.price }}</td>
+                    <td style="text-align: center; font-weight: bold; color: #2b6cb0;">{{ p.scan_count }}</td>
+                    <td><span style="color: green; font-weight: bold;">{{ p.status }}</span></td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
-</div>
-
 </body>
 </html>
