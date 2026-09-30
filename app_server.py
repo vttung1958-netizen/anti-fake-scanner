@@ -9,15 +9,23 @@ from openpyxl.utils import get_column_letter
 from openpyxl.drawing.image import Image as XLImage
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 
+# Thư viện tạo PDF cho trang in thử mẫu
+try:
+    from reportlab.lib.pagesizes import A4
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib import colors
+    PDF_READY = True
+except ImportError:
+    PDF_READY = False
+
 app = Flask(__name__)
 app.secret_key = 'vuong_thanh_tung_secret_key_2026'
 
-# Đảm bảo thư mục lưu trữ ảnh QR và file tồn tại
 QR_OUTPUT_DIR = "static/qrs"
 os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
 os.makedirs("static", exist_ok=True)
 
-# Cơ sở dữ liệu mẫu lưu trên bộ nhớ tạm của server
 products_db = [
     {
         "code": "SP001",
@@ -93,13 +101,11 @@ def generate_batch():
         ws = wb.active
         ws.title = "ThongKe_Va_TemQR"
         
-        # Tạo bảng thống kê chi tiết ở các dòng đầu tiên để doanh nghiệp đối chiếu thông tin lô hàng
         ws.append(["--- THÔNG TIN LÔ HÀNG & DANH SÁCH MÃ QR ĐẶC QUYỀN ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
         ws.append(["Số lượng mã:", quantity, "Đơn giá niêm yết:", price])
-        ws.append([]) # Dòng trống ngăn cách
+        ws.append([])
         
-        # Tiêu đề bảng quản lý
         header_row = 5
         ws.cell(row=header_row, column=1, value="STT")
         ws.cell(row=header_row, column=2, value="Mã Code")
@@ -108,18 +114,17 @@ def generate_batch():
         ws.cell(row=header_row, column=5, value="Nhà Sản Xuất")
         ws.cell(row=header_row, column=6, value="Link Xác Thực Ngầm")
         
-        # Thư mục tạm chứa ảnh riêng biệt cho file ZIP
         batch_img_dir = f"static/batch_{uuid.uuid4().hex[:8]}"
         os.makedirs(batch_img_dir, exist_ok=True)
         
         generated_qr_files = []
+        sample_qr_data_for_pdf = [] # Lưu tối đa 12 mã để in trang mẫu thử nghiệm
         
         for i in range(1, quantity + 1):
             code = f"SP{len(products_db) + i:03d}"
             token = uuid.uuid4().hex[:12]
             verify_url = f"https://anti-fake-scanner-2026.onrender.com/verify?code={code}&token={token}"
             
-            # Tạo và lưu ảnh QR Code vào thư mục chung và thư mục riêng của lô
             img = qrcode.make(verify_url)
             img_filename = f"{code}.png"
             img_path = os.path.join(QR_OUTPUT_DIR, img_filename)
@@ -128,6 +133,9 @@ def generate_batch():
             batch_img_path = os.path.join(batch_img_dir, img_filename)
             img.save(batch_img_path)
             generated_qr_files.append(batch_img_path)
+            
+            if len(sample_qr_data_for_pdf) < 12: # Lấy 12 mã đầu tiên làm trang in thử
+                sample_qr_data_for_pdf.append((code, batch_img_path))
             
             new_prod = {
                 "code": code,
@@ -141,7 +149,6 @@ def generate_batch():
             }
             products_db.append(new_prod)
             
-            # Ghi dòng dữ liệu quản lý vào Excel
             row_idx = header_row + i
             ws.cell(row=row_idx, column=1, value=i)
             ws.cell(row=row_idx, column=2, value=code)
@@ -153,18 +160,69 @@ def generate_batch():
         excel_path = "static/ThongKe_DanhSach_MaQR.xlsx"
         wb.save(excel_path)
         
-        # Đóng gói toàn bộ file Excel thống kê và kho ảnh QR vào một file ZIP duy nhất
+        # Tự động tạo tệp PDF trang in thử mẫu (Label Sheet A4) để doanh nghiệp test trước khi in bao bì
+        sample_pdf_path = "static/TrangInThu_MauA4.pdf"
+        if PDF_READY and sample_qr_data_for_pdf:
+            doc = SimpleDocTemplate(sample_pdf_path, pagesize=A4, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=30)
+            elements = []
+            styles = getSampleStyleSheet()
+            
+            title_style = ParagraphStyle(
+                'TitleStyle',
+                parent=styles['Heading1'],
+                fontName='Helvetica-Bold',
+                fontSize=14,
+                textColor=colors.HexColor('#1A365D'),
+                spaceAfter=15,
+                alignment=1
+            )
+            elements.append(Paragraph(f"<b>TRANG IN THỬ MẪU (TEST TEM QR) - LÔ: {prod_name}</b>", title_style))
+            elements.append(Paragraph("<i>(Doanh nghiệp in trang này ra giấy A4 thường để kiểm tra kích thước và quét thử mã QR trước khi gửi đi in hàng loạt lên bao bì)</i>", ParagraphStyle('Sub', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#718096'), spaceAfter=20, alignment=1)))
+            
+            # Sắp xếp 12 mã QR thành lưới 3 cột x 4 hàng
+            table_data = []
+            row_cells = []
+            for idx, (code_val, img_p) in enumerate(sample_qr_data_for_pdf):
+                # Mỗi ô gồm mã code và hình ảnh QR
+                cell_content = [
+                    Paragraph(f"<b>{code_val}</b>", ParagraphStyle('CodeSt', parent=styles['Normal'], fontSize=10, alignment=1)),
+                    Spacer(1, 4),
+                    RLImage(img_p, width=80, height=80)
+                ]
+                row_cells.append(cell_content)
+                if len(row_cells) == 3:
+                    table_data.append(row_cells)
+                    row_cells = []
+            if row_cells: # Thêm phần dư nếu chưa đủ hàng
+                while len(row_cells) < 3:
+                    row_cells.append("")
+                table_data.append(row_cells)
+                
+            t = Table(table_data, colWidths=[170, 170, 170])
+            t.setStyle(TableStyle([
+                ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+                ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E0')),
+                ('TOPPADDING', (0,0), (-1,-1), 10),
+                ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+            ]))
+            elements.append(t)
+            doc.build(elements)
+
+        # Đóng gói toàn bộ vào file ZIP giao cho doanh nghiệp
         zip_path = "static/Goi_Tem_QR_DoanhNghiep.zip"
         with zipfile.ZipFile(zip_path, 'w') as zipf:
-            zipf.write(excel_path, arcname="ThongKe_DanhSach_MaQR.xlsx")
+            zipf.write(excel_path, arcname="1_ThongKe_DanhSach_MaQR.xlsx")
+            if os.path.exists(sample_pdf_path):
+                zipf.write(sample_pdf_path, arcname="2_TrangInThu_MauA4.pdf")
             for qr_file in generated_qr_files:
-                zipf.write(qr_file, arcname=f"ThuVien_Anh_QR/{os.path.basename(qr_file)}")
+                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR_Goc/{os.path.basename(qr_file)}")
                 
         return send_file(zip_path, as_attachment=True)
     except Exception as e:
         return f"<h3>Lỗi hệ thống khi tạo gói dữ liệu doanh nghiệp:</h3><p>{str(e)}</p><a href='/admin'>Quay lại</a>", 500
 
-@app.route('/super_admin')
+@app.super_admin_route if hasattr(app, 'super_admin_route') else app.route('/super_admin')
 def super_admin():
     return render_template('super_admin.html')
 
