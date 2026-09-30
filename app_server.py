@@ -236,3 +236,7 @@ def super_admin():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+    # Trang Điều khoản pháp lý và đăng ký dịch vụ
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
