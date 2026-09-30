@@ -16,8 +16,9 @@ app.secret_key = 'vuong_thanh_tung_secret_key_2026'
 QR_OUTPUT_DIR = "static/qrs"
 os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
 os.makedirs("static", exist_ok=True)
+os.makedirs("templates", exist_ok=True)
 
-# Cơ sở dữ liệu đơn hàng và sản phẩm tự động
+# Cơ sở dữ liệu đơn hàng và sản phẩm
 orders_db = {}
 products_db = [
     {
@@ -56,13 +57,13 @@ def index():
     
     return render_template('index.html', status="success", message="XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100%.", product=product)
 
-# Trang Khách hàng mua và thanh toán tự động
+# Trang Đặt hàng & Chọn gói dịch vụ tự động cho Khách hàng/Doanh nghiệp
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
     if request.method == 'POST':
         prod_name = request.form.get('prod_name')
         manufacturer = request.form.get('manufacturer')
-        quantity = int(request.form.get('quantity', 100))
+        quantity = int(request.form.get('quantity', 1000))
         price_per_tem = 500 # 500 VNĐ / tem
         total_price = quantity * price_per_tem
         
@@ -80,39 +81,24 @@ def buy():
         
     return render_template('buy.html')
 
+# Trang Thanh toán qua VietQR động
 @app.route('/checkout/<order_id>')
 def checkout(order_id):
     order = orders_db.get(order_id)
     if not order:
         return "Đơn hàng không tồn tại!", 404
         
-    # Tạo link VietQR động tự động (Ví dụ Vietcombank / MB Bank)
-    # Cấu trúc: https://img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-compact2.png?amount=<AMOUNT>&addInfo=<CONTENT>
-    bank_id = "MB"
-    account_no = "0987654321" # Số tài khoản nhận tiền tự động của thầy
+    bank_id = "AGRIBANK"
+    account_no = "1500215038690" # Số tài khoản Agribank của thầy: VƯƠNG THANH TÙNG
     amount = order["total_price"]
     add_info = f"AFQR {order_id}"
     
+    # Tạo mã VietQR tự động qua API công khai VietQR
     vietqr_url = f"https://img.vietqr.io/image/{bank_id}-{account_no}-compact2.png?amount={amount}&addInfo={add_info}"
     
     return render_template('checkout.html', order=order, order_id=order_id, vietqr_url=vietqr_url)
 
-# API Webhook nhận tín hiệu tự động từ ngân hàng khi khách chuyển khoản thành công
-@app.route('/api/payment_webhook', methods=['POST'])
-def payment_webhook():
-    data = request.json
-    # Dữ liệu từ API ngân hàng (Casso/SePay gửi sang)
-    content = data.get('content', '')
-    amount = data.get('amount', 0)
-    
-    for order_id, order in orders_db.items():
-        if order_id in content and amount >= order["total_price"]:
-            order["status"] = "paid"
-            return jsonify({"success": True, "message": "Xác nhận thanh toán tự động thành công!"})
-            
-    return jsonify({"success": False, "message": "Không tìm thấy đơn hàng khớp lệnh."}), 400
-
-# API kiểm tra trạng thái thanh toán theo thời gian thực (Ajax Polling từ trình duyệt)
+# API kiểm tra trạng thái thanh toán thời gian thực (Ajax từ trình duyệt)
 @app.route('/api/check_status/<order_id>')
 def check_status(order_id):
     order = orders_db.get(order_id)
@@ -120,12 +106,21 @@ def check_status(order_id):
         return jsonify({"status": "not_found"})
     return jsonify({"status": order["status"]})
 
-# Trang tự động sinh gói dữ liệu sau khi thanh toán thành công
+# Quản trị viên kích hoạt xác nhận thanh toán thủ công nhanh hoặc tự động
+@app.route('/admin/approve/<order_id>')
+def approve_order(order_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('admin_login'))
+    if order_id in orders_db:
+        orders_db[order_id]["status"] = "paid"
+    return redirect(url_for('admin'))
+
+# Tự động sinh và tải gói dữ liệu sau khi thanh toán thành công
 @app.route('/success/<order_id>')
 def success_download(order_id):
     order = orders_db.get(order_id)
     if not order:
-        return "Đơn hàng không tồn tại!", 404
+        return "Đơn hàng không tồn tại hoặc chưa thanh toán!", 404
         
     prod_name = order["prod_name"]
     manufacturer = order["manufacturer"]
