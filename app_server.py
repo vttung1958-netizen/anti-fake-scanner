@@ -70,7 +70,14 @@ def index():
     
     return render_template('index.html', status="success", message="XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100%.", product=product)
 
-# Quản trị viên tạo lô tem, xuất file Excel và PDF trực tiếp từ trang quản lý chung
+# Trang Quản trị chính (Tập trung toàn bộ tính năng tạo lô và xuất file tại đây)
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    if not session.get('logged_in'):
+        return redirect(url_for('admin_login'))
+    return render_template('admin.html', products=products_db)
+
+# Xử lý tạo lô tem và tải tệp .ZIP trực tiếp
 @app.route('/admin/generate_batch', methods=['POST'])
 def generate_batch():
     if not session.get('logged_in'):
@@ -119,7 +126,7 @@ def generate_batch():
             img.save(batch_img_path)
             generated_qr_files.append(batch_img_path)
             
-            # Lấy đúng 12 mã đầu tiên (SP001 - SP012) cho trang PDF A4 ngang
+            # Lấy đúng 12 mã đầu tiên (SP001 - SP012) để hiển thị lên trang PDF A4 ngang
             if len(sample_qr_data) < 12:
                 sample_qr_data.append((code, batch_img_path))
             
@@ -218,11 +225,14 @@ def admin_logout():
     session.pop('logged_in', None)
     return redirect(url_for('admin_login'))
 
-@app.route('/admin')
-def admin():
+# Trang Quản trị cấp cao (Super Admin) tích hợp chung
+@app.route('/super_admin')
+def super_admin():
     if not session.get('logged_in'):
         return redirect(url_for('admin_login'))
-    return render_template('admin.html', products=products_db)
+    total_products = len(products_db)
+    total_scans = sum(p.get("scan_count", 0) for p in products_db)
+    return render_template('super_admin.html', total_products=total_products, total_scans=total_scans, products=products_db)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
