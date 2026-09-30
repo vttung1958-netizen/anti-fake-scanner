@@ -9,7 +9,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.drawing.image import Image as XLImage
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 
-# Sử dụng thư viện fpdf2 tạo PDF in thử cực kỳ ổn định, không lỗi trên Render
+# Thư viện FPDF2 tạo PDF
 from fpdf import FPDF
 
 app = Flask(__name__)
@@ -154,18 +154,17 @@ def generate_batch():
         excel_path = "static/ThongKe_DanhSach_MaQR.xlsx"
         wb.save(excel_path)
         
-        # 2. Tạo tệp PDF "2_TrangInThu_MauA4.pdf" bằng thư viện FPDF2
+        # 2. Tạo tệp PDF "2_TrangInThu_MauA4.pdf" (Sử dụng văn bản không dấu thuần ASCII để tuyệt đối an toàn)
         pdf_path = "static/TrangInThu_MauA4.pdf"
         pdf = FPDF(orientation='P', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 12)
-        pdf.cell(0, 8, f"TRANG IN THU MAU (TEST TEM QR) - LO: {prod_name}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LOU HANG", align="C", new_x="LMARGIN", new_y="NEXT")
         
         pdf.set_font("helvetica", "I", 8)
-        pdf.cell(0, 6, "Doanh nghiep in file PDF nay ra A4 de kiem tra kich thuoc va quet thu ma QR truoc khi in hang loat.", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 6, "Doanh nghiep in file PDF nay ra giay A4 de kiem tra kich thuoc va quet thu ma QR truoc khi in hang loat.", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(5)
         
-        # Vẽ lưới 3 cột chứa 12 mã QR
         col_width = 60
         row_height = 42
         start_x = 15
@@ -177,15 +176,12 @@ def generate_batch():
             x = start_x + c * col_width
             y = start_y + r * row_height
             
-            # Vẽ khung viền tem
             pdf.rect(x, y, col_width - 5, row_height - 3)
             
-            # Ghi mã code
             pdf.set_xy(x, y + 2)
             pdf.set_font("helvetica", "B", 9)
             pdf.cell(col_width - 5, 5, s_code, align="C", new_x="LMARGIN", new_y="NEXT")
             
-            # Chèn hình ảnh QR
             try:
                 pdf.image(s_path, x=x + 15, y=y + 8, w=30, h=30)
             except Exception:
