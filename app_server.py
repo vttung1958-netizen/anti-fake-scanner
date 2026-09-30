@@ -18,8 +18,21 @@ os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
 os.makedirs("static", exist_ok=True)
 os.makedirs("templates", exist_ok=True)
 
-# Biến toàn cục lưu trữ dữ liệu và mật khẩu quản trị có thể thay đổi an toàn
-ADMIN_PASSWORD = 'tung1958'
+# Quản lý mật khẩu quản trị đọc/ghi qua file để đồng bộ hoàn hảo giữa các tiến trình Gunicorn trên Render
+ADMIN_PASS_FILE = "admin_pass.txt"
+
+def get_admin_password():
+    if os.path.exists(ADMIN_PASS_FILE):
+        with open(ADMIN_PASS_FILE, "r", encoding="utf-8") as f:
+            pw = f.read().strip()
+            if pw: 
+                return pw
+    return 'tung1958'
+
+def save_admin_password(new_pw):
+    with open(ADMIN_PASS_FILE, "w", encoding="utf-8") as f:
+        f.write(new_pw)
+
 orders_db = {}
 products_db = [
     {
@@ -235,16 +248,16 @@ def success_download(order_id):
     except Exception as e:
         return f"Lỗi tạo gói dữ liệu: {str(e)}", 500
 
-# Quản lý đăng nhập và đổi mật khẩu an toàn
+# Quản lý đăng nhập và đổi mật khẩu quản trị đồng bộ qua file
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
-    global ADMIN_PASSWORD
+    current_password = get_admin_password()
     if request.method == 'POST':
         action = request.form.get('action')
         if action == 'login':
             username = request.form.get('username')
             password = request.form.get('password')
-            if username == 'admin' and password == ADMIN_PASSWORD:
+            if username == 'admin' and password == current_password:
                 session['logged_in'] = True
                 return redirect(url_for('admin'))
             else:
@@ -252,8 +265,8 @@ def admin_login():
         elif action == 'change_password':
             old_pass = request.form.get('old_password')
             new_pass = request.form.get('new_password')
-            if old_pass == ADMIN_PASSWORD:
-                ADMIN_PASSWORD = new_pass
+            if old_pass == current_password:
+                save_admin_password(new_pass)
                 return render_template('admin_login.html', success="Đổi mật khẩu thành công! Vui lòng đăng nhập lại.")
             else:
                 return render_template('admin_login.html', error="Mật khẩu cũ không chính xác!")
