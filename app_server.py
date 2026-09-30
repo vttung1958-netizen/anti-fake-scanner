@@ -18,7 +18,8 @@ os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
 os.makedirs("static", exist_ok=True)
 os.makedirs("templates", exist_ok=True)
 
-# Cơ sở dữ liệu đơn hàng và sản phẩm
+# Biến toàn cục lưu trữ dữ liệu và mật khẩu quản trị có thể thay đổi an toàn
+ADMIN_PASSWORD = 'tung1958'
 orders_db = {}
 products_db = [
     {
@@ -57,7 +58,7 @@ def index():
     
     return render_template('index.html', status="success", message="XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100%.", product=product)
 
-# Trang Đặt hàng & Chọn gói dịch vụ tự động cho Khách hàng/Doanh nghiệp
+# Trang Khách hàng đặt mua gói QR tự động
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
     if request.method == 'POST':
@@ -74,14 +75,14 @@ def buy():
             "manufacturer": manufacturer,
             "quantity": quantity,
             "total_price": total_price,
-            "status": "pending" # pending hoặc paid
+            "status": "pending"
         }
         
         return redirect(url_for('checkout', order_id=order_id))
         
     return render_template('buy.html')
 
-# Trang Thanh toán qua VietQR động
+# Trang Thanh toán VietQR động
 @app.route('/checkout/<order_id>')
 def checkout(order_id):
     order = orders_db.get(order_id)
@@ -89,16 +90,15 @@ def checkout(order_id):
         return "Đơn hàng không tồn tại!", 404
         
     bank_id = "AGRIBANK"
-    account_no = "1500215038690" # Số tài khoản Agribank của thầy: VƯƠNG THANH TÙNG
+    account_no = "1500215038690" # Tài khoản Agribank: VƯƠNG THANH TÙNG
     amount = order["total_price"]
     add_info = f"AFQR {order_id}"
     
-    # Tạo mã VietQR tự động qua API công khai VietQR
     vietqr_url = f"https://img.vietqr.io/image/{bank_id}-{account_no}-compact2.png?amount={amount}&addInfo={add_info}"
     
     return render_template('checkout.html', order=order, order_id=order_id, vietqr_url=vietqr_url)
 
-# API kiểm tra trạng thái thanh toán thời gian thực (Ajax từ trình duyệt)
+# API kiểm tra trạng thái thanh toán thời gian thực
 @app.route('/api/check_status/<order_id>')
 def check_status(order_id):
     order = orders_db.get(order_id)
@@ -106,7 +106,7 @@ def check_status(order_id):
         return jsonify({"status": "not_found"})
     return jsonify({"status": order["status"]})
 
-# Quản trị viên kích hoạt xác nhận thanh toán thủ công nhanh hoặc tự động
+# Quản trị viên duyệt đơn hàng nhanh
 @app.route('/admin/approve/<order_id>')
 def approve_order(order_id):
     if not session.get('logged_in'):
@@ -115,7 +115,7 @@ def approve_order(order_id):
         orders_db[order_id]["status"] = "paid"
     return redirect(url_for('admin'))
 
-# Tự động sinh và tải gói dữ liệu sau khi thanh toán thành công
+# Tự động sinh và tải gói dữ liệu (.zip gồm Excel, PDF A4 ngang và kho ảnh)
 @app.route('/success/<order_id>')
 def success_download(order_id):
     order = orders_db.get(order_id)
@@ -191,6 +191,7 @@ def success_download(order_id):
         excel_path = "static/ThongKe_DanhSach_MaQR.xlsx"
         wb.save(excel_path)
         
+        # Tạo tệp PDF trang in thử mẫu A4 ngang (Landscape) chuẩn 12 ô
         pdf_path = "static/TrangInThu_MauA4.pdf"
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
@@ -234,25 +235,40 @@ def success_download(order_id):
     except Exception as e:
         return f"Lỗi tạo gói dữ liệu: {str(e)}", 500
 
-@app.route('/admin')
-def admin():
-    if not session.get('logged_in'):
-        return redirect(url_for('admin_login'))
-    return render_template('admin.html', products=products_db, orders=orders_db)
-
+# Quản lý đăng nhập và đổi mật khẩu an toàn
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
+    global ADMIN_PASSWORD
     if request.method == 'POST':
-        if request.form.get('username') == 'admin' and request.form.get('password') == 'tung1958':
-            session['logged_in'] = True
-            return redirect(url_for('admin'))
-        return render_template('admin_login.html', error="Sai tài khoản hoặc mật khẩu!")
+        action = request.form.get('action')
+        if action == 'login':
+            username = request.form.get('username')
+            password = request.form.get('password')
+            if username == 'admin' and password == ADMIN_PASSWORD:
+                session['logged_in'] = True
+                return redirect(url_for('admin'))
+            else:
+                return render_template('admin_login.html', error="Sai tên đăng nhập hoặc mật khẩu!")
+        elif action == 'change_password':
+            old_pass = request.form.get('old_password')
+            new_pass = request.form.get('new_password')
+            if old_pass == ADMIN_PASSWORD:
+                ADMIN_PASSWORD = new_pass
+                return render_template('admin_login.html', success="Đổi mật khẩu thành công! Vui lòng đăng nhập lại.")
+            else:
+                return render_template('admin_login.html', error="Mật khẩu cũ không chính xác!")
     return render_template('admin_login.html')
 
 @app.route('/admin/logout')
 def admin_logout():
     session.pop('logged_in', None)
     return redirect(url_for('admin_login'))
+
+@app.route('/admin')
+def admin():
+    if not session.get('logged_in'):
+        return redirect(url_for('admin_login'))
+    return render_template('admin.html', products=products_db, orders=orders_db)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
