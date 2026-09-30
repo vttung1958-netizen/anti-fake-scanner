@@ -7,7 +7,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font
 from openpyxl.utils import get_column_letter
 from openpyxl.drawing.image import Image as XLImage
-from flask import Flask, render_template, request, redirect, url_for, session, send_file
+from flask import Flask, render_template, request, redirect, url_for, session, send_file, jsonify
 from fpdf import FPDF
 
 app = Flask(__name__)
@@ -17,6 +17,8 @@ QR_OUTPUT_DIR = "static/qrs"
 os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
 os.makedirs("static", exist_ok=True)
 
+# Cơ sở dữ liệu đơn hàng và sản phẩm tự động
+orders_db = {}
 products_db = [
     {
         "code": "SP001",
@@ -54,47 +56,90 @@ def index():
     
     return render_template('index.html', status="success", message="XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100%.", product=product)
 
-@app.route('/admin', methods=['GET', 'POST'])
-def admin():
-    if not session.get('logged_in'):
-        return redirect(url_for('admin_login'))
-    return render_template('admin.html', products=products_db)
-
-@app.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
+# Trang Khách hàng mua và thanh toán tự động
+@app.route('/buy', methods=['GET', 'POST'])
+def buy():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        if username == 'admin' and password == 'tung1958':
-            session['logged_in'] = True
-            return redirect(url_for('admin'))
-        else:
-            return render_template('admin_login.html', error="Sai tên đăng nhập hoặc mật khẩu!")
-    return render_template('admin_login.html')
-
-@app.route('/admin/logout')
-def admin_logout():
-    session.pop('logged_in', None)
-    return redirect(url_for('admin_login'))
-
-@app.route('/admin/generate_batch', methods=['POST'])
-def generate_batch():
-    if not session.get('logged_in'):
-        return redirect(url_for('admin_login'))
-    
-    try:
         prod_name = request.form.get('prod_name')
         manufacturer = request.form.get('manufacturer')
-        price = request.form.get('price')
         quantity = int(request.form.get('quantity', 100))
+        price_per_tem = 500 # 500 VNĐ / tem
+        total_price = quantity * price_per_tem
         
+        order_id = f"DH{uuid.uuid4().hex[:6].upper()}"
+        
+        orders_db[order_id] = {
+            "prod_name": prod_name,
+            "manufacturer": manufacturer,
+            "quantity": quantity,
+            "total_price": total_price,
+            "status": "pending" # pending hoặc paid
+        }
+        
+        return redirect(url_for('checkout', order_id=order_id))
+        
+    return render_template('buy.html')
+
+@app.route('/checkout/<order_id>')
+def checkout(order_id):
+    order = orders_db.get(order_id)
+    if not order:
+        return "Đơn hàng không tồn tại!", 404
+        
+    # Tạo link VietQR động tự động (Ví dụ Vietcombank / MB Bank)
+    # Cấu trúc: https://img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-compact2.png?amount=<AMOUNT>&addInfo=<CONTENT>
+    bank_id = "MB"
+    account_no = "0987654321" # Số tài khoản nhận tiền tự động của thầy
+    amount = order["total_price"]
+    add_info = f"AFQR {order_id}"
+    
+    vietqr_url = f"https://img.vietqr.io/image/{bank_id}-{account_no}-compact2.png?amount={amount}&addInfo={add_info}"
+    
+    return render_template('checkout.html', order=order, order_id=order_id, vietqr_url=vietqr_url)
+
+# API Webhook nhận tín hiệu tự động từ ngân hàng khi khách chuyển khoản thành công
+@app.route('/api/payment_webhook', methods=['POST'])
+def payment_webhook():
+    data = request.json
+    # Dữ liệu từ API ngân hàng (Casso/SePay gửi sang)
+    content = data.get('content', '')
+    amount = data.get('amount', 0)
+    
+    for order_id, order in orders_db.items():
+        if order_id in content and amount >= order["total_price"]:
+            order["status"] = "paid"
+            return jsonify({"success": True, "message": "Xác nhận thanh toán tự động thành công!"})
+            
+    return jsonify({"success": False, "message": "Không tìm thấy đơn hàng khớp lệnh."}), 400
+
+# API kiểm tra trạng thái thanh toán theo thời gian thực (Ajax Polling từ trình duyệt)
+@app.route('/api/check_status/<order_id>')
+def check_status(order_id):
+    order = orders_db.get(order_id)
+    if not order:
+        return jsonify({"status": "not_found"})
+    return jsonify({"status": order["status"]})
+
+# Trang tự động sinh gói dữ liệu sau khi thanh toán thành công
+@app.route('/success/<order_id>')
+def success_download(order_id):
+    order = orders_db.get(order_id)
+    if not order:
+        return "Đơn hàng không tồn tại!", 404
+        
+    prod_name = order["prod_name"]
+    manufacturer = order["manufacturer"]
+    quantity = order["quantity"]
+    price_str = f"{order['total_price']:,} VNĐ"
+    
+    try:
         wb = Workbook()
         ws = wb.active
         ws.title = "ThongKe_DanhSach"
         
         ws.append(["--- THÔNG TIN LÔ HÀNG & DANH SÁCH MÃ QR ĐẶC QUYỀN ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
-        ws.append(["Số lượng mã:", quantity, "Đơn giá niêm yết:", price])
+        ws.append(["Số lượng mã:", quantity, "Đơn giá:", price_str])
         ws.append([])
         
         header_row = 5
@@ -111,9 +156,6 @@ def generate_batch():
         generated_qr_files = []
         sample_qr_data = []
         
-        # Cố định chỉ số cơ sở để sinh mã số liên tục chính xác tuyệt đối
-        base_db_len = len(products_db)
-        
         for i in range(1, quantity + 1):
             code = f"SP{i:03d}"
             token = uuid.uuid4().hex[:12]
@@ -128,7 +170,6 @@ def generate_batch():
             img.save(batch_img_path)
             generated_qr_files.append(batch_img_path)
             
-            # Lấy đúng 12 mã đầu tiên để lấp đầy hoàn hảo 3 hàng x 4 cột trên trang PDF ngang
             if len(sample_qr_data) < 12:
                 sample_qr_data.append((code, batch_img_path))
             
@@ -138,7 +179,7 @@ def generate_batch():
                 "name": prod_name,
                 "manufacturer": manufacturer,
                 "mfg_date": "2026-03-01",
-                "price": price,
+                "price": price_str,
                 "scan_count": 0,
                 "status": "Hàng thật"
             }
@@ -155,15 +196,13 @@ def generate_batch():
         excel_path = "static/ThongKe_DanhSach_MaQR.xlsx"
         wb.save(excel_path)
         
-        # Tạo tệp PDF trang in thử mẫu chuẩn A4 ngang (Landscape) với 12 ô cân đối
         pdf_path = "static/TrangInThu_MauA4.pdf"
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 13)
-        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LO HANG", align="C", new_x="LMARGIN", new_y="NEXT")
-        
+        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LOU HANG", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("helvetica", "I", 9)
-        pdf.cell(0, 6, "Doanh nghiep in file PDF nay ra giay A4 ngang de kiem tra kich thuoc va quet thu ma QR truoc khi in hang loat.", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 6, "Doanh nghiep in file PDF nay ra giay A4 ngang de kiem tra kich thuoc va quet thu ma QR.", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(5)
         
         col_width = 65
@@ -178,7 +217,6 @@ def generate_batch():
             y = start_y + r * row_height
             
             pdf.rect(x, y, col_width - 6, row_height - 4)
-            
             pdf.set_xy(x, y + 3)
             pdf.set_font("helvetica", "B", 10)
             pdf.cell(col_width - 6, 6, s_code, align="C", new_x="LMARGIN", new_y="NEXT")
@@ -190,7 +228,7 @@ def generate_batch():
                 
         pdf.output(pdf_path)
         
-        zip_path = "static/Goi_Tem_QR_DoanhNghiep.zip"
+        zip_path = f"static/Goi_Tem_{order_id}.zip"
         with zipfile.ZipFile(zip_path, 'w') as zipf:
             zipf.write(excel_path, arcname="1_ThongKe_DanhSach_MaQR.xlsx")
             zipf.write(pdf_path, arcname="2_TrangInThu_MauA4.pdf")
@@ -199,11 +237,27 @@ def generate_batch():
                 
         return send_file(zip_path, as_attachment=True)
     except Exception as e:
-        return f"<h3>Lỗi hệ thống khi tạo gói dữ liệu doanh nghiệp:</h3><p>{str(e)}</p><a href='/admin'>Quay lại</a>", 500
+        return f"Lỗi tạo gói dữ liệu: {str(e)}", 500
 
-@app.route('/super_admin')
-def super_admin():
-    return render_template('super_admin.html')
+@app.route('/admin')
+def admin():
+    if not session.get('logged_in'):
+        return redirect(url_for('admin_login'))
+    return render_template('admin.html', products=products_db, orders=orders_db)
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        if request.form.get('username') == 'admin' and request.form.get('password') == 'tung1958':
+            session['logged_in'] = True
+            return redirect(url_for('admin'))
+        return render_template('admin_login.html', error="Sai tài khoản hoặc mật khẩu!")
+    return render_template('admin_login.html')
+
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('admin_login'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
