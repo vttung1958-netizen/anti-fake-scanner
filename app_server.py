@@ -111,8 +111,11 @@ def generate_batch():
         generated_qr_files = []
         sample_qr_data = []
         
+        # Cố định chỉ số cơ sở để sinh mã số liên tục chính xác tuyệt đối
+        base_db_len = len(products_db)
+        
         for i in range(1, quantity + 1):
-            code = f"SP{len(products_db) + i:03d}"
+            code = f"SP{base_db_len + i:03d}"
             token = uuid.uuid4().hex[:12]
             verify_url = f"https://anti-fake-scanner-2026.onrender.com/verify?code={code}&token={token}"
             
@@ -125,6 +128,7 @@ def generate_batch():
             img.save(batch_img_path)
             generated_qr_files.append(batch_img_path)
             
+            # Lấy đúng 12 mã đầu tiên để lấp đầy hoàn hảo 3 hàng x 4 cột trên trang PDF ngang
             if len(sample_qr_data) < 12:
                 sample_qr_data.append((code, batch_img_path))
             
@@ -151,11 +155,12 @@ def generate_batch():
         excel_path = "static/ThongKe_DanhSach_MaQR.xlsx"
         wb.save(excel_path)
         
+        # Tạo tệp PDF trang in thử mẫu chuẩn A4 ngang (Landscape) với 12 ô cân đối
         pdf_path = "static/TrangInThu_MauA4.pdf"
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 13)
-        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LO HANG", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LOU HANG", align="C", new_x="LMARGIN", new_y="NEXT")
         
         pdf.set_font("helvetica", "I", 9)
         pdf.cell(0, 6, "Doanh nghiep in file PDF nay ra giay A4 ngang de kiem tra kich thuoc va quet thu ma QR truoc khi in hang loat.", align="C", new_x="LMARGIN", new_y="NEXT")
