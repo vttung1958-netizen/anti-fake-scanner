@@ -2,39 +2,80 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Nhập Quản Trị - Vuongtung.com.vn</title>
+    <title>Đăng Nhập & Quản Trị Hệ Thống</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h2 { color: #2c3e50; text-align: center; margin-bottom: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #34495e; font-weight: bold; }
-        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
-        button { width: 100%; background: #27ae60; color: white; border: none; padding: 10px; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 10px; }
-        button:hover { background: #219653; }
-        .error { color: #e74c3c; font-size: 14px; text-align: center; margin-bottom: 15px; background: #fadbd8; padding: 8px; border-radius: 4px; }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 40px; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { width: 400px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; }
+        h3 { color: #1a365d; text-align: center; margin-top: 0; }
+        label { font-weight: bold; display: block; margin-top: 12px; color: #333; font-size: 14px; }
+        input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #cbd5e0; border-radius: 4px; box-sizing: border-box; }
+        .btn { background: #38a169; color: white; border: none; padding: 12px; width: 100%; margin-top: 20px; font-size: 15px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .btn:hover { background: #2f855a; }
+        .btn-secondary { background: #4a5568; margin-top: 10px; }
+        .btn-secondary:hover { background: #2d3748; }
+        .error { color: #e53e3e; text-align: center; font-size: 14px; margin-top: 10px; font-weight: bold; }
+        .success { color: #38a169; text-align: center; font-size: 14px; margin-top: 10px; font-weight: bold; }
+        .toggle-link { text-align: center; margin-top: 15px; font-size: 13px; color: #2b6cb0; cursor: pointer; text-decoration: underline; }
+        .back-home { position: absolute; top: 15px; left: 15px; font-size: 12px; color: #718096; text-decoration: none; }
+        .back-home:hover { color: #2b6cb0; }
     </style>
 </head>
 <body>
-
-<div class="login-card">
-    <h2>🔐 Đăng Nhập Quản Trị</h2>
-    {% if error %}
-        <div class="error">{{ error }}</div>
-    {% endif %}
-    <form action="/admin/login" method="POST">
-        <div class="form-group">
-            <label for="username">Tên đăng nhập:</label>
-            <input type="text" id="username" name="username" required>
+    <div class="card">
+        <a href="/" class="back-home">⬅ Thoát về Trang Chủ</a>
+        
+        <!-- Form Đăng Nhập -->
+        <div id="login-form">
+            <h3>🔐 Đăng Nhập Quản Trị</h3>
+            <form method="POST">
+                <input type="hidden" name="action" value="login">
+                <label>Tên đăng nhập:</label>
+                <input type="text" name="username" required placeholder="admin">
+                
+                <label>Mật khẩu:</label>
+                <input type="password" name="password" required placeholder="••••••••">
+                
+                <button type="submit" class="btn">Đăng Nhập</button>
+            </form>
+            <div class="toggle-link" onclick="toggleForm()">🔄 Đổi mật khẩu quản trị?</div>
         </div>
-        <div class="form-group">
-            <label for="password">Mật khẩu:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Đăng Nhập</button>
-    </form>
-</div>
 
+        <!-- Form Đổi Mật Khẩu -->
+        <div id="change-pass-form" style="display: none;">
+            <h3>🔑 Đổi Mật Khẩu Quản Trị</h3>
+            <form method="POST">
+                <input type="hidden" name="action" value="change_password">
+                <label>Mật khẩu cũ:</label>
+                <input type="password" name="old_password" required placeholder="Nhập mật khẩu hiện tại">
+                
+                <label>Mật khẩu mới:</label>
+                <input type="password" name="new_password" required placeholder="Nhập mật khẩu mới">
+                
+                <button type="submit" class="btn" style="background: #2b6cb0;">Xác Nhận Đổi</button>
+                <button type="button" class="btn btn-secondary" onclick="toggleForm()">Quay lại Đăng Nhập</button>
+            </form>
+        </div>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        {% if success %}
+            <div class="success">{{ success }}</div>
+        {% endif %}
+    </div>
+
+    <script>
+        function toggleForm() {
+            var loginDiv = document.getElementById('login-form');
+            var passDiv = document.getElementById('change-pass-form');
+            if (loginDiv.style.display === 'none') {
+                loginDiv.style.display = 'block';
+                passDiv.style.display = 'none';
+            } else {
+                loginDiv.style.display = 'none';
+                passDiv.style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>
