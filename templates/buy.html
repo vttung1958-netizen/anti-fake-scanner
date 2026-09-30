@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đặt Mua Gói Mã QR Tự Động</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 40px; }
+        .container { max-width: 600px; background: white; padding: 30px; margin: auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #1a365d; text-align: center; }
+        label { font-weight: bold; display: block; margin-top: 15px; color: #333; }
+        input, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #2b6cb0; color: white; border: none; padding: 12px; width: 100%; margin-top: 25px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2c5282; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Đăng Ký Phát Hành Lô Mã QR Chống Hàng Giả</h2>
+        <form method="POST">
+            <label>Tên Sản Phẩm:</label>
+            <input type="text" name="prod_name" required placeholder="Ví dụ: Sâm Ngọc Linh Nguyên Chất">
+            
+            <label>Tên Nhà Sản Xuất / Công Ty:</label>
+            <input type="text" name="manufacturer" required placeholder="Ví dụ: Tập đoàn Dược phẩm VN">
+            
+            <label>Số Lượng Tem Cần Tạo:</label>
+            <select name="quantity">
+                <option value="1000">Gói 1.000 Tem (500.000 VNĐ)</option>
+                <option value="5000">Gói 5.000 Tem (2.500.000 VNĐ)</option>
+                <option value="10000">Gói 10.000 Tem (5.000.000 VNĐ)</option>
+                <option value="20000">Gói 20.000 Tem (7.000.000 VNĐ)</option>
+            </select>
+            
+            <button type="submit">Tiếp Tục Đến Trang Thanh Toán VietQR</button>
+        </form>
+    </div>
+</body>
+</html>
