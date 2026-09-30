@@ -155,7 +155,7 @@ def generate_batch():
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 13)
-        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LOU HANG", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LO HANG", align="C", new_x="LMARGIN", new_y="NEXT")
         
         pdf.set_font("helvetica", "I", 9)
         pdf.cell(0, 6, "Doanh nghiep in file PDF nay ra giay A4 ngang de kiem tra kich thuoc va quet thu ma QR truoc khi in hang loat.", align="C", new_x="LMARGIN", new_y="NEXT")
