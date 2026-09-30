@@ -8,6 +8,7 @@ from openpyxl.styles import Alignment, Font
 from openpyxl.utils import get_column_letter
 from openpyxl.drawing.image import Image as XLImage
 from flask import Flask, render_template, request, redirect, url_for, session, send_file, jsonify
+from datetime import datetime
 from fpdf import FPDF
 
 app = Flask(__name__)
@@ -18,15 +19,13 @@ os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
 os.makedirs("static", exist_ok=True)
 os.makedirs("templates", exist_ok=True)
 
-# Quản lý mật khẩu quản trị đọc/ghi qua file để đồng bộ hoàn hảo giữa các tiến trình trên Render
 ADMIN_PASS_FILE = "admin_pass.txt"
 
 def get_admin_password():
     if os.path.exists(ADMIN_PASS_FILE):
         with open(ADMIN_PASS_FILE, "r", encoding="utf-8") as f:
             pw = f.read().strip()
-            if pw: 
-                return pw
+            if pw: return pw
     return 'tung1958'
 
 def save_admin_password(new_pw):
@@ -71,12 +70,13 @@ def index():
     
     return render_template('index.html', status="success", message="XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100%.", product=product)
 
-# Trang Khách hàng / Doanh nghiệp đặt mua gói QR tự động
+# 1. Cổng đăng ký mua tem
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
     if request.method == 'POST':
         prod_name = request.form.get('prod_name')
         manufacturer = request.form.get('manufacturer')
+        tax_code = request.form.get('tax_code', 'Chưa cung cấp')
         quantity = int(request.form.get('quantity', 1000))
         
         if quantity <= 1000:
@@ -91,16 +91,18 @@ def buy():
         orders_db[order_id] = {
             "prod_name": prod_name,
             "manufacturer": manufacturer,
+            "tax_code": tax_code,
             "quantity": quantity,
             "total_price": total_price,
-            "status": "pending"
+            "status": "pending",
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         
         return redirect(url_for('checkout', order_id=order_id))
         
     return render_template('buy.html')
 
-# Trang Thanh toán VietQR động
+# 2. Trang quét VietQR chờ thanh toán thực tế
 @app.route('/checkout/<order_id>')
 def checkout(order_id):
     order = orders_db.get(order_id)
@@ -108,7 +110,7 @@ def checkout(order_id):
         return "Đơn hàng không tồn tại!", 404
         
     bank_id = "AGRIBANK"
-    account_no = "1500215038690" # Tài khoản Agribank: VƯƠNG THANH TÙNG
+    account_no = "1500215038690" # Chủ tài khoản: VƯƠNG THANH TÙNG
     amount = order["total_price"]
     add_info = f"AFQR {order_id}"
     
@@ -116,7 +118,22 @@ def checkout(order_id):
     
     return render_template('checkout.html', order=order, order_id=order_id, vietqr_url=vietqr_url)
 
-# API kiểm tra trạng thái thanh toán thời gian thực
+# 3. API Webhook tự động nhận diện dòng tiền từ Ngân hàng (Casso/SePay gọi sang khi có tiền vào)
+@app.route('/api/payment_webhook', methods=['POST'])
+def payment_webhook():
+    data = request.json or {}
+    # Dữ liệu ngân hàng đẩy sang thường chứa nội dung chuyển khoản và số tiền
+    content = str(data.get('content', '')).upper()
+    amount = float(data.get('amount', 0))
+    
+    for order_id, order in orders_db.items():
+        if order_id in content and amount >= order["total_price"]:
+            order["status"] = "paid"
+            return jsonify({"success": True, "message": f"Đơn hàng {order_id} đã khớp lệnh thanh toán tự động!"})
+            
+    return jsonify({"success": False, "message": "Không tìm thấy mã đơn hàng phù hợp."}), 400
+
+# API kiểm tra trạng thái liên tục từ trình duyệt khách hàng
 @app.route('/api/check_status/<order_id>')
 def check_status(order_id):
     order = orders_db.get(order_id)
@@ -124,7 +141,15 @@ def check_status(order_id):
         return jsonify({"status": "not_found"})
     return jsonify({"status": order["status"]})
 
-# Quản trị viên duyệt đơn hàng nhanh
+# 4. Trang xem Hóa đơn & Biên nhận điện tử tự động sau khi thanh toán thành công
+@app.route('/invoice/<order_id>')
+def invoice(order_id):
+    order = orders_db.get(order_id)
+    if not order or order["status"] != "paid":
+        return "Đơn hàng chưa được thanh toán hoặc không tồn tại!", 403
+    return render_template('invoice.html', order=order, order_id=order_id)
+
+# Quản trị viên duyệt đơn nhanh thủ công (nếu cần)
 @app.route('/admin/approve/<order_id>')
 def approve_order(order_id):
     if not session.get('logged_in'):
@@ -133,12 +158,12 @@ def approve_order(order_id):
         orders_db[order_id]["status"] = "paid"
     return redirect(url_for('admin'))
 
-# Tự động sinh và tải gói dữ liệu (.zip gồm Excel, PDF A4 ngang và kho ảnh)
+# 5. Tự động sinh tệp .ZIP chứa toàn bộ mã QR, Excel và PDF in thử
 @app.route('/success/<order_id>')
 def success_download(order_id):
     order = orders_db.get(order_id)
-    if not order:
-        return "Đơn hàng không tồn tại hoặc chưa thanh toán!", 404
+    if not order or order["status"] != "paid":
+        return "Đơn hàng chưa thanh toán!", 403
         
     prod_name = order["prod_name"]
     manufacturer = order["manufacturer"]
@@ -191,7 +216,7 @@ def success_download(order_id):
                 "token": token,
                 "name": prod_name,
                 "manufacturer": manufacturer,
-                "mfg_date": "2026-03-01",
+                "mfg_date": datetime.now().strftime("%Y-%m-%d"),
                 "price": price_str,
                 "scan_count": 0,
                 "status": "Hàng thật"
@@ -252,7 +277,6 @@ def success_download(order_id):
     except Exception as e:
         return f"Lỗi tạo gói dữ liệu: {str(e)}", 500
 
-# Quản lý đăng nhập và đổi mật khẩu quản trị đồng bộ qua file
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     current_password = get_admin_password()
@@ -287,7 +311,6 @@ def admin():
         return redirect(url_for('admin_login'))
     return render_template('admin.html', products=products_db, orders=orders_db)
 
-# Trang Quản trị cấp cao (Super Admin)
 @app.route('/super_admin')
 def super_admin():
     if not session.get('logged_in'):
@@ -296,7 +319,6 @@ def super_admin():
     total_scans = sum(p.get("scan_count", 0) for p in products_db)
     return render_template('super_admin.html', total_products=total_products, total_scans=total_scans, products=products_db)
 
-# Trang điều khoản pháp lý và miễn trách nhiệm
 @app.route('/terms')
 def terms():
     return render_template('terms.html')
