@@ -115,7 +115,7 @@ def generate_batch():
         base_db_len = len(products_db)
         
         for i in range(1, quantity + 1):
-            code = f"SP{base_db_len + i:03d}"
+            code = f"SP{i:03d}"
             token = uuid.uuid4().hex[:12]
             verify_url = f"https://anti-fake-scanner-2026.onrender.com/verify?code={code}&token={token}"
             
