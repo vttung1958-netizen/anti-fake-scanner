@@ -2,7 +2,10 @@ import os
 import uuid
 import qrcode
 import pandas as pd
+import openpyxl
 from openpyxl import Workbook
+from openpyxl.styles import Alignment, Font
+from openpyxl.utils import get_column_letter
 from openpyxl.drawing.image import Image as XLImage
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 
@@ -88,16 +91,14 @@ def generate_batch():
         
         wb = Workbook()
         ws = wb.active
-        ws.title = "DanhSachTemQR"
+        ws.title = "TemQR_InNhanh"
         
-        # Tạo tiêu đề bảng
-        ws.append(["Mã Code", "Token Bảo Mật", "Link Xác Thực", "Hình Ảnh QR Code"])
+        # Thiết lập bố cục lưới gồm 4 cột tem QR trên mỗi hàng (tối ưu in decal)
+        cols_per_row = 4
         
-        # Định dạng chiều rộng cột
-        ws.column_dimensions['A'].width = 12
-        ws.column_dimensions['B'].width = 16
-        ws.column_dimensions['C'].width = 65
-        ws.column_dimensions['D'].width = 20
+        # Đặt chiều rộng cho 4 cột (A, B, C, D) vừa vặn với kích thước tem QR
+        for col_letter in ['A', 'B', 'C', 'D']:
+            ws.column_dimensions[col_letter].width = 16
         
         for i in range(1, quantity + 1):
             code = f"SP{len(products_db) + i:03d}"
@@ -121,18 +122,28 @@ def generate_batch():
             }
             products_db.append(new_prod)
             
-            row_idx = i + 1
-            ws.row_dimensions[row_idx].height = 65  # Chiều cao dòng để chứa ảnh QR
-            ws.cell(row=row_idx, column=1, value=code)
-            ws.cell(row=row_idx, column=2, value=token)
-            ws.cell(row=row_idx, column=3, value=verify_url)
+            # Tính toán vị trí hàng và cột trong lưới (mỗi tem chiếm 2 dòng: dòng 1 chứa mã code, dòng 2 chứa ảnh QR)
+            zero_based_idx = i - 1
+            row_idx = (zero_based_idx // cols_per_row) * 2 + 1
+            col_idx = (zero_based_idx % cols_per_row) + 1
             
-            # Chèn ảnh QR trực tiếp vào file Excel
+            # Cấu hình chiều cao dòng cho đẹp mắt
+            ws.row_dimensions[row_idx].height = 18     # Dòng chữ mã định danh
+            ws.row_dimensions[row_idx + 1].height = 75 # Dòng chứa hình ảnh mã QR
+            
+            # Ghi mã code nhỏ gọn ngay phía trên mã QR
+            cell = ws.cell(row=row_idx, column=col_idx, value=code)
+            cell.alignment = Alignment(horizontal='center', vertical='center')
+            cell.font = Font(bold=True, size=9)
+            
+            # Chèn ảnh QR Code độc lập vào ô phía dưới mã code
             try:
                 xl_img = XLImage(img_path)
-                xl_img.width = 80
-                xl_img.height = 80
-                ws.add_image(xl_img, f"D{row_idx}")
+                xl_img.width = 70
+                xl_img.height = 70
+                
+                col_letter = get_column_letter(col_idx)
+                ws.add_image(xl_img, f"{col_letter}{row_idx + 1}")
             except Exception:
                 pass
             
@@ -141,7 +152,7 @@ def generate_batch():
         
         return send_file(export_file, as_attachment=True)
     except Exception as e:
-        return f"<h3>Lỗi hệ thống khi tạo file Excel kèm ảnh:</h3><p>{str(e)}</p><a href='/admin'>Quay lại</a>", 500
+        return f"<h3>Lỗi hệ thống khi tạo file Excel tem QR:</h3><p>{str(e)}</p><a href='/admin'>Quay lại</a>", 500
 
 @app.route('/super_admin')
 def super_admin():
