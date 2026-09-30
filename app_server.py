@@ -9,6 +9,9 @@ from openpyxl.utils import get_column_letter
 from openpyxl.drawing.image import Image as XLImage
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 
+# Sử dụng thư viện fpdf2 tạo PDF in thử cực kỳ ổn định, không lỗi trên Render
+from fpdf import FPDF
+
 app = Flask(__name__)
 app.secret_key = 'vuong_thanh_tung_secret_key_2026'
 
@@ -109,7 +112,7 @@ def generate_batch():
         os.makedirs(batch_img_dir, exist_ok=True)
         
         generated_qr_files = []
-        sample_qr_data = [] # Lưu 12 mã đầu tiên để làm trang in thử mẫu
+        sample_qr_data = [] # Lưu 12 mã đầu tiên để làm file PDF in thử
         
         for i in range(1, quantity + 1):
             code = f"SP{len(products_db) + i:03d}"
@@ -151,45 +154,50 @@ def generate_batch():
         excel_path = "static/ThongKe_DanhSach_MaQR.xlsx"
         wb.save(excel_path)
         
-        # 2. Tạo file Excel "2_TrangInThu_MauA4.xlsx" chứa lưới 12 tem QR để in thử nhanh chóng
-        wb_sample = Workbook()
-        ws_sample = wb_sample.active
-        ws_sample.title = "InThu_TrangMau"
+        # 2. Tạo tệp PDF "2_TrangInThu_MauA4.pdf" bằng thư viện FPDF2
+        pdf_path = "static/TrangInThu_MauA4.pdf"
+        pdf = FPDF(orientation='P', unit='mm', format='A4')
+        pdf.add_page()
+        pdf.set_font("helvetica", "B", 12)
+        pdf.cell(0, 8, f"TRANG IN THU MAU (TEST TEM QR) - LO: {prod_name}", align="C", new_x="LMARGIN", new_y="NEXT")
         
-        ws_sample.cell(row=1, column=1, value=f"TRANG IN THỬ MẪU (TEST TEM QR) - LÔ: {prod_name}").font = Font(bold=True, size=12, color="1A365D")
-        ws_sample.cell(row=2, column=1, value="Doanh nghiệp in file này ra A4 thường để kiểm tra kích thước và quét thử mã QR trước khi in chính thức.").font = Font(italic=True, size=9, color="718096")
+        pdf.set_font("helvetica", "I", 8)
+        pdf.cell(0, 6, "Doanh nghiep in file PDF nay ra A4 de kiem tra kich thuoc va quet thu ma QR truoc khi in hang loat.", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.ln(5)
         
-        for col_let in ['A', 'B', 'C']:
-            ws_sample.column_dimensions[col_let].width = 22
-            
+        # Vẽ lưới 3 cột chứa 12 mã QR
+        col_width = 60
+        row_height = 42
+        start_x = 15
+        start_y = pdf.get_y()
+        
         for idx, (s_code, s_path) in enumerate(sample_qr_data):
-            r_idx = 4 + (idx // 3) * 3
-            c_idx = (idx % 3) + 1
+            c = idx % 3
+            r = idx // 3
+            x = start_x + c * col_width
+            y = start_y + r * row_height
             
-            ws_sample.row_dimensions[r_idx].height = 18
-            ws_sample.row_dimensions[r_idx + 1].height = 65
+            # Vẽ khung viền tem
+            pdf.rect(x, y, col_width - 5, row_height - 3)
             
-            cell = ws_sample.cell(row=r_idx, column=c_idx, value=s_code)
-            cell.alignment = Alignment(horizontal='center', vertical='center')
-            cell.font = Font(bold=True, size=10)
+            # Ghi mã code
+            pdf.set_xy(x, y + 2)
+            pdf.set_font("helvetica", "B", 9)
+            pdf.cell(col_width - 5, 5, s_code, align="C", new_x="LMARGIN", new_y="NEXT")
             
+            # Chèn hình ảnh QR
             try:
-                xl_img = XLImage(s_path)
-                xl_img.width = 75
-                xl_img.height = 75
-                col_let = get_column_letter(c_idx)
-                ws_sample.add_image(xl_img, f"{col_let}{r_idx + 1}")
+                pdf.image(s_path, x=x + 15, y=y + 8, w=30, h=30)
             except Exception:
                 pass
                 
-        sample_excel_path = "static/TrangInThu_MauA4.xlsx"
-        wb_sample.save(sample_excel_path)
+        pdf.output(pdf_path)
         
-        # 3. Đóng gói tất cả vào file ZIP
+        # 3. Đóng gói tất cả vào file ZIP giao cho doanh nghiệp
         zip_path = "static/Goi_Tem_QR_DoanhNghiep.zip"
         with zipfile.ZipFile(zip_path, 'w') as zipf:
             zipf.write(excel_path, arcname="1_ThongKe_DanhSach_MaQR.xlsx")
-            zipf.write(sample_excel_path, arcname="2_TrangInThu_MauA4.xlsx")
+            zipf.write(pdf_path, arcname="2_TrangInThu_MauA4.pdf")
             for qr_file in generated_qr_files:
                 zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR_Goc/{os.path.basename(qr_file)}")
                 
