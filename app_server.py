@@ -1,7 +1,7 @@
 import os
 import uuid
 import qrcode
-import pandas as pd
+import zipfile
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font
@@ -91,24 +91,43 @@ def generate_batch():
         
         wb = Workbook()
         ws = wb.active
-        ws.title = "TemQR_InNhanh"
+        ws.title = "ThongKe_Va_TemQR"
         
-        # Thiết lập bố cục lưới gồm 4 cột tem QR trên mỗi hàng (tối ưu in decal)
-        cols_per_row = 4
+        # Tạo bảng thống kê chi tiết ở các dòng đầu tiên để doanh nghiệp đối chiếu thông tin lô hàng
+        ws.append(["--- THÔNG TIN LÔ HÀNG & DANH SÁCH MÃ QR ĐẶC QUYỀN ---"])
+        ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
+        ws.append(["Số lượng mã:", quantity, "Đơn giá niêm yết:", price])
+        ws.append([]) # Dòng trống ngăn cách
         
-        # Đặt chiều rộng cho 4 cột (A, B, C, D) vừa vặn với kích thước tem QR
-        for col_letter in ['A', 'B', 'C', 'D']:
-            ws.column_dimensions[col_letter].width = 16
+        # Tiêu đề bảng quản lý
+        header_row = 5
+        ws.cell(row=header_row, column=1, value="STT")
+        ws.cell(row=header_row, column=2, value="Mã Code")
+        ws.cell(row=header_row, column=3, value="Token Bảo Mật")
+        ws.cell(row=header_row, column=4, value="Tên Sản Phẩm")
+        ws.cell(row=header_row, column=5, value="Nhà Sản Xuất")
+        ws.cell(row=header_row, column=6, value="Link Xác Thực Ngầm")
+        
+        # Thư mục tạm chứa ảnh riêng biệt cho file ZIP
+        batch_img_dir = f"static/batch_{uuid.uuid4().hex[:8]}"
+        os.makedirs(batch_img_dir, exist_ok=True)
+        
+        generated_qr_files = []
         
         for i in range(1, quantity + 1):
             code = f"SP{len(products_db) + i:03d}"
             token = uuid.uuid4().hex[:12]
             verify_url = f"https://anti-fake-scanner-2026.onrender.com/verify?code={code}&token={token}"
             
-            # Tạo và lưu ảnh QR Code
+            # Tạo và lưu ảnh QR Code vào thư mục chung và thư mục riêng của lô
             img = qrcode.make(verify_url)
-            img_path = os.path.join(QR_OUTPUT_DIR, f"{code}.png")
+            img_filename = f"{code}.png"
+            img_path = os.path.join(QR_OUTPUT_DIR, img_filename)
             img.save(img_path)
+            
+            batch_img_path = os.path.join(batch_img_dir, img_filename)
+            img.save(batch_img_path)
+            generated_qr_files.append(batch_img_path)
             
             new_prod = {
                 "code": code,
@@ -122,37 +141,28 @@ def generate_batch():
             }
             products_db.append(new_prod)
             
-            # Tính toán vị trí hàng và cột trong lưới (mỗi tem chiếm 2 dòng: dòng 1 chứa mã code, dòng 2 chứa ảnh QR)
-            zero_based_idx = i - 1
-            row_idx = (zero_based_idx // cols_per_row) * 2 + 1
-            col_idx = (zero_based_idx % cols_per_row) + 1
+            # Ghi dòng dữ liệu quản lý vào Excel
+            row_idx = header_row + i
+            ws.cell(row=row_idx, column=1, value=i)
+            ws.cell(row=row_idx, column=2, value=code)
+            ws.cell(row=row_idx, column=3, value=token)
+            ws.cell(row=row_idx, column=4, value=prod_name)
+            ws.cell(row=row_idx, column=5, value=manufacturer)
+            ws.cell(row=row_idx, column=6, value=verify_url)
             
-            # Cấu hình chiều cao dòng cho đẹp mắt
-            ws.row_dimensions[row_idx].height = 18     # Dòng chữ mã định danh
-            ws.row_dimensions[row_idx + 1].height = 75 # Dòng chứa hình ảnh mã QR
-            
-            # Ghi mã code nhỏ gọn ngay phía trên mã QR
-            cell = ws.cell(row=row_idx, column=col_idx, value=code)
-            cell.alignment = Alignment(horizontal='center', vertical='center')
-            cell.font = Font(bold=True, size=9)
-            
-            # Chèn ảnh QR Code độc lập vào ô phía dưới mã code
-            try:
-                xl_img = XLImage(img_path)
-                xl_img.width = 70
-                xl_img.height = 70
-                
-                col_letter = get_column_letter(col_idx)
-                ws.add_image(xl_img, f"{col_letter}{row_idx + 1}")
-            except Exception:
-                pass
-            
-        export_file = "static/Danh_Sach_Tem_QR.xlsx"
-        wb.save(export_file)
+        excel_path = "static/ThongKe_DanhSach_MaQR.xlsx"
+        wb.save(excel_path)
         
-        return send_file(export_file, as_attachment=True)
+        # Đóng gói toàn bộ file Excel thống kê và kho ảnh QR vào một file ZIP duy nhất
+        zip_path = "static/Goi_Tem_QR_DoanhNghiep.zip"
+        with zipfile.ZipFile(zip_path, 'w') as zipf:
+            zipf.write(excel_path, arcname="ThongKe_DanhSach_MaQR.xlsx")
+            for qr_file in generated_qr_files:
+                zipf.write(qr_file, arcname=f"ThuVien_Anh_QR/{os.path.basename(qr_file)}")
+                
+        return send_file(zip_path, as_attachment=True)
     except Exception as e:
-        return f"<h3>Lỗi hệ thống khi tạo file Excel tem QR:</h3><p>{str(e)}</p><a href='/admin'>Quay lại</a>", 500
+        return f"<h3>Lỗi hệ thống khi tạo gói dữ liệu doanh nghiệp:</h3><p>{str(e)}</p><a href='/admin'>Quay lại</a>", 500
 
 @app.route('/super_admin')
 def super_admin():
