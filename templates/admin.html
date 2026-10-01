@@ -2,87 +2,153 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Quản Trị Hệ Thống Chống Hàng Giả - Auto Vương Tùng</title>
+    <title>Quản Trị Hệ Thống Tối Cao - Giải Pháp Cuộc Sống</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; margin: 0; padding: 30px; }
-        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
-        .header h2 { color: #0f172a; margin: 0; }
-        .btn-logout { background: #ef4444; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold; }
-        .btn-logout:hover { background: #dc2626; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #0f172a; color: #f8fafc; padding: 30px; }
+        .container { max-width: 1200px; margin: 0 auto; }
         
-        .card-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 8px; margin-bottom: 30px; }
-        .card-box h3 { margin-top: 0; color: #0284c7; margin-bottom: 15px; font-size: 18px; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 13px; color: #334155; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
-        .btn-submit { background: #0284c7; color: white; border: none; padding: 12px; width: 100%; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; }
-        .btn-submit:hover { background: #0369a1; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 20px 30px; border-radius: 12px; margin-bottom: 30px; border-left: 6px solid #38bdf8; }
+        .admin-header h2 { color: #38bdf8; font-size: 22px; }
+        .btn-logout { background: #ef4444; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; }
+        .btn-logout:hover { background: #dc2626; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
-        th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; }
-        th { background: #1e293b; color: white; }
+        .card { background: #1e293b; padding: 25px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .card h3 { color: #38bdf8; margin-bottom: 20px; font-size: 18px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; text-align: left; }
+        th, td { padding: 12px; border-bottom: 1px solid #334155; }
+        th { background: #0f172a; color: #94a3b8; font-weight: 600; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; color: #cbd5e1; }
+        input, select { width: 100%; padding: 11px 14px; border: 1px solid #475569; border-radius: 6px; background: #0f172a; color: white; font-size: 14px; }
+        
+        .btn-action { background: #22c55e; color: white; border: none; padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.2s; }
+        .btn-action:hover { background: #16a34a; }
+        
+        .badge-paid { background: #166534; color: #bbf7d0; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-pending { background: #854d0e; color: #fef08a; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        
+        .btn-download { background: #0284c7; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; }
+        .btn-download:hover { background: #0369a1; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h2>⚙️ Quản Trị Hệ Thống Chống Hàng Giả</h2>
-            <a href="/admin/logout" class="btn-logout">Đăng Xuất</a>
+        <!-- HEADER QUẢN TRỊ -->
+        <div class="admin-header">
+            <h2>🛡️ Khu Vực Quản Trị Tối Cao (Super Admin) - Tác Giả Vương Tùng</h2>
+            <a href="/admin/logout" class="btn-logout">Đăng Xuất Hệ Thống</a>
         </div>
 
-        <div class="card-box">
-            <h3>🛠️ Tạo Lô Tem Mới & Xuất File Trọn Gói (.ZIP, Excel, PDF A4)</h3>
-            <form method="POST" action="/admin/generate_batch">
+        <!-- QUẢN LÝ ĐƠN HÀNG & DUYỆT THANH TOÁN CỦA DOANH NGHIỆP -->
+        <div class="card">
+            <h3>📦 Quản Lý Đơn Hàng & Cấp Phát Tem Tự Động Cho Doanh Nghiệp</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã Đơn</th>
+                        <th>Doanh Nghiệp / Sản Phẩm</th>
+                        <th>Số Lượng</th>
+                        <th>Công Nghệ In</th>
+                        <th>Thành Tiền</th>
+                        <th>Trạng Thái</th>
+                        <th>Thao Tác Tác Giả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if orders %}
+                        {% for oid, order in orders.items() %}
+                        <tr>
+                            <td><strong>{{ oid }}</strong></td>
+                            <td>{{ order.manufacturer }}<br><small style="color: #94a3b8;">{{ order.prod_name }}</small></td>
+                            <td>{{ order.quantity }} tem</td>
+                            <td>{{ '7 Màu / Hologram' if order.print_type == 'hologram_7color' else 'Trắng Đen' }}</td>
+                            <td style="color: #38bdf8; font-weight: bold;">{{ "{:,}".format(order.total_price) }} VNĐ</td>
+                            <td>
+                                {% if order.status == 'paid' %}
+                                    <span class="badge-paid">Đã Thanh Toán</span>
+                                {% else %}
+                                    <span class="badge-pending">Chờ Thanh Toán</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if order.status != 'paid' %}
+                                    <a href="/admin/approve/{{ oid }}" style="background: #eab308; color: black; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; margin-right: 5px;">Duyệt Tiền</a>
+                                {% endif %}
+                                <a href="/success/{{ oid }}" class="btn-download">Tải Khoản .ZIP</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><td colspan="7" style="text-align: center; color: #94a3b8;">Chưa có đơn hàng nào đăng ký mới.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TỰ TẠO LÔ TRỰC TIẾP TỪ ADMIN -->
+        <div class="card">
+            <h3>⚙️ Công Cụ Tạo Lô Tem Trực Tiếp (Dành Riêng Cho Quản Trị)</h3>
+            <form action="/admin/generate_batch" method="POST">
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Tên Sản Phẩm:</label>
-                        <input type="text" name="prod_name" placeholder="Ví dụ: Sâm Ngọc Linh" required>
+                        <input type="text" name="prod_name" placeholder="Ví dụ: Sâm Ngọc Linh Nguyên Chất" required>
                     </div>
                     <div class="form-group">
-                        <label>Nhà Sản Xuất:</label>
+                        <label>Tên Nhà Sản Xuất / Doanh Nghiệp:</label>
                         <input type="text" name="manufacturer" placeholder="Ví dụ: Công ty TNHH Vương Tùng" required>
                     </div>
                 </div>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Giá Niêm Yết:</label>
+                        <label>Giá Niêm Yết Sản Phẩm:</label>
                         <input type="text" name="price" value="2.500.000 VNĐ" required>
                     </div>
                     <div class="form-group">
                         <label>Số Lượng Tem Cần Tạo:</label>
                         <select name="quantity">
                             <option value="100">100 Tem (Kiểm tra nhanh)</option>
-                            <option value="500">500 Tem</option>
-                            <option value="1000">1.000 Tem</option>
+                            <option value="1000">1,000 Tem Tiêu Chuẩn</option>
+                            <option value="5000">5,000 Tem Lớn</option>
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn-submit">🚀 Tạo Lô & Tải Về Trọn Gói File (.ZIP)</button>
+                <button type="submit" class="btn-action">🚀 Khởi Tạo Lô & Tải Tệp .ZIP Trọn Gói (Excel, PDF A4, Kho Ảnh QR)</button>
             </form>
         </div>
 
-        <h3>📦 Kho Dữ Liệu Sản Phẩm & Lượt Quét Thực Tế</h3>
-        <table>
-            <tr>
-                <th>Mã Code</th>
-                <th>Tên Sản Phẩm</th>
-                <th>Nhà Sản Xuất</th>
-                <th>Giá Niêm Yết</th>
-                <th>Lượt Quét</th>
-                <th>Trạng Thái</th>
-            </tr>
-            {% for p in products %}
-            <tr>
-                <td><strong>{{ p.code }}</strong></td>
-                <td>{{ p.name }}</td>
-                <td>{{ p.manufacturer }}</td>
-                <td>{{ p.price }}</td>
-                <td><span style="color: #0284c7; font-weight: bold;">{{ p.scan_count }}</span></td>
-                <td><span style="color: {% if p.status == 'Hàng thật' %}#16a34a{% else %}#dc2626{% endif %}; font-weight: bold;">{{ p.status }}</span></td>
-            </tr>
-            {% endfor %}
-        </table>
+        <!-- KHO DỮ LIỆU SẢN PHẨM & LƯỢT QUÉT -->
+        <div class="card">
+            <h3>📊 Kho Dữ Liệu & Thống Kê Lượt Quét Thực Tế</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã Code</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Nhà Sản Xuất</th>
+                        <th>Mã HW-ID Định Danh</th>
+                        <th>Lượt Quét</th>
+                        <th>Trạng Thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in products %}
+                    <tr>
+                        <td><strong>{{ p.code }}</strong></td>
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.manufacturer }}</td>
+                        <td><small style="color: #94a3b8;">{{ p.hardware_id }}</small></td>
+                        <td style="color: #38bdf8; font-weight: bold;">{{ p.scan_count }} lần</td>
+                        <td><span style="color: #22c55e; font-weight: bold;">{{ p.status }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
