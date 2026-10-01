@@ -13,6 +13,7 @@
         .navbar .nav-links { display: flex; align-items: center; gap: 15px; }
         .navbar .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 6px; transition: 0.2s; }
         .navbar .nav-links a:hover, .navbar .nav-links a.active { color: #38bdf8; background: #1e293b; }
+        .btn-register { background: #16a34a !important; color: white !important; font-weight: bold !important; }
         .btn-login { background: #0284c7 !important; color: white !important; font-weight: bold !important; }
 
         /* HERO BANNER - ẤN TƯỢNG MẠNH */
@@ -66,26 +67,15 @@
     <!-- NAVBAR THƯƠNG HIỆU MỚI -->
     <div class="navbar">
         <a href="/" class="brand">🌐 GIẢI PHÁP CUỘC SỐNG</a>
-       # Lưu trữ tài khoản khách hàng đăng ký tạm thời
-users_db = {}
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        fullname = request.form.get('fullname')
-        username = request.form.get('username')
-        password = request.form.get('password')
-        
-        # Lưu thông tin tài khoản doanh nghiệp/khách hàng
-        users_db[username] = {
-            "fullname": fullname,
-            "password": password,
-            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
-        # Đăng ký thành công thì chuyển hướng ngay sang cổng mua tem và cấp phát lô QR
-        return redirect(url_for('buy'))
-        
-    return render_template('register.html')
+        <div class="nav-links">
+            <a href="/" class="active">Trang Chủ</a>
+            <a href="#about">Giới Thiệu</a>
+            <a href="#solutions">Giải Pháp & Sản Phẩm</a>
+            <a href="/buy">Cấp Phát Lô Tem</a>
+            <a href="/admin">Quản Trị Admin</a>
+            <a href="/register" class="btn-register">Đăng Ký</a>
+            <a href="/admin/login" class="btn-login">Đăng Nhập</a>
+        </div>
     </div>
 
     <!-- HERO BANNER GIỚI THIỆU THƯƠNG HIỆU -->
@@ -143,23 +133,22 @@ def register():
             </div>
 
             <div class="feature-card" style="border-top-color: #f59e0b;">
-                <h3>⚙️ Quản Trị Đa Tầng & Bảo Mật</h3>
+                <h3>⚙️️ Quản Trị Đa Tầng & Bảo Mật</h3>
                 <p>Khu vực quản lý bảo mật 4 cấp độ dành riêng cho doanh nghiệp để kiểm soát kho mã, theo dõi lượt quét và chống sao chép tuyệt đối.</p>
                 <a href="/admin">Truy Cập Quản Trị &rarr;</a>
             </div>
         </div>
 
-        <!-- THÔNG TIN VỀ GIẢI PHÁP CUỘC SỐNG & TÁC GIẢ -->
-        <!-- Về thương hiệu & Liên hệ -->
-<div id="about" class="contact-section">
-    <h2>Về Thương Hiệu &bull; GIẢI PHÁP CUỘC SỐNG</h2>
-    <p>Giải pháp công nghệ  được nghiên cứu và phát triển bởi <strong> Vương Tùng &bull; Auto Vương Tùng</strong>.</p>
-    <p style="margin-top: 15px;">
-        📞 Hotline hỗ trợ: <strong>0868405499</strong> &bull; 
-        ✉️ Email: <strong>vttung1958@gmail.com</strong> &bull; 
-        🌐 Tên miền: <strong>vuongtung.com.vn</strong>
-    </p>
-</div>
+        <!-- VỀ THƯƠNG HIỆU & LIÊN HỆ -->
+        <div id="about" class="contact-section">
+            <h2>Về Thương Hiệu &bull; GIẢI PHÁP CUỘC SỐNG</h2>
+            <p>Giải pháp công nghệ được nghiên cứu và phát triển bởi <strong>Vương Tùng &bull; Auto Vương Tùng</strong>.</p>
+            <p style="margin-top: 15px;">
+                📞 Hotline hỗ trợ: <strong>0868405499</strong> &bull; 
+                ✉️ Email: <strong>vttung1958@gmail.com</strong> &bull; 
+                🌐 Tên miền: <strong>vuongtung.com.vn</strong>
+            </p>
+        </div>
 
     </div>
 
