@@ -2,39 +2,44 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quét Mã Chống Hàng Giả</title>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#27ae60">
+    <title>Quét Mã Chống Hàng Giả - Auto Vương Tùng</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { color: #2c3e50; }
-        .scanner-box { width: 100%; height: 220px; background: #222; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; }
-        input[type="text"] { width: 80%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px; }
-        button { background-color: #27ae60; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; }
-        button:hover { background-color: #219653; }
-        .result { margin-top: 20px; padding: 15px; border-radius: 6px; text-align: left; background: #e8f8f5; border-left: 5px solid #27ae60; }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center; }
+        input[type="text"] { width: 80%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
+        button { background: #28a745; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #218838; }
+        .alert { margin-top: 20px; padding: 15px; border-radius: 5px; font-weight: bold; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .fake { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="card">
         <h2>🔍 Quét Mã Chống Hàng Giả</h2>
         <p>Nhập mã sản phẩm hoặc quét mã QR để xác thực</p>
         
-        <form method="POST">
+        <form method="POST" action="/">
             <input type="text" name="code" placeholder="Nhập mã (VD: SP001, SP002)..." required>
+            <br>
             <button type="submit">Kiểm tra sản phẩm</button>
         </form>
 
-        {% if result %}
-        <div class="result">
-            <h3>Kết quả xác thực:</h3>
-            <p><strong>Tên sản phẩm:</strong> {{ result.name }}</p>
-            <p><strong>Trạng thái:</strong> <span style="color: #27ae60; font-weight: bold;">{{ result.status }}</span></p>
-            <p><strong>Nhà sản xuất:</strong> {{ result.maker }}</p>
-            <p><strong>Ngày sản xuất:</strong> {{ result.date }}</p>
-        </div>
+        {% if message %}
+            <div class="alert {% if status == 'success' %}success{% elif status == 'fake' %}fake{% else %}warning{% endif %}">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        {% if product %}
+            <div style="margin-top: 20px; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                <p><strong>Tên SP:</strong> {{ product.name }}</p>
+                <p><strong>Nhà sản xuất:</strong> {{ product.manufacturer }}</p>
+                <p><strong>Ngày sản xuất:</strong> {{ product.mfg_date }}</p>
+                <p><strong>Số lần quét:</strong> {{ product.scan_count }}</p>
+                <p><strong>Trạng thái:</strong> {{ product.status }}</p>
+            </div>
         {% endif %}
     </div>
 </body>
