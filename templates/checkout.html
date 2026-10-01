@@ -2,52 +2,53 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Thanh Toán Đơn Hàng QR</title>
+    <title>Thanh Toán Đơn Hàng QR - Auto Vương Tùng</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 40px; text-align: center; }
-        .container { max-width: 550px; background: white; padding: 30px; margin: auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { color: #1a365d; }
-        .qr-box { margin: 20px 0; }
-        .qr-box img { max-width: 280px; border: 2px solid #cbd5e0; border-radius: 8px; }
-        .info { background: #edf2f7; padding: 15px; border-radius: 6px; text-align: left; margin: 15px 0; font-size: 14px; }
-        .status { font-weight: bold; color: #d69e2e; margin-top: 15px; font-size: 16px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 90vh; }
+        .card { background: white; width: 100%; max-width: 550px; padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; }
+        h2 { color: #0f172a; margin-bottom: 8px; }
+        p { color: #64748b; font-size: 14px; margin-bottom: 20px; }
+        .qr-img { width: 280px; height: 280px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; background: white; margin-bottom: 20px; }
+        .info-box { background: #f1f5f9; padding: 15px; border-radius: 8px; text-align: left; font-size: 14px; margin-bottom: 20px; }
+        .info-box p { margin: 6px 0; color: #334155; }
+        .status { font-weight: bold; color: #d97706; background: #fef3c7; padding: 10px; border-radius: 6px; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="card">
         <h2>Xác Nhận Thanh Toán Đơn Hàng</h2>
-        <p>Quét mã VietQR bên dưới bằng ứng dụng ngân hàng để thanh toán tự động:</p>
+        <p>Quét mã VietQR bên dưới bằng ứng dụng ngân hàng để thanh toán tự động</p>
         
-        <div class="qr-box">
-            <img src="{{ vietqr_url }}" alt="VietQR Thanh Toan">
+        <img src="{{ vietqr_url }}" class="qr-img" alt="VietQR Thanh Toán">
+        
+        <div class="info-box">
+            <p><strong>Mã đơn hàng:</strong> {{ order_id }}</p>
+            <p><strong>Chủ tài khoản:</strong> VƯƠNG THANH TÙNG (Agribank)</p>
+            <p><strong>Số tài khoản:</strong> 1500215038690</p>
+            <p><strong>Số tiền:</strong> <span style="color: #16a34a; font-weight: bold;">{{ "{:,}".format(order.total_price) }} VNĐ</span></p>
+            <p><strong>Nội dung chuyển khoản:</strong> <span style="color: #dc2626; font-weight: bold;">AFQR {{ order_id }}</span></p>
         </div>
-        
-        <div class="info">
-            <p><b>Mã đơn hàng:</b> {{ order_id }}</p>
-            <p><b>Chủ tài khoản:</b> VƯƠNG THANH TÙNG (Agribank)</p>
-            <p><b>Số tài khoản:</b> 1500215038690</p>
-            <p><b>Số tiền:</b> {{ "{:,.0f}".format(order.total_price) }} VNĐ</p>
-            <p><b>Nội dung chuyển khoản:</b> <span style="color: red; font-weight: bold;">AFQR {{ order_id }}</span></p>
-        </div>
-        
+
         <div class="status" id="status-text">⏳ Đang chờ hệ thống xác nhận thanh toán tự động...</div>
     </div>
 
     <script>
-        // Tự động kiểm tra trạng thái thanh toán mỗi 3 giây
         const orderId = "{{ order_id }}";
-        const checkInterval = setInterval(function() {
+        function checkPaymentStatus() {
             fetch('/api/check_status/' + orderId)
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'paid') {
-                        clearInterval(checkInterval);
-                        document.getElementById('status-text').innerHTML = "✅ Thanh toán thành công! Đang tự động tải gói dữ liệu...";
-                        // Tự động chuyển hướng tải file .zip về máy
-                        window.location.href = "/success/" + orderId;
+                        document.getElementById('status-text').innerHTML = "✅ Thanh toán thành công! Đang chuyển hướng lấy file...";
+                        document.getElementById('status-text').style.background = "#dcfce7";
+                        document.getElementById('status-text').style.color = "#166534";
+                        setTimeout(() => {
+                            window.location.href = '/success/' + orderId;
+                        }, 1500);
                     }
                 });
-        }, 3000);
+        }
+        setInterval(checkPaymentStatus, 3000);
     </script>
 </body>
 </html>
