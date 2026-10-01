@@ -43,41 +43,60 @@ products_db = [
         "price": "2.500.000 VNĐ",
         "scan_count": 0,
         "status": "Hàng thật"
+    },
+    {
+        "code": "SP002",
+        "token": "b2c3d4e5f6a1",
+        "name": "Thiết bị điện tử điều khiển ESP32",
+        "manufacturer": "Công ty TNHH Vương Tùng",
+        "mfg_date": "2026-04-01",
+        "price": "450.000 VNĐ",
+        "scan_count": 0,
+        "status": "Hàng thật"
     }
 ]
 
-# Trang chủ hỗ trợ cả GET (hiển thị form / quét QR) và POST (gửi mã từ ô tìm kiếm)
+# Trang chủ xử lý tra cứu mã (Hỗ trợ cả GET quét QR và POST nhập ô tìm kiếm)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     code = None
     token = None
+    product = None
+    status = None
+    message = None
     
     if request.method == 'POST':
-        code = request.form.get('code', '').strip().upper()
+        code = (request.form.get('code') or request.form.get('product_code') or request.form.get('search') or '').strip().upper()
     else:
         code = request.args.get('code')
         token = request.args.get('token')
         
     if not code:
-        return render_template('index.html', status=None, message=None)
+        return render_template('index.html', status=None, message=None, product=None)
         
     product = next((p for p in products_db if p["code"] == code), None)
     
     if not product:
-        return render_template('index.html', status="fake", message="CẢNH BÁO: Mã sản phẩm không tồn tại trên hệ thống!")
+        status = "fake"
+        message = f"CẢNH BÁO: Mã sản phẩm '{code}' không tồn tại trên hệ thống!"
+        return render_template('index.html', status=status, message=message, product=None)
         
     if token and product.get("token") and product["token"] != token:
-        return render_template('index.html', status="fake", message="CẢNH BÁO NGUY HIỂM: Phát hiện tem giả mạo (Sai mã Token bảo mật)!", product=product)
+        status = "fake"
+        message = "CẢNH BÁO NGUY HIỂM: Phát hiện tem giả mạo (Sai mã Token bảo mật)!"
+        return render_template('index.html', status=status, message=message, product=product)
         
     product["scan_count"] = product.get("scan_count", 0) + 1
     
     if product["scan_count"] > 3:
-        product["status"] = "Hàng giả / Bị nghi ngờ"
-        return render_template('index.html', status="warning", message=f"CẢNH BÁO: Tem này đã bị quét {product['scan_count']} lần! Có dấu hiệu bị sao chép hàng loạt.", product=product)
+        status = "warning"
+        message = f"CẢNH BÁO: Tem này đã bị quét {product['scan_count']} lần! Có dấu hiệu bị sao chép hàng loạt."
+    else:
+        status = "success"
+        message = "XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100 từ Auto Vương Tùng."
         
-    return render_template('index.html', status="success", message="XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100%.", product=product)
+    return render_template('index.html', status=status, message=message, product=product)
 
-# Đường dẫn chuyên dụng để quét mã QR từ tem
 @app.route('/verify', methods=['GET'])
 def verify():
     code = request.args.get('code')
@@ -111,7 +130,6 @@ def buy():
             "status": "pending",
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
-        
         return redirect(url_for('checkout', order_id=order_id))
         
     return render_template('buy.html')
@@ -129,7 +147,6 @@ def checkout(order_id):
     add_info = f"AFQR {order_id}"
     
     vietqr_url = f"https://img.vietqr.io/image/{bank_id}-{account_no}-compact2.png?amount={amount}&addInfo={add_info}"
-    
     return render_template('checkout.html', order=order, order_id=order_id, vietqr_url=vietqr_url)
 
 # 3. API Webhook tự động nhận diện dòng tiền từ Ngân hàng
@@ -146,7 +163,6 @@ def payment_webhook():
             
     return jsonify({"success": False, "message": "Không tìm thấy mã đơn hàng phù hợp."}), 400
 
-# API kiểm tra trạng thái liên tục từ trình duyệt khách hàng
 @app.route('/api/check_status/<order_id>')
 def check_status(order_id):
     order = orders_db.get(order_id)
@@ -154,7 +170,6 @@ def check_status(order_id):
         return jsonify({"status": "not_found"})
     return jsonify({"status": order["status"]})
 
-# 4. Trang xem Hóa đơn & Biên nhận điện tử tự động
 @app.route('/invoice/<order_id>')
 def invoice(order_id):
     order = orders_db.get(order_id)
@@ -162,7 +177,6 @@ def invoice(order_id):
         return "Đơn hàng chưa được thanh toán hoặc không tồn tại!", 403
     return render_template('invoice.html', order=order, order_id=order_id)
 
-# Quản trị viên duyệt đơn nhanh thủ công
 @app.route('/admin/approve/<order_id>')
 def approve_order(order_id):
     if not session.get('logged_in'):
