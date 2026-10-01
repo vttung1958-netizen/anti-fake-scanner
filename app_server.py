@@ -41,7 +41,7 @@ products_db = [
         "manufacturer": "Công ty TNHH Vương Tùng",
         "mfg_date": "2026-03-01",
         "price": "2.500.000 VNĐ",
-        "scan_count": 0,
+        "scan_count": 1,
         "status": "Hàng thật"
     },
     {
@@ -56,7 +56,7 @@ products_db = [
     }
 ]
 
-# Trang chủ xử lý tra cứu mã (Hỗ trợ cả GET quét QR và POST nhập ô tìm kiếm)
+# Trang chủ xử lý tra cứu mã (Hỗ trợ GET quét QR và POST nhập ô tìm kiếm)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     code = None
@@ -93,7 +93,7 @@ def index():
         message = f"CẢNH BÁO: Tem này đã bị quét {product['scan_count']} lần! Có dấu hiệu bị sao chép hàng loạt."
     else:
         status = "success"
-        message = "XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100 từ Auto Vương Tùng."
+        message = "XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100% từ Auto Vương Tùng."
         
     return render_template('index.html', status=status, message=message, product=product)
 
@@ -103,7 +103,7 @@ def verify():
     token = request.args.get('token')
     return redirect(url_for('index', code=code, token=token))
 
-# 1. Cổng đăng ký mua tem
+# 1. Cổng đăng ký mua tem cho khách hàng
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
     if request.method == 'POST':
@@ -185,7 +185,7 @@ def approve_order(order_id):
         orders_db[order_id]["status"] = "paid"
     return redirect(url_for('admin'))
 
-# 5. Tự động sinh tệp .ZIP chứa toàn bộ mã QR, Excel và PDF in thử
+# 4. Tự động sinh tệp .ZIP từ đơn hàng đã thanh toán
 @app.route('/success/<order_id>')
 def success_download(order_id):
     order = orders_db.get(order_id)
@@ -222,7 +222,7 @@ def success_download(order_id):
         sample_qr_data = []
         
         for i in range(1, quantity + 1):
-            code = f"SP{i:03d}"
+            code = f"SP{len(products_db) + i:03d}"
             token = uuid.uuid4().hex[:12]
             verify_url = f"https://vuongtung.com.vn/verify?code={code}&token={token}"
             
@@ -258,16 +258,16 @@ def success_download(order_id):
             ws.cell(row=row_idx, column=5, value=manufacturer)
             ws.cell(row=row_idx, column=6, value=verify_url)
             
-        excel_path = "static/ThongKe_DanhSach_MaQR.xlsx"
+        excel_path = f"static/ThongKe_{order_id}.xlsx"
         wb.save(excel_path)
         
-        pdf_path = "static/TrangInThu_MauA4.pdf"
+        pdf_path = f"static/InThu_{order_id}.pdf"
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 13)
-        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LOHANG", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, f"TRANG IN THU MAU - LO: {order_id}", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("helvetica", "I", 9)
-        pdf.cell(0, 6, "Doanh nghiep in file PDF nay ra giay A4 ngang de kiem tra kich thuoc va quet thu ma QR.", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 6, "In file nay ra giay A4 de kiem tra kich thuoc ma QR.", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(5)
         
         col_width = 65
@@ -295,14 +295,138 @@ def success_download(order_id):
         
         zip_path = f"static/Goi_Tem_{order_id}.zip"
         with zipfile.ZipFile(zip_path, 'w') as zipf:
-            zipf.write(excel_path, arcname="1_ThongKe_DanhSach_MaQR.xlsx")
-            zipf.write(pdf_path, arcname="2_TrangInThu_MauA4.pdf")
+            zipf.write(excel_path, arcname="1_DanhSach_MaQR.xlsx")
+            zipf.write(pdf_path, arcname="2_TrangInThu_A4.pdf")
             for qr_file in generated_qr_files:
-                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR_Goc/{os.path.basename(qr_file)}")
+                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR/{os.path.basename(qr_file)}")
                 
         return send_file(zip_path, as_attachment=True)
     except Exception as e:
-        return f"Lỗi tạo gói dữ liệu: {str(e)}", 500
+        return f"Lỗi tạo tệp: {str(e)}", 500
+
+# 5. Xử lý tạo lô tem trực tiếp từ trang Quản trị Admin (/admin/generate_batch)
+@app.route('/admin/generate_batch', methods=['POST'])
+def admin_generate_batch():
+    if not session.get('logged_in'):
+        return redirect(url_for('admin_login'))
+        
+    prod_name = request.form.get('prod_name')
+    manufacturer = request.form.get('manufacturer')
+    price_str = request.form.get('price', '2.000.000 VNĐ')
+    
+    try:
+        quantity = int(request.form.get('quantity', 100))
+    except ValueError:
+        quantity = 100
+        
+    order_id = f"AD{uuid.uuid4().hex[:6].upper()}"
+    
+    try:
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "ThongKe_DanhSach"
+        
+        ws.append(["--- THÔNG TIN LÔ HÀNG & DANH SÁCH MÃ QR ĐẶC QUYỀN ---"])
+        ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
+        ws.append(["Số lượng mã:", quantity, "Đơn giá:", price_str])
+        ws.append([])
+        
+        header_row = 5
+        ws.cell(row=header_row, column=1, value="STT")
+        ws.cell(row=header_row, column=2, value="Mã Code")
+        ws.cell(row=header_row, column=3, value="Token Bảo Mật")
+        ws.cell(row=header_row, column=4, value="Tên Sản Phẩm")
+        ws.cell(row=header_row, column=5, value="Nhà Sản Xuất")
+        ws.cell(row=header_row, column=6, value="Link Xác Thực Ngầm")
+        
+        batch_img_dir = f"static/batch_{uuid.uuid4().hex[:8]}"
+        os.makedirs(batch_img_dir, exist_ok=True)
+        
+        generated_qr_files = []
+        sample_qr_data = []
+        
+        for i in range(1, quantity + 1):
+            code = f"SP{len(products_db) + i:03d}"
+            token = uuid.uuid4().hex[:12]
+            verify_url = f"https://vuongtung.com.vn/verify?code={code}&token={token}"
+            
+            img = qrcode.make(verify_url)
+            img_filename = f"{code}.png"
+            img_path = os.path.join(QR_OUTPUT_DIR, img_filename)
+            img.save(img_path)
+            
+            batch_img_path = os.path.join(batch_img_dir, img_filename)
+            img.save(batch_img_path)
+            generated_qr_files.append(batch_img_path)
+            
+            if len(sample_qr_data) < 12:
+                sample_qr_data.append((code, batch_img_path))
+                
+            new_prod = {
+                "code": code,
+                "token": token,
+                "name": prod_name,
+                "manufacturer": manufacturer,
+                "mfg_date": datetime.now().strftime("%Y-%m-%d"),
+                "price": price_str,
+                "scan_count": 0,
+                "status": "Hàng thật"
+            }
+            products_db.append(new_prod)
+            
+            row_idx = header_row + i
+            ws.cell(row=row_idx, column=1, value=i)
+            ws.cell(row=row_idx, column=2, value=code)
+            ws.cell(row=row_idx, column=3, value=token)
+            ws.cell(row=row_idx, column=4, value=prod_name)
+            ws.cell(row=row_idx, column=5, value=manufacturer)
+            ws.cell(row=row_idx, column=6, value=verify_url)
+            
+        excel_path = f"static/ThongKe_{order_id}.xlsx"
+        wb.save(excel_path)
+        
+        pdf_path = f"static/InThu_{order_id}.pdf"
+        pdf = FPDF(orientation='L', unit='mm', format='A4')
+        pdf.add_page()
+        pdf.set_font("helvetica", "B", 13)
+        pdf.cell(0, 8, f"TRANG IN THU MAU - LO: {order_id}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.set_font("helvetica", "I", 9)
+        pdf.cell(0, 6, "In file nay ra giay A4 de kiem tra kich thuoc ma QR.", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.ln(5)
+        
+        col_width = 65
+        row_height = 45
+        start_x = 18
+        start_y = pdf.get_y()
+        
+        for idx, (s_code, s_path) in enumerate(sample_qr_data):
+            c = idx % 4
+            r = idx // 4
+            x = start_x + c * col_width
+            y = start_y + r * row_height
+            
+            pdf.rect(x, y, col_width - 6, row_height - 4)
+            pdf.set_xy(x, y + 3)
+            pdf.set_font("helvetica", "B", 10)
+            pdf.cell(col_width - 6, 6, s_code, align="C", new_x="LMARGIN", new_y="NEXT")
+            
+            try:
+                pdf.image(s_path, x=x + 17, y=y + 10, w=30, h=30)
+            except Exception:
+                pass
+                
+        pdf.output(pdf_path)
+        
+        zip_path = f"static/Goi_Tem_{order_id}.zip"
+        with zipfile.ZipFile(zip_path, 'w') as zipf:
+            zipf.write(excel_path, arcname="1_DanhSach_MaQR.xlsx")
+            zipf.write(pdf_path, arcname="2_TrangInThu_A4.pdf")
+            for qr_file in generated_qr_files:
+                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR/{os.path.basename(qr_file)}")
+                
+        return send_file(zip_path, as_attachment=True)
+    except Exception as e:
+        return f"Lỗi tạo tệp: {str(e)}", 500
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
