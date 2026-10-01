@@ -130,38 +130,34 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         users_db[username] = {
-            "fullname": fullname,
-            "password": password,
+            "fullname": fullname, "password": password,
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         return redirect(url_for('buy'))
     return render_template('register.html')
 
+# HÀM BUY ĐÃ BỔ SUNG NHẬN THÔNG SỐ qr_size
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
     if request.method == 'POST':
         prod_name = request.form.get('prod_name')
         manufacturer = request.form.get('manufacturer')
-        tax_code = request.form.get('tax_code', 'Chưa cung cấp')
+        tax_code = request.form.get('tax_code', 'Chura cung cap')
         try:
             quantity = int(request.form.get('quantity', 1000))
         except ValueError:
             quantity = 1000
             
         print_type = request.form.get('print_type', 'black_white')
+        qr_size = int(request.form.get('qr_size', 20)) # Nhận kích thước tem (mm) từ form
         company_hw_id = f"HW-CORP-{uuid.uuid4().hex[:10].upper()}"
         total_price = calculate_tem_price(quantity)
         order_id = f"DH{uuid.uuid4().hex[:6].upper()}"
         
         orders_db[order_id] = {
-            "prod_name": prod_name,
-            "manufacturer": manufacturer,
-            "tax_code": tax_code,
-            "hardware_id": company_hw_id,
-            "quantity": quantity,
-            "print_type": print_type,
-            "total_price": total_price,
-            "status": "pending",
+            "prod_name": prod_name, "manufacturer": manufacturer, "tax_code": tax_code,
+            "hardware_id": company_hw_id, "quantity": quantity, "print_type": print_type,
+            "qr_size": qr_size, "total_price": total_price, "status": "pending",
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         return redirect(url_for('checkout', order_id=order_id))
@@ -208,15 +204,18 @@ def approve_order(order_id):
     if order_id in orders_db: orders_db[order_id]["status"] = "paid"
     return redirect(url_for('admin'))
 
+# HÀM SUCCESS_DOWNLOAD ĐÃ TÍCH HỢP CO GIÃN PDF THEO qr_size (MM)
 @app.route('/success/<order_id>')
 def success_download(order_id):
     order = orders_db.get(order_id)
     if not order or order["status"] != "paid": return "Đơn hàng chưa thanh toán!", 403
+    
     prod_name = order["prod_name"]
     manufacturer = order["manufacturer"]
     quantity = order["quantity"]
     company_hw_id = order["hardware_id"]
     print_type = order.get("print_type", "black_white")
+    qr_size = order.get("qr_size", 20) # Lấy kích thước tem mm đã lưu
     price_str = f"{order['total_price']:,} VNĐ"
     print_name_desc = "Tem Trang Den Tieu Chuan" if print_type == "black_white" else "Tem QR 7 Mau / Hologram Cao Cap"
     
@@ -226,15 +225,15 @@ def success_download(order_id):
         ws.title = "ThongKe_DanhSach"
         ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - GIẢI PHÁP CUỘC SỐNG ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
-        ws.append(["Công nghệ in ấn:", print_name_desc, "Mã định danh HW-ID:", company_hw_id])
-        ws.append(["Số lượng tem:", quantity, "Tổng chi phí:", price_str])
+        ws.append(["Công nghệ in ấn:", print_name_desc, "Kích thước thực tế:", f"{qr_size}x{qr_size} mm"])
+        ws.append(["Mã định danh HW-ID:", company_hw_id, "Số lượng tem:", quantity])
         ws.append([])
         
         header_row = 6
         ws.cell(row=header_row, column=1, value="STT")
         ws.cell(row=header_row, column=2, value="Mã Code")
         ws.cell(row=header_row, column=3, value="Chữ Ký Số & Token Bảo Mật")
-        ws.cell(row=header_row, column=4, value="Công Nghệ In Ấn")
+        ws.cell(row=header_row, column=4, value="Kích Thước Khổ")
         ws.cell(row=header_row, column=5, value="Link Xác Thực Ngầm")
         
         batch_img_dir = f"static/batch_{uuid.uuid4().hex[:8]}"
@@ -270,17 +269,42 @@ def success_download(order_id):
             ws.cell(row=row_idx, column=1, value=i)
             ws.cell(row=row_idx, column=2, value=code)
             ws.cell(row=row_idx, column=3, value=token)
-            ws.cell(row=row_idx, column=4, value=print_name_desc)
+            ws.cell(row=row_idx, column=4, value=f"{qr_size}x{qr_size}mm")
             ws.cell(row=row_idx, column=5, value=verify_url)
             
         excel_path = f"static/ThongKe_{order_id}.xlsx"
         wb.save(excel_path)
         
+        # TẠO FILE PDF IN THỬ A4 CO GIÃN CHÍNH XÁC THEO qr_size (MM)
         pdf_path = f"static/InThu_{order_id}.pdf"
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 12)
-        pdf.cell(0, 8, f"TRANG IN THU MAU - {print_name_desc.upper()}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, f"TRANG IN THU MAU - KICH THUOC THUC TE: {qr_size}x{qr_size} MM ({print_name_desc})", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.set_font("helvetica", "I", 9)
+        pdf.cell(0, 6, f"Doanh nghiep: {manufacturer} | Ma HW-ID: {company_hw_id}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.ln(4)
+        
+        col_width = qr_size + 35
+        row_height = qr_size + 20
+        start_x = 18
+        start_y = pdf.get_y()
+        
+        for idx, (s_code, s_path) in enumerate(sample_qr_data):
+            c = idx % 4
+            r = idx // 4
+            x = start_x + c * col_width
+            y = start_y + r * row_height
+            
+            pdf.rect(x, y, col_width - 6, row_height - 4)
+            pdf.set_xy(x, y + 2)
+            pdf.set_font("helvetica", "B", 9)
+            pdf.cell(col_width - 6, 5, f"{s_code} ({qr_size}x{qr_size}mm)", align="C", new_x="LMARGIN", new_y="NEXT")
+            try:
+                pdf.image(s_path, x=x + ((col_width - 6 - qr_size) / 2), y=y + 8, w=qr_size, h=qr_size)
+            except Exception:
+                pass
+                
         pdf.output(pdf_path)
         
         zip_path = f"static/Goi_Tem_{order_id}.zip"
@@ -295,22 +319,19 @@ def success_download(order_id):
     except Exception as e:
         return f"Lỗi tạo tệp: {str(e)}", 500
 
-# Xử lý tạo lô trực tiếp từ Admin (khắc phục lỗi 404)
+# HÀM ADMIN_GENERATE_BATCH ĐÃ BỔ SUNG NHẬN THÔNG SỐ qr_size TỪ QUẢN TRỊ
 @app.route('/admin/generate_batch', methods=['POST'])
 def admin_generate_batch():
-    if not session.get('logged_in'):
-        return redirect(url_for('admin_login'))
-        
+    if not session.get('logged_in'): return redirect(url_for('admin_login'))
+    
     prod_name = request.form.get('prod_name')
     manufacturer = request.form.get('manufacturer')
     price_str = request.form.get('price', '2.500.000 VNĐ')
+    qr_size = int(request.form.get('qr_size', 20)) # Nhận kích thước mm do Admin chọn
     company_hw_id = f"HW-ADMIN-{uuid.uuid4().hex[:10].upper()}"
     
-    try:
-        quantity = int(request.form.get('quantity', 100))
-    except ValueError:
-        quantity = 100
-        
+    try: quantity = int(request.form.get('quantity', 100))
+    except ValueError: quantity = 100
     order_id = f"AD{uuid.uuid4().hex[:6].upper()}"
     
     try:
@@ -319,20 +340,18 @@ def admin_generate_batch():
         ws.title = "ThongKe_DanhSach"
         ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - GIẢI PHÁP CUỘC SỐNG ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
-        ws.append(["Mã định danh phần cứng (HW-ID):", company_hw_id, "Số lượng tem:", quantity])
+        ws.append(["Kích thước chuẩn:", f"{qr_size}x{qr_size} mm", "Số lượng tem:", quantity])
         ws.append([])
         
         header_row = 5
         ws.cell(row=header_row, column=1, value="STT")
         ws.cell(row=header_row, column=2, value="Mã Code")
         ws.cell(row=header_row, column=3, value="Chữ Ký Số & Token Bảo Mật")
-        ws.cell(row=header_row, column=4, value="Tên Sản Phẩm")
-        ws.cell(row=header_row, column=5, value="Nhà Sản Xuất")
-        ws.cell(row=header_row, column=6, value="Link Xác Thực Ngầm")
+        ws.cell(row=header_row, column=4, value="Kích Thước")
+        ws.cell(row=header_row, column=5, value="Link Xác Thực Ngầm")
         
         batch_img_dir = f"static/batch_{uuid.uuid4().hex[:8]}"
         os.makedirs(batch_img_dir, exist_ok=True)
-        
         generated_qr_files = []
         sample_qr_data = []
         
@@ -351,8 +370,7 @@ def admin_generate_batch():
             img.save(batch_img_path)
             generated_qr_files.append(batch_img_path)
             
-            if len(sample_qr_data) < 12:
-                sample_qr_data.append((code, batch_img_path))
+            if len(sample_qr_data) < 12: sample_qr_data.append((code, batch_img_path))
                 
             new_prod = {
                 "code": code, "token": token, "name": prod_name, "manufacturer": manufacturer,
@@ -365,18 +383,40 @@ def admin_generate_batch():
             ws.cell(row=row_idx, column=1, value=i)
             ws.cell(row=row_idx, column=2, value=code)
             ws.cell(row=row_idx, column=3, value=token)
-            ws.cell(row=row_idx, column=4, value=prod_name)
-            ws.cell(row=row_idx, column=5, value=manufacturer)
-            ws.cell(row=row_idx, column=6, value=verify_url)
+            ws.cell(row=row_idx, column=4, value=f"{qr_size}x{qr_size}mm")
+            ws.cell(row=row_idx, column=5, value=verify_url)
             
         excel_path = f"static/ThongKe_{order_id}.xlsx"
         wb.save(excel_path)
         
+        # TẠO PDF IN THỬ A4 CO GIÃN THEO KHỔ ADMIN CHỌN
         pdf_path = f"static/InThu_{order_id}.pdf"
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 13)
-        pdf.cell(0, 8, f"TRANG IN THU MAU - LO: {order_id}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, f"TRANG IN THU MAU - KICH THUOC: {qr_size}x{qr_size} MM (LO: {order_id})", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.ln(4)
+        
+        col_width = qr_size + 35
+        row_height = qr_size + 20
+        start_x = 18
+        start_y = pdf.get_y()
+        
+        for idx, (s_code, s_path) in enumerate(sample_qr_data):
+            c = idx % 4
+            r = idx // 4
+            x = start_x + c * col_width
+            y = start_y + r * row_height
+            
+            pdf.rect(x, y, col_width - 6, row_height - 4)
+            pdf.set_xy(x, y + 2)
+            pdf.set_font("helvetica", "B", 9)
+            pdf.cell(col_width - 6, 5, f"{s_code} ({qr_size}x{qr_size}mm)", align="C", new_x="LMARGIN", new_y="NEXT")
+            try:
+                pdf.image(s_path, x=x + ((col_width - 6 - qr_size) / 2), y=y + 8, w=qr_size, h=qr_size)
+            except Exception:
+                pass
+                
         pdf.output(pdf_path)
         
         zip_path = f"static/Goi_Tem_{order_id}.zip"
