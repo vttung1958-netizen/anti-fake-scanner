@@ -38,7 +38,7 @@ products_db = [
         "code": "SP001",
         "token": "a1b2c3d4e5f6",
         "name": "Sâm ngọc linh nguyên chất",
-        "manufacturer": "Tập đoàn dược phẩm VN",
+        "manufacturer": "Công ty TNHH Vương Tùng",
         "mfg_date": "2026-03-01",
         "price": "2.500.000 VNĐ",
         "scan_count": 0,
@@ -46,29 +46,43 @@ products_db = [
     }
 ]
 
-@app.route('/')
+# Trang chủ hỗ trợ cả GET (hiển thị form / quét QR) và POST (gửi mã từ ô tìm kiếm)
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    code = request.args.get('code')
-    token = request.args.get('token')
+    code = None
+    token = None
     
+    if request.method == 'POST':
+        code = request.form.get('code', '').strip().upper()
+    else:
+        code = request.args.get('code')
+        token = request.args.get('token')
+        
     if not code:
-        return render_template('index.html', status="error", message="Vui lòng quét mã QR hợp lệ trên sản phẩm.")
-    
+        return render_template('index.html', status=None, message=None)
+        
     product = next((p for p in products_db if p["code"] == code), None)
     
     if not product:
         return render_template('index.html', status="fake", message="CẢNH BÁO: Mã sản phẩm không tồn tại trên hệ thống!")
-    
-    if product["token"] != token:
+        
+    if token and product.get("token") and product["token"] != token:
         return render_template('index.html', status="fake", message="CẢNH BÁO NGUY HIỂM: Phát hiện tem giả mạo (Sai mã Token bảo mật)!", product=product)
-    
-    product["scan_count"] += 1
+        
+    product["scan_count"] = product.get("scan_count", 0) + 1
     
     if product["scan_count"] > 3:
         product["status"] = "Hàng giả / Bị nghi ngờ"
         return render_template('index.html', status="warning", message=f"CẢNH BÁO: Tem này đã bị quét {product['scan_count']} lần! Có dấu hiệu bị sao chép hàng loạt.", product=product)
-    
+        
     return render_template('index.html', status="success", message="XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100%.", product=product)
+
+# Đường dẫn chuyên dụng để quét mã QR từ tem
+@app.route('/verify', methods=['GET'])
+def verify():
+    code = request.args.get('code')
+    token = request.args.get('token')
+    return redirect(url_for('index', code=code, token=token))
 
 # 1. Cổng đăng ký mua tem
 @app.route('/buy', methods=['GET', 'POST'])
@@ -118,11 +132,10 @@ def checkout(order_id):
     
     return render_template('checkout.html', order=order, order_id=order_id, vietqr_url=vietqr_url)
 
-# 3. API Webhook tự động nhận diện dòng tiền từ Ngân hàng (Casso/SePay gọi sang khi có tiền vào)
+# 3. API Webhook tự động nhận diện dòng tiền từ Ngân hàng
 @app.route('/api/payment_webhook', methods=['POST'])
 def payment_webhook():
     data = request.json or {}
-    # Dữ liệu ngân hàng đẩy sang thường chứa nội dung chuyển khoản và số tiền
     content = str(data.get('content', '')).upper()
     amount = float(data.get('amount', 0))
     
@@ -141,7 +154,7 @@ def check_status(order_id):
         return jsonify({"status": "not_found"})
     return jsonify({"status": order["status"]})
 
-# 4. Trang xem Hóa đơn & Biên nhận điện tử tự động sau khi thanh toán thành công
+# 4. Trang xem Hóa đơn & Biên nhận điện tử tự động
 @app.route('/invoice/<order_id>')
 def invoice(order_id):
     order = orders_db.get(order_id)
@@ -149,7 +162,7 @@ def invoice(order_id):
         return "Đơn hàng chưa được thanh toán hoặc không tồn tại!", 403
     return render_template('invoice.html', order=order, order_id=order_id)
 
-# Quản trị viên duyệt đơn nhanh thủ công (nếu cần)
+# Quản trị viên duyệt đơn nhanh thủ công
 @app.route('/admin/approve/<order_id>')
 def approve_order(order_id):
     if not session.get('logged_in'):
@@ -197,7 +210,7 @@ def success_download(order_id):
         for i in range(1, quantity + 1):
             code = f"SP{i:03d}"
             token = uuid.uuid4().hex[:12]
-            verify_url = f"https://anti-fake-scanner-2026.onrender.com/verify?code={code}&token={token}"
+            verify_url = f"https://vuongtung.com.vn/verify?code={code}&token={token}"
             
             img = qrcode.make(verify_url)
             img_filename = f"{code}.png"
@@ -210,7 +223,7 @@ def success_download(order_id):
             
             if len(sample_qr_data) < 12:
                 sample_qr_data.append((code, batch_img_path))
-            
+                
             new_prod = {
                 "code": code,
                 "token": token,
@@ -238,7 +251,7 @@ def success_download(order_id):
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 13)
-        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LOU HANG", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, "TRANG IN THU MAU (TEST TEM QR) - LOHANG", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("helvetica", "I", 9)
         pdf.cell(0, 6, "Doanh nghiep in file PDF nay ra giay A4 ngang de kiem tra kich thuoc va quet thu ma QR.", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(5)
