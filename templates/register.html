@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký Tài Khoản Doanh Nghiệp - Giải Pháp Cuộc Sống</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f8fafc; color: #1e293b; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .register-card { background: white; width: 100%; max-width: 480px; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-top: 5px solid #0284c7; }
+        .register-card h2 { color: #0f172a; text-align: center; margin-bottom: 8px; font-size: 24px; }
+        .register-card p { text-align: center; color: #64748b; font-size: 14px; margin-bottom: 25px; }
+        
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; color: #334155; }
+        input { width: 100%; padding: 12px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s; }
+        input:focus { border-color: #0284c7; }
+        
+        .btn-submit { background: #16a34a; color: white; border: none; width: 100%; padding: 12px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: background 0.2s; }
+        .btn-submit:hover { background: #15803d; }
+        
+        .divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: #94a3b8; font-size: 13px; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #e2e8f0; }
+        .divider::before { margin-right: 10px; }
+        .divider::after { margin-left: 10px; }
+        
+        .social-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-social { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: white; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; color: #334155; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s; }
+        .btn-social:hover { background: #f1f5f9; }
+        
+        .back-home { text-align: center; margin-top: 20px; font-size: 13px; }
+        .back-home a { color: #0284c7; text-decoration: none; font-weight: 600; }
+        .back-home a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="register-card">
+        <h2>Đăng Ký Tài Khoản</h2>
+        <p>Tạo tài khoản để quản lý và mua lô tem QR độc quyền</p>
+
+        <!-- Đăng nhập nhanh qua mạng xã hội -->
+        <div class="social-buttons">
+            <button class="btn-social" onclick="alert('Tính năng đang kết nối Google OAuth...')">
+                🌐 Google
+            </button>
+            <button class="btn-social" onclick="alert('Tính năng đang kết nối Facebook SDK...')">
+                📘 Facebook
+            </button>
+            <button class="btn-social" onclick="alert('Tính năng đang kết nối Zalo OA...')">
+                💬 Zalo
+            </button>
+        </div>
+
+        <div class="divider">hoặc đăng ký bằng biểu mẫu</div>
+
+        <form method="POST" action="/register">
+            <div class="form-group">
+                <label>Họ và Tên Doanh Nghiệp / Người Đại Diện:</label>
+                <input type="text" name="fullname" placeholder="Ví dụ: Vương Thanh Tùng" required>
+            </div>
+            <div class="form-group">
+                <label>Email hoặc Số Điện Thoại:</label>
+                <input type="text" name="username" placeholder="Ví dụ: vttung1958@gmail.com" required>
+            </div>
+            <div class="form-group">
+                <label>Mật Khẩu Bảo Mật:</label>
+                <input type="password" name="password" placeholder="Nhập mật khẩu của bạn" required>
+            </div>
+            <button type="submit" class="btn-submit">🚀 Hoàn Tất Đăng Ký Tài Khoản</button>
+        </form>
+
+        <div class="back-home">
+            <a href="/">&larr; Quay lại Trang Chủ Giải Pháp Cuộc Sống</a>
+        </div>
+    </div>
+
+</body>
+</html>
