@@ -295,6 +295,101 @@ def success_download(order_id):
     except Exception as e:
         return f"Lỗi tạo tệp: {str(e)}", 500
 
+# Xử lý tạo lô trực tiếp từ Admin (khắc phục lỗi 404)
+@app.route('/admin/generate_batch', methods=['POST'])
+def admin_generate_batch():
+    if not session.get('logged_in'):
+        return redirect(url_for('admin_login'))
+        
+    prod_name = request.form.get('prod_name')
+    manufacturer = request.form.get('manufacturer')
+    price_str = request.form.get('price', '2.500.000 VNĐ')
+    company_hw_id = f"HW-ADMIN-{uuid.uuid4().hex[:10].upper()}"
+    
+    try:
+        quantity = int(request.form.get('quantity', 100))
+    except ValueError:
+        quantity = 100
+        
+    order_id = f"AD{uuid.uuid4().hex[:6].upper()}"
+    
+    try:
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "ThongKe_DanhSach"
+        ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - GIẢI PHÁP CUỘC SỐNG ---"])
+        ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
+        ws.append(["Mã định danh phần cứng (HW-ID):", company_hw_id, "Số lượng tem:", quantity])
+        ws.append([])
+        
+        header_row = 5
+        ws.cell(row=header_row, column=1, value="STT")
+        ws.cell(row=header_row, column=2, value="Mã Code")
+        ws.cell(row=header_row, column=3, value="Chữ Ký Số & Token Bảo Mật")
+        ws.cell(row=header_row, column=4, value="Tên Sản Phẩm")
+        ws.cell(row=header_row, column=5, value="Nhà Sản Xuất")
+        ws.cell(row=header_row, column=6, value="Link Xác Thực Ngầm")
+        
+        batch_img_dir = f"static/batch_{uuid.uuid4().hex[:8]}"
+        os.makedirs(batch_img_dir, exist_ok=True)
+        
+        generated_qr_files = []
+        sample_qr_data = []
+        
+        for i in range(1, quantity + 1):
+            code = f"SP{i:03d}"
+            digital_sign = generate_secure_digital_signature(code, manufacturer, company_hw_id)
+            token = f"{uuid.uuid4().hex[:6]}-{digital_sign}"
+            verify_url = f"https://vuongtung.com.vn/verify?code={code}&token={token}"
+            
+            img = qrcode.make(verify_url)
+            img_filename = f"{code}.png"
+            img_path = os.path.join(QR_OUTPUT_DIR, img_filename)
+            img.save(img_path)
+            
+            batch_img_path = os.path.join(batch_img_dir, img_filename)
+            img.save(batch_img_path)
+            generated_qr_files.append(batch_img_path)
+            
+            if len(sample_qr_data) < 12:
+                sample_qr_data.append((code, batch_img_path))
+                
+            new_prod = {
+                "code": code, "token": token, "name": prod_name, "manufacturer": manufacturer,
+                "hardware_id": company_hw_id, "mfg_date": datetime.now().strftime("%Y-%m-%d"),
+                "price": price_str, "scan_count": 0, "status": "Hàng thật"
+            }
+            products_db.append(new_prod)
+            
+            row_idx = header_row + i
+            ws.cell(row=row_idx, column=1, value=i)
+            ws.cell(row=row_idx, column=2, value=code)
+            ws.cell(row=row_idx, column=3, value=token)
+            ws.cell(row=row_idx, column=4, value=prod_name)
+            ws.cell(row=row_idx, column=5, value=manufacturer)
+            ws.cell(row=row_idx, column=6, value=verify_url)
+            
+        excel_path = f"static/ThongKe_{order_id}.xlsx"
+        wb.save(excel_path)
+        
+        pdf_path = f"static/InThu_{order_id}.pdf"
+        pdf = FPDF(orientation='L', unit='mm', format='A4')
+        pdf.add_page()
+        pdf.set_font("helvetica", "B", 13)
+        pdf.cell(0, 8, f"TRANG IN THU MAU - LO: {order_id}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.output(pdf_path)
+        
+        zip_path = f"static/Goi_Tem_{order_id}.zip"
+        with zipfile.ZipFile(zip_path, 'w') as zipf:
+            zipf.write(excel_path, arcname="1_DanhSach_MaQR_Enterprise.xlsx")
+            zipf.write(pdf_path, arcname="2_TrangInThu_A4.pdf")
+            for qr_file in generated_qr_files:
+                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR_Enterprise/{os.path.basename(qr_file)}")
+                
+        return send_file(zip_path, as_attachment=True)
+    except Exception as e:
+        return f"Lỗi tạo tệp: {str(e)}", 500
+
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     current_password = get_admin_password()
