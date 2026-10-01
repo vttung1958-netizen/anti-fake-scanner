@@ -66,14 +66,26 @@
     <!-- NAVBAR THƯƠNG HIỆU MỚI -->
     <div class="navbar">
         <a href="/" class="brand">🌐 GIẢI PHÁP CUỘC SỐNG</a>
-        <div class="nav-links">
-            <a href="/" class="active">Trang Chủ</a>
-            <a href="#about">Giới Thiệu</a>
-            <a href="#solutions">Giải Pháp & Sản Phẩm</a>
-            <a href="/buy">Cấp Phát Lô Tem</a>
-            <a href="/admin">Quản Trị Admin</a>
-            <a href="/admin/login" class="btn-login">Đăng Nhập</a>
-        </div>
+       # Lưu trữ tài khoản khách hàng đăng ký tạm thời
+users_db = {}
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        fullname = request.form.get('fullname')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        # Lưu thông tin tài khoản doanh nghiệp/khách hàng
+        users_db[username] = {
+            "fullname": fullname,
+            "password": password,
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        # Đăng ký thành công thì chuyển hướng ngay sang cổng mua tem và cấp phát lô QR
+        return redirect(url_for('buy'))
+        
+    return render_template('register.html')
     </div>
 
     <!-- HERO BANNER GIỚI THIỆU THƯƠNG HIỆU -->
