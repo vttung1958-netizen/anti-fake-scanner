@@ -2,70 +2,60 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cổng Đăng Ký & Phát Hành Tem Chống Hàng Giả - Vương Tùng</title>
+    <title>Cổng Đăng Ký Cấp Phát Lô Tem QR - Auto Vương Tùng</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 40px; }
-        .container { max-width: 650px; background: white; padding: 35px; margin: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { color: #1a365d; text-align: center; margin-bottom: 10px; }
-        .subtitle { text-align: center; color: #718096; font-size: 14px; margin-bottom: 25px; }
-        label { font-weight: bold; display: block; margin-top: 15px; color: #333; font-size: 14px; }
-        input, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #cbd5e0; border-radius: 4px; box-sizing: border-box; }
-        .btn { background: #38a169; color: white; border: none; padding: 12px; width: 100%; margin-top: 25px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; }
-        .btn:hover { background: #2f855a; }
-        .price-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
-        .price-table th, .price-table td { border: 1px solid #e2e8f0; padding: 8px; text-align: center; }
-        .price-table th { background: #2b6cb0; color: white; }
-        .legal-note { font-size: 12px; color: #718096; text-align: center; margin-top: 20px; line-height: 1.5; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; margin: 0; padding: 20px; }
+        .navbar { background: #0f172a; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px; margin-bottom: 30px; }
+        .navbar a { color: #38bdf8; text-decoration: none; font-weight: bold; }
+        .card { background: white; max-width: 600px; margin: 0 auto; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { text-align: center; color: #0f172a; margin-bottom: 10px; }
+        p.subtitle { text-align: center; color: #64748b; font-size: 14px; margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 14px; text-align: center; }
+        th, td { border: 1px solid #e2e8f0; padding: 10px; }
+        th { background: #1e293b; color: white; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #334155; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; }
+        button { width: 100%; background: #22c55e; color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        button:hover { background: #16a34a; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Cổng Đăng Ký Cấp Phát Lô Tem QR</h2>
-        <div class="subtitle">Giải pháp chống hàng giả tự động hóa toàn diện cho Doanh nghiệp</div>
+    <div class="navbar">
+        <a href="/">&larr; Quay lại Trang Chủ</a>
+        <span>📦 Cổng Đăng Ký Mua Tem</span>
+    </div>
 
-        <table class="price-table">
-            <tr>
-                <th>Gói Số Lượng</th>
-                <th>Đơn Giá / Tem</th>
-                <th>Thành Tiền</th>
-            </tr>
-            <tr>
-                <td>1.000 Tem</td>
-                <td>500 VNĐ</td>
-                <td>500.000 VNĐ</td>
-            </tr>
-            <tr>
-                <td>5.000 Tem</td>
-                <td>450 VNĐ</td>
-                <td>2.250.000 VNĐ</td>
-            </tr>
-            <tr>
-                <td>10.000+ Tem</td>
-                <td>350 VNĐ</td>
-                <td>Liên hệ / Tối ưu</td>
-            </tr>
+    <div class="card">
+        <h2>Cổng Đăng Ký Cấp Phát Lô Tem QR</h2>
+        <p class="subtitle">Giải pháp chống hàng giả tự động hóa toàn diện cho Doanh nghiệp</p>
+        
+        <table>
+            <tr><th>Gói Số Lượng</th><th>Đơn Giá / Tem</th><th>Thành Tiền</th></tr>
+            <tr><td>1.000 Tem</td><td>500 VNĐ</td><td>500.000 VNĐ</td></tr>
+            <tr><td>5.000 Tem</td><td>450 VNĐ</td><td>2.250.000 VNĐ</td></tr>
+            <tr><td>10.000+ Tem</td><td>350 VNĐ</td><td>Liên hệ / Tối ưu</td></tr>
         </table>
 
         <form method="POST">
-            <label>Tên Sản Phẩm:</label>
-            <input type="text" name="prod_name" required placeholder="Ví dụ: Sâm Ngọc Linh Nguyên Chất">
-            
-            <label>Tên Doanh Nghiệp / Nhà Sản Xuất:</label>
-            <input type="text" name="manufacturer" required placeholder="Ví dụ: Công ty Cổ phần Dược liệu VN">
-            
-            <label>Chọn Số Lượng Tem Cần Mua:</label>
-            <select name="quantity">
-                <option value="1000">Gói 1.000 Tem (500.000 VNĐ)</option>
-                <option value="5000">Gói 5.000 Tem (2.250.000 VNĐ)</option>
-                <option value="10000">Gói 10.000 Tem (3.500.000 VNĐ)</option>
-            </select>
-            
-            <button type="submit" class="btn">🚀 Tiến Hành Thanh Toán VietQR Tự Động</button>
+            <div class="form-group">
+                <label>Tên Sản Phẩm:</label>
+                <input type="text" name="prod_name" placeholder="Ví dụ: Sâm Ngọc Linh Nguyên Chất" required>
+            </div>
+            <div class="form-group">
+                <label>Tên Doanh Nghiệp / Nhà Sản Xuất:</label>
+                <input type="text" name="manufacturer" placeholder="Ví dụ: Công ty TNHH Vương Tùng" required>
+            </div>
+            <div class="form-group">
+                <label>Chọn Số Lượng Tem Cần Mua:</label>
+                <select name="quantity">
+                    <option value="1000">Gói 1.000 Tem (500.000 VNĐ)</option>
+                    <option value="5000">Gói 5.000 Tem (2.250.000 VNĐ)</option>
+                    <option value="10000">Gói 10.000 Tem (3.500.000 VNĐ)</option>
+                </select>
+            </div>
+            <button type="submit">🚀 Tiến Hành Thanh Toán VietQR Tự Động</button>
         </form>
-
-        <div class="legal-note">
-            Bằng việc đăng ký, Doanh nghiệp cam kết tuân thủ tuyệt đối <a href="/terms" target="_blank" style="color: #2b6cb0; font-weight: bold;">Điều khoản pháp lý</a> và chịu hoàn toàn trách nhiệm trước pháp luật về sản phẩm của mình.
-        </div>
     </div>
 </body>
 </html>
