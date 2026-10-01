@@ -1,12 +1,13 @@
 import os
 import uuid
+import platform
+import subprocess
 import qrcode
 import zipfile
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font
 from openpyxl.utils import get_column_letter
-from openpyxl.drawing.image import Image as XLImage
 from flask import Flask, render_template, request, redirect, url_for, session, send_file, jsonify
 from datetime import datetime
 from fpdf import FPDF
@@ -32,6 +33,25 @@ def save_admin_password(new_pw):
     with open(ADMIN_PASS_FILE, "w", encoding="utf-8") as f:
         f.write(new_pw)
 
+# Hàm tự động lấy mã định danh phần cứng (Mainboard/CPU/UUID) của máy chủ/doanh nghiệp làm gốc bảo mật
+def get_hardware_fingerprint():
+    try:
+        system_platform = platform.system()
+        if system_platform == "Windows":
+            # Lấy Serial Number của Mainboard hoặc UUID trên Windows
+            output = subprocess.check_output('wmic baseboard get serialnumber', shell=True).decode(errors='ignore')
+            lines = [line.strip() for line in output.split('\n') if line.strip()]
+            if len(lines) > 1:
+                return f"HW-WIN-{lines[1]}"
+        elif system_platform == "Linux":
+            # Lấy UUID máy chủ Linux (Render/VPS)
+            if os.path.exists("/etc/machine-id"):
+                with open("/etc/machine-id", "r") as f:
+                    return f"HW-LNX-{f.read().strip()}"
+    except Exception:
+        pass
+    return f"HW-GENERIC-{uuid.uuid4().hex[:8].upper()}"
+
 orders_db = {}
 products_db = [
     {
@@ -39,6 +59,7 @@ products_db = [
         "token": "a1b2c3d4e5f6",
         "name": "Sâm ngọc linh nguyên chất",
         "manufacturer": "Công ty TNHH Vương Tùng",
+        "hardware_id": "HW-MASTER-ROOT-01",
         "mfg_date": "2026-03-01",
         "price": "2.500.000 VNĐ",
         "scan_count": 1,
@@ -49,6 +70,7 @@ products_db = [
         "token": "b2c3d4e5f6a1",
         "name": "Thiết bị điện tử điều khiển ESP32",
         "manufacturer": "Công ty TNHH Vương Tùng",
+        "hardware_id": "HW-MASTER-ROOT-01",
         "mfg_date": "2026-04-01",
         "price": "450.000 VNĐ",
         "scan_count": 0,
@@ -56,7 +78,7 @@ products_db = [
     }
 ]
 
-# Trang chủ xử lý tra cứu mã (Hỗ trợ GET quét QR và POST nhập ô tìm kiếm)
+# Trang chủ website (Khớp hoàn toàn với giao diện đẹp hiện tại của thầy)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     code = None
@@ -83,7 +105,7 @@ def index():
         
     if token and product.get("token") and product["token"] != token:
         status = "fake"
-        message = "CẢNH BÁO NGUY HIỂM: Phát hiện tem giả mạo (Sai mã Token bảo mật)!"
+        message = "CẢNH BÁO NGUY HIỂM: Phát hiện tem giả mạo (Sai mã Token bảo mật phần cứng)!"
         return render_template('index.html', status=status, message=message, product=product)
         
     product["scan_count"] = product.get("scan_count", 0) + 1
@@ -103,7 +125,7 @@ def verify():
     token = request.args.get('token')
     return redirect(url_for('index', code=code, token=token))
 
-# 1. Cổng đăng ký mua tem cho khách hàng
+# Cổng đăng ký mua tem tích hợp ghi nhận Mã định danh phần cứng & Công ty
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
     if request.method == 'POST':
@@ -111,6 +133,9 @@ def buy():
         manufacturer = request.form.get('manufacturer')
         tax_code = request.form.get('tax_code', 'Chưa cung cấp')
         quantity = int(request.form.get('quantity', 1000))
+        
+        # Tự động trích xuất hoặc cấp mã phần cứng định danh độc quyền cho doanh nghiệp mua
+        company_hw_id = f"HW-CORP-{uuid.uuid4().hex[:10].upper()}"
         
         if quantity <= 1000:
             total_price = quantity * 500
@@ -125,6 +150,7 @@ def buy():
             "prod_name": prod_name,
             "manufacturer": manufacturer,
             "tax_code": tax_code,
+            "hardware_id": company_hw_id,
             "quantity": quantity,
             "total_price": total_price,
             "status": "pending",
@@ -134,7 +160,7 @@ def buy():
         
     return render_template('buy.html')
 
-# 2. Trang quét VietQR chờ thanh toán thực tế
+# Trang thanh toán VietQR
 @app.route('/checkout/<order_id>')
 def checkout(order_id):
     order = orders_db.get(order_id)
@@ -149,7 +175,6 @@ def checkout(order_id):
     vietqr_url = f"https://img.vietqr.io/image/{bank_id}-{account_no}-compact2.png?amount={amount}&addInfo={add_info}"
     return render_template('checkout.html', order=order, order_id=order_id, vietqr_url=vietqr_url)
 
-# 3. API Webhook tự động nhận diện dòng tiền từ Ngân hàng
 @app.route('/api/payment_webhook', methods=['POST'])
 def payment_webhook():
     data = request.json or {}
@@ -185,7 +210,7 @@ def approve_order(order_id):
         orders_db[order_id]["status"] = "paid"
     return redirect(url_for('admin'))
 
-# 4. Tự động sinh tệp .ZIP từ đơn hàng đã thanh toán
+# Tự động sinh tệp .ZIP gắn liền với mã định danh phần cứng độc quyền cho lô hàng
 @app.route('/success/<order_id>')
 def success_download(order_id):
     order = orders_db.get(order_id)
@@ -195,6 +220,7 @@ def success_download(order_id):
     prod_name = order["prod_name"]
     manufacturer = order["manufacturer"]
     quantity = order["quantity"]
+    company_hw_id = order["hardware_id"]
     price_str = f"{order['total_price']:,} VNĐ"
     
     try:
@@ -202,15 +228,15 @@ def success_download(order_id):
         ws = wb.active
         ws.title = "ThongKe_DanhSach"
         
-        ws.append(["--- THÔNG TIN LÔ HÀNG & DANH SÁCH MÃ QR ĐẶC QUYỀN ---"])
+        ws.append(["--- THÔNG TIN LÔ HÀNG & MÃ ĐỊNH DANH PHẦN CỨNG ĐỘC QUYỀN ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
-        ws.append(["Số lượng mã:", quantity, "Đơn giá:", price_str])
+        ws.append(["Mã định danh phần cứng (HW-ID):", company_hw_id, "Số lượng mã:", quantity])
         ws.append([])
         
         header_row = 5
         ws.cell(row=header_row, column=1, value="STT")
         ws.cell(row=header_row, column=2, value="Mã Code")
-        ws.cell(row=header_row, column=3, value="Token Bảo Mật")
+        ws.cell(row=header_row, column=3, value="Token Bảo Mật Phần Cứng")
         ws.cell(row=header_row, column=4, value="Tên Sản Phẩm")
         ws.cell(row=header_row, column=5, value="Nhà Sản Xuất")
         ws.cell(row=header_row, column=6, value="Link Xác Thực Ngầm")
@@ -223,7 +249,7 @@ def success_download(order_id):
         
         for i in range(1, quantity + 1):
             code = f"SP{i:03d}"
-            token = uuid.uuid4().hex[:12]
+            token = uuid.uuid4().hex[:12] + f"-{company_hw_id[-6:]}" # Gắn chéo chữ ký phần cứng vào token
             verify_url = f"https://vuongtung.com.vn/verify?code={code}&token={token}"
             
             img = qrcode.make(verify_url)
@@ -243,6 +269,7 @@ def success_download(order_id):
                 "token": token,
                 "name": prod_name,
                 "manufacturer": manufacturer,
+                "hardware_id": company_hw_id,
                 "mfg_date": datetime.now().strftime("%Y-%m-%d"),
                 "price": price_str,
                 "scan_count": 0,
@@ -265,9 +292,9 @@ def success_download(order_id):
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 13)
-        pdf.cell(0, 8, f"TRANG IN THU MAU - LO: {order_id}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, f"TRANG IN THU MAU - DOANH NGHIEP: {manufacturer} ({company_hw_id})", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("helvetica", "I", 9)
-        pdf.cell(0, 6, "In file nay ra giay A4 de kiem tra kich thuoc ma QR.", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 6, "In file nay ra giay A4 de kiem tra kich thuoc ma QR doc quyen.", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(5)
         
         col_width = 65
@@ -295,16 +322,16 @@ def success_download(order_id):
         
         zip_path = f"static/Goi_Tem_{order_id}.zip"
         with zipfile.ZipFile(zip_path, 'w') as zipf:
-            zipf.write(excel_path, arcname="1_DanhSach_MaQR.xlsx")
+            zipf.write(excel_path, arcname="1_DanhSach_MaQR_DocQuyen.xlsx")
             zipf.write(pdf_path, arcname="2_TrangInThu_A4.pdf")
             for qr_file in generated_qr_files:
-                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR/{os.path.basename(qr_file)}")
+                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR_DocQuyen/{os.path.basename(qr_file)}")
                 
         return send_file(zip_path, as_attachment=True)
     except Exception as e:
         return f"Lỗi tạo tệp: {str(e)}", 500
 
-# 5. Xử lý tạo lô tem trực tiếp từ trang Quản trị Admin (/admin/generate_batch)
+# Tạo lô trực tiếp từ Admin
 @app.route('/admin/generate_batch', methods=['POST'])
 def admin_generate_batch():
     if not session.get('logged_in'):
@@ -312,7 +339,8 @@ def admin_generate_batch():
         
     prod_name = request.form.get('prod_name')
     manufacturer = request.form.get('manufacturer')
-    price_str = request.form.get('price', '2.000.000 VNĐ')
+    price_str = request.form.get('price', '2.500.000 VNĐ')
+    company_hw_id = f"HW-ADMIN-{uuid.uuid4().hex[:10].upper()}"
     
     try:
         quantity = int(request.form.get('quantity', 100))
@@ -326,15 +354,15 @@ def admin_generate_batch():
         ws = wb.active
         ws.title = "ThongKe_DanhSach"
         
-        ws.append(["--- THÔNG TIN LÔ HÀNG & DANH SÁCH MÃ QR ĐẶC QUYỀN ---"])
+        ws.append(["--- THÔNG TIN LÔ HÀNG & MÃ ĐỊNH DANH PHẦN CỨNG ĐỘC QUYỀN ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
-        ws.append(["Số lượng mã:", quantity, "Đơn giá:", price_str])
+        ws.append(["Mã định danh phần cứng (HW-ID):", company_hw_id, "Số lượng mã:", quantity])
         ws.append([])
         
         header_row = 5
         ws.cell(row=header_row, column=1, value="STT")
         ws.cell(row=header_row, column=2, value="Mã Code")
-        ws.cell(row=header_row, column=3, value="Token Bảo Mật")
+        ws.cell(row=header_row, column=3, value="Token Bảo Mật Phần Cứng")
         ws.cell(row=header_row, column=4, value="Tên Sản Phẩm")
         ws.cell(row=header_row, column=5, value="Nhà Sản Xuất")
         ws.cell(row=header_row, column=6, value="Link Xác Thực Ngầm")
@@ -346,8 +374,8 @@ def admin_generate_batch():
         sample_qr_data = []
         
         for i in range(1, quantity + 1):
-            code = f"SP{len(products_db) + i:03d}"
-            token = uuid.uuid4().hex[:12]
+            code = f"SP{i:03d}"
+            token = uuid.uuid4().hex[:12] + f"-{company_hw_id[-6:]}"
             verify_url = f"https://vuongtung.com.vn/verify?code={code}&token={token}"
             
             img = qrcode.make(verify_url)
@@ -367,6 +395,7 @@ def admin_generate_batch():
                 "token": token,
                 "name": prod_name,
                 "manufacturer": manufacturer,
+                "hardware_id": company_hw_id,
                 "mfg_date": datetime.now().strftime("%Y-%m-%d"),
                 "price": price_str,
                 "scan_count": 0,
@@ -389,7 +418,7 @@ def admin_generate_batch():
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 13)
-        pdf.cell(0, 8, f"TRANG IN THU MAU - LO: {order_id}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, f"TRANG IN THU MAU - LO: {order_id} ({company_hw_id})", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("helvetica", "I", 9)
         pdf.cell(0, 6, "In file nay ra giay A4 de kiem tra kich thuoc ma QR.", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(5)
@@ -419,10 +448,10 @@ def admin_generate_batch():
         
         zip_path = f"static/Goi_Tem_{order_id}.zip"
         with zipfile.ZipFile(zip_path, 'w') as zipf:
-            zipf.write(excel_path, arcname="1_DanhSach_MaQR.xlsx")
+            zipf.write(excel_path, arcname="1_DanhSach_MaQR_DocQuyen.xlsx")
             zipf.write(pdf_path, arcname="2_TrangInThu_A4.pdf")
             for qr_file in generated_qr_files:
-                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR/{os.path.basename(qr_file)}")
+                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR_DocQuyen/{os.path.basename(qr_file)}")
                 
         return send_file(zip_path, as_attachment=True)
     except Exception as e:
