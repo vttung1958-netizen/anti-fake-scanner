@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hóa Đơn & Biên Nhận Điện Tử - Vương Tùng</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 40px; }
+        .invoice-box { max-width: 700px; margin: auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 6px solid #38a169; }
+        h2 { color: #1a365d; text-align: center; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #718096; font-size: 13px; margin-bottom: 25px; }
+        .info-section { margin: 20px 0; font-size: 14px; line-height: 1.6; }
+        .info-section p { margin: 6px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+        th, td { border: 1px solid #cbd5e0; padding: 10px; text-align: left; font-size: 14px; }
+        th { background: #2b6cb0; color: white; }
+        .total { text-align: right; font-size: 16px; font-weight: bold; margin-top: 20px; color: #2d3748; }
+        .btn-group { text-align: center; margin-top: 30px; }
+        .btn { background: #38a169; color: white; padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block; margin: 5px; }
+        .btn:hover { background: #2f855a; }
+        .btn-print { background: #4a5568; }
+        .badge-success { background: #c6f6d5; color: #22543d; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <h2>HÓA ĐƠN / BIÊN NHẬN DỊCH VỤ ĐIỆN TỬ</h2>
+        <div class="subtitle">Nền tảng Cấp Phát Tem Chống Hàng Giả - Chủ tài khoản: VƯƠNG THANH TÙNG (Agribank)</div>
+
+        <div class="info-section">
+            <p><b>Mã đơn hàng:</b> {{ order_id }}</p>
+            <p><b>Thời gian giao dịch:</b> {{ order.time }}</p>
+            <p><b>Tên Doanh nghiệp:</b> {{ order.manufacturer }}</p>
+            <p><b>Mã số thuế / MST:</b> {{ order.tax_code }}</p>
+            <p><b>Trạng thái thanh toán:</b> <span class="badge-success">✔ ĐÃ THANH TOÁN THÀNH CÔNG</span></p>
+        </div>
+
+        <table>
+            <tr>
+                <th>Nội Dung Dịch Vụ</th>
+                <th>Số Lượng Tem</th>
+                <th>Đơn Giá</th>
+                <th>Thành Tiền</th>
+            </tr>
+            <tr>
+                <td>Phát hành lô tem QR chống giả cho sản phẩm: <b>{{ order.prod_name }}</b></td>
+                <td>{{ "{:,}".format(order.quantity) }}</td>
+                <td>{{ "{:,.0f}".format(order.total_price / order.quantity) }} VNĐ</td>
+                <td>{{ "{:,.0f}".format(order.total_price) }} VNĐ</td>
+            </tr>
+        </table>
+
+        <div class="total">
+            Tổng tiền thanh toán: <span style="color: #e53e3e;">{{ "{:,.0f}".format(order.total_price) }} VNĐ</span>
+        </div>
+
+        <div class="btn-group">
+            <a href="/success/{{ order_id }}" class="btn">📥 Tải Trọn Gói File (Excel, PDF, Ảnh QR)</a>
+            <button onclick="window.print()" class="btn btn-print">🖨️️ In Hóa Đơn</button>
+        </div>
+    </div>
+</body>
+</html>
