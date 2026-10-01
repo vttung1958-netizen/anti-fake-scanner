@@ -2,45 +2,68 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Quét Mã Chống Hàng Giả - Auto Vương Tùng</title>
+    <title>Hệ Thống Chống Hàng Giả - Auto Vương Tùng</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 0; }
+        /* Thanh menu điều hướng chuyên nghiệp */
+        .navbar { background: #1e293b; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .navbar .brand { font-size: 18px; font-weight: bold; color: #38bdf8; text-decoration: none; }
+        .navbar .nav-links a { color: white; text-decoration: none; margin-left: 20px; padding: 8px 15px; border-radius: 5px; background: #334155; transition: 0.2s; font-size: 14px; }
+        .navbar .nav-links a:hover { background: #0284c7; }
+        
+        /* Khung chính */
+        .container { display: flex; justify-content: center; align-items: center; height: calc(100vh - 70px); }
         .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center; }
-        input[type="text"] { width: 80%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
-        button { background: #28a745; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #218838; }
-        .alert { margin-top: 20px; padding: 15px; border-radius: 5px; font-weight: bold; }
-        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .fake { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        input[type="text"] { width: 80%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
+        button { background: #22c55e; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 85%; }
+        button:hover { background: #16a34a; }
+        .alert { margin-top: 20px; padding: 15px; border-radius: 5px; font-weight: bold; text-align: left; }
+        .success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .fake { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .warning { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>🔍 Quét Mã Chống Hàng Giả</h2>
-        <p>Nhập mã sản phẩm hoặc quét mã QR để xác thực</p>
-        
-        <form method="POST" action="/">
-            <input type="text" name="code" placeholder="Nhập mã (VD: SP001, SP002)..." required>
-            <br>
-            <button type="submit">Kiểm tra sản phẩm</button>
-        </form>
 
-        {% if message %}
-            <div class="alert {% if status == 'success' %}success{% elif status == 'fake' %}fake{% else %}warning{% endif %}">
-                {{ message }}
-            </div>
-        {% endif %}
-
-        {% if product %}
-            <div style="margin-top: 20px; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 5px;">
-                <p><strong>Tên SP:</strong> {{ product.name }}</p>
-                <p><strong>Nhà sản xuất:</strong> {{ product.manufacturer }}</p>
-                <p><strong>Ngày sản xuất:</strong> {{ product.mfg_date }}</p>
-                <p><strong>Số lần quét:</strong> {{ product.scan_count }}</p>
-                <p><strong>Trạng thái:</strong> {{ product.status }}</p>
-            </div>
-        {% endif %}
+    <!-- Thanh Menu điều hướng luôn hiển thị ở mọi trang -->
+    <div class="navbar">
+        <a href="/" class="brand">🛡️ AUTO VƯƠNG TÙNG - CHỐNG HÀNG GIẢ</a>
+        <div class="nav-links">
+            <a href="/">Tra Cứu Mã</a>
+            <a href="/buy">Đăng Ký Mua Tem</a>
+            <a href="/admin">Quản Trị Hệ Thống</a>
+        </div>
     </div>
+
+    <!-- Giao diện tra cứu chính -->
+    <div class="container">
+        <div class="card">
+            <h2>🔍 Quét Mã Chống Hàng Giả</h2>
+            <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">Nhập mã sản phẩm hoặc quét mã QR để xác thực chính hãng</p>
+            
+            <form method="POST" action="/">
+                <input type="text" name="code" placeholder="Nhập mã (VD: SP001, SP002)..." required>
+                <br>
+                <button type="submit">Kiểm tra sản phẩm</button>
+            </form>
+
+            {% if message %}
+                <div class="alert {% if status == 'success' %}success{% elif status == 'fake' %}fake{% else %}warning{% endif %}">
+                    {{ message }}
+                </div>
+            {% endif %}
+
+            {% if product %}
+                <div style="margin-top: 20px; text-align: left; background: #f8fafc; padding: 15px; border-radius: 5px; border: 1px solid #e2e8f0; font-size: 14px;">
+                    <p><strong>Tên SP:</strong> {{ product.name }}</p>
+                    <p><strong>Nhà sản xuất:</strong> {{ product.manufacturer }}</p>
+                    <p><strong>Ngày sản xuất:</strong> {{ product.mfg_date }}</p>
+                    <p><strong>Số lần quét:</strong> {{ product.scan_count }}</p>
+                    <p><strong>Trạng thái:</strong> <span style="color: {% if product.status == 'Hàng thật' %}#16a34a{% else %}#dc2626{% endif %}; font-weight: bold;">{{ product.status }}</span></p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
 </body>
 </html>
