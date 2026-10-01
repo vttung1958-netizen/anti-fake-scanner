@@ -104,7 +104,7 @@ def index():
         message = f"CẢNH BÁO: Tem này đã bị quét {product['scan_count']} lần! Có dấu hiệu bị sao chép hoặc in lậu."
     else:
         status = "success"
-        message = "XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100% từ Auto Vương Tùng."
+        message = "XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100% từ Giải Pháp Cuộc Sống."
         
     return render_template('index.html', status=status, message=message, product=product)
 
@@ -114,7 +114,7 @@ def verify():
     token = request.args.get('token')
     return redirect(url_for('index', code=code, token=token))
 
-# Cổng đăng ký mua tem tích hợp bảo mật Cấp độ 3 (Định danh phần cứng doanh nghiệp)
+# Cổng đăng ký mua tem tích hợp chọn công nghệ in (Trắng đen hoặc 7 màu Hologram)
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
     if request.method == 'POST':
@@ -122,6 +122,7 @@ def buy():
         manufacturer = request.form.get('manufacturer')
         tax_code = request.form.get('tax_code', 'Chưa cung cấp')
         quantity = int(request.form.get('quantity', 1000))
+        print_type = request.form.get('print_type', 'black_white') # Nhận lựa chọn in ấn từ doanh nghiệp
         
         # Cấp mã định danh phần cứng độc quyền cho doanh nghiệp
         company_hw_id = f"HW-CORP-{uuid.uuid4().hex[:10].upper()}"
@@ -141,6 +142,7 @@ def buy():
             "tax_code": tax_code,
             "hardware_id": company_hw_id,
             "quantity": quantity,
+            "print_type": print_type, # Lưu lại tùy chọn in ấn
             "total_price": total_price,
             "status": "pending",
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -198,7 +200,7 @@ def approve_order(order_id):
         orders_db[order_id]["status"] = "paid"
     return redirect(url_for('admin'))
 
-# Tự động sinh tệp .ZIP chứa dải mã QR độc quyền sau khi thanh toán
+# Tự động sinh tệp .ZIP phân loại theo tùy chọn in ấn (Trắng đen hoặc 7 màu Hologram)
 @app.route('/success/<order_id>')
 def success_download(order_id):
     order = orders_db.get(order_id)
@@ -209,25 +211,28 @@ def success_download(order_id):
     manufacturer = order["manufacturer"]
     quantity = order["quantity"]
     company_hw_id = order["hardware_id"]
+    print_type = order.get("print_type", "black_white")
     price_str = f"{order['total_price']:,} VNĐ"
+    
+    print_name_desc = "Tem Trang Den Tieu Chuan" if print_type == "black_white" else "Tem QR 7 Mau / Hologram Cao Cap"
     
     try:
         wb = Workbook()
         ws = wb.active
         ws.title = "ThongKe_DanhSach"
         
-        ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - TIÊU CHUẨN ENTERPRISE SHIELD ---"])
+        ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - GIẢI PHÁP CUỘC SỐNG ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
-        ws.append(["Mã định danh phần cứng (HW-ID):", company_hw_id, "Số lượng tem:", quantity])
+        ws.append(["Công nghệ in ấn:", print_name_desc, "Mã định danh HW-ID:", company_hw_id])
+        ws.append(["Số lượng tem:", quantity, "Tổng chi phí:", price_str])
         ws.append([])
         
-        header_row = 5
+        header_row = 6
         ws.cell(row=header_row, column=1, value="STT")
         ws.cell(row=header_row, column=2, value="Mã Code")
         ws.cell(row=header_row, column=3, value="Chữ Ký Số & Token Bảo Mật")
-        ws.cell(row=header_row, column=4, value="Tên Sản Phẩm")
-        ws.cell(row=header_row, column=5, value="Nhà Sản Xuất")
-        ws.cell(row=header_row, column=6, value="Link Xác Thực Ngầm")
+        ws.cell(row=header_row, column=4, value="Công Nghệ In Ấn")
+        ws.cell(row=header_row, column=5, value="Link Xác Thực Ngầm")
         
         batch_img_dir = f"static/batch_{uuid.uuid4().hex[:8]}"
         os.makedirs(batch_img_dir, exist_ok=True)
@@ -237,7 +242,6 @@ def success_download(order_id):
         
         for i in range(1, quantity + 1):
             code = f"SP{i:03d}"
-            # Kết hợp Cấp độ 4: Chữ ký số mã hóa chống giả mạo
             digital_sign = generate_secure_digital_signature(code, manufacturer, company_hw_id)
             token = f"{uuid.uuid4().hex[:6]}-{digital_sign}"
             
@@ -272,9 +276,8 @@ def success_download(order_id):
             ws.cell(row=row_idx, column=1, value=i)
             ws.cell(row=row_idx, column=2, value=code)
             ws.cell(row=row_idx, column=3, value=token)
-            ws.cell(row=row_idx, column=4, value=prod_name)
-            ws.cell(row=row_idx, column=5, value=manufacturer)
-            ws.cell(row=row_idx, column=6, value=verify_url)
+            ws.cell(row=row_idx, column=4, value=print_name_desc)
+            ws.cell(row=row_idx, column=5, value=verify_url)
             
         excel_path = f"static/ThongKe_{order_id}.xlsx"
         wb.save(excel_path)
@@ -282,10 +285,10 @@ def success_download(order_id):
         pdf_path = f"static/InThu_{order_id}.pdf"
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
-        pdf.set_font("helvetica", "B", 13)
-        pdf.cell(0, 8, f"TRANG IN THU MAU - DOANH NGHIEP: {manufacturer}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.set_font("helvetica", "B", 12)
+        pdf.cell(0, 8, f"TRANG IN THU MAU - {print_name_desc.upper()}", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("helvetica", "I", 9)
-        pdf.cell(0, 6, "In file nay ra giay A4 de kiem tra kich thuoc ma QR chong gia.", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 6, f"Doanh nghiep: {manufacturer} | Ma HW-ID: {company_hw_id}", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(5)
         
         col_width = 65
@@ -302,7 +305,7 @@ def success_download(order_id):
             pdf.rect(x, y, col_width - 6, row_height - 4)
             pdf.set_xy(x, y + 3)
             pdf.set_font("helvetica", "B", 10)
-            pdf.cell(col_width - 6, 6, s_code, align="C", new_x="LMARGIN", new_y="NEXT")
+            pdf.cell(col_width - 6, 6, f"{s_code} ({'7 Mau' if print_type=='hologram_7color' else 'Standard'})", align="C", new_x="LMARGIN", new_y="NEXT")
             
             try:
                 pdf.image(s_path, x=x + 17, y=y + 10, w=30, h=30)
@@ -313,10 +316,11 @@ def success_download(order_id):
         
         zip_path = f"static/Goi_Tem_{order_id}.zip"
         with zipfile.ZipFile(zip_path, 'w') as zipf:
-            zipf.write(excel_path, arcname="1_DanhSach_MaQR_Enterprise.xlsx")
+            zipf.write(excel_path, arcname="1_DanhSach_MaQR_DoanhNghiep.xlsx")
             zipf.write(pdf_path, arcname="2_TrangInThu_A4.pdf")
             for qr_file in generated_qr_files:
-                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR_Enterprise/{os.path.basename(qr_file)}")
+                folder_name = "3_ThuVien_Anh_QR_Tem_7Mau_Hologram" if print_type == "hologram_7color" else "3_ThuVien_Anh_QR_Tem_TrangDen"
+                zipf.write(qr_file, arcname=f"{folder_name}/{os.path.basename(qr_file)}")
                 
         return send_file(zip_path, as_attachment=True)
     except Exception as e:
@@ -345,7 +349,7 @@ def admin_generate_batch():
         ws = wb.active
         ws.title = "ThongKe_DanhSach"
         
-        ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - TIÊU CHUẨN ENTERPRISE SHIELD ---"])
+        ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - GIẢI PHÁP CUỘC SỐNG ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
         ws.append(["Mã định danh phần cứng (HW-ID):", company_hw_id, "Số lượng tem:", quantity])
         ws.append([])
@@ -495,7 +499,8 @@ def super_admin():
 @app.route('/terms')
 def terms():
     return render_template('terms.html')
-# Lưu trữ tài khoản khách hàng đăng ký tạm thời
+
+# Lưu trữ tài khoản khách hàng đăng ký
 users_db = {}
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -505,15 +510,14 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         
-        # Lưu thông tin tài khoản doanh nghiệp/khách hàng
         users_db[username] = {
             "fullname": fullname,
             "password": password,
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
-        # Đăng ký thành công thì chuyển hướng ngay sang cổng mua tem và cấp phát lô QR
         return redirect(url_for('buy'))
         
     return render_template('register.html')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
