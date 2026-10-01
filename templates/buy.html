@@ -16,6 +16,9 @@
         .form-group { margin-bottom: 20px; }
         label { display: block; font-weight: bold; margin-bottom: 8px; color: #334155; font-size: 14px; }
         input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; }
+        .terms-box { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; font-size: 13px; color: #475569; }
+        .terms-box input { width: 18px; height: 18px; margin-top: 2px; }
+        .terms-box a { color: #0284c7; text-decoration: none; }
         button { width: 100%; background: #22c55e; color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; }
         button:hover { background: #16a34a; }
     </style>
@@ -54,6 +57,15 @@
                     <option value="10000">Gói 10.000 Tem (3.500.000 VNĐ)</option>
                 </select>
             </div>
+
+            <!-- Bổ sung điều khoản pháp lý bắt buộc tích chọn -->
+            <div class="terms-box">
+                <input type="checkbox" id="agree" required>
+                <label for="agree" style="font-weight: normal; display: inline; margin: 0;">
+                    Tôi cam kết doanh nghiệp chịu hoàn toàn trách nhiệm pháp lý về nguồn gốc, chất lượng hàng hóa gắn tem và tuân thủ tuyệt đối <a href="/terms" target="_blank">Điều khoản pháp lý dịch vụ</a> của Auto Vương Tùng.
+                </label>
+            </div>
+
             <button type="submit">🚀 Tiến Hành Thanh Toán VietQR Tự Động</button>
         </form>
     </div>
