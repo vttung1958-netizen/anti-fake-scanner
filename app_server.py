@@ -495,6 +495,25 @@ def super_admin():
 @app.route('/terms')
 def terms():
     return render_template('terms.html')
+# Lưu trữ tài khoản khách hàng đăng ký tạm thời
+users_db = {}
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        fullname = request.form.get('fullname')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        # Lưu thông tin tài khoản doanh nghiệp/khách hàng
+        users_db[username] = {
+            "fullname": fullname,
+            "password": password,
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        # Đăng ký thành công thì chuyển hướng ngay sang cổng mua tem và cấp phát lô QR
+        return redirect(url_for('buy'))
+        
+    return render_template('register.html')
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
