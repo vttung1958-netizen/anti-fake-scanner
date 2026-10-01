@@ -2,86 +2,87 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Quản Trị Hệ Thống Chống Hàng Giả</title>
+    <title>Quản Trị Hệ Thống Chống Hàng Giả - Auto Vương Tùng</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; }
-        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2, h3 { color: #1a365d; }
-        .logout-btn { float: right; background: #e53e3e; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; font-weight: bold; }
-        .section { margin-top: 30px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        label { font-weight: bold; font-size: 13px; color: #333; display: block; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 9px; border: 1px solid #cbd5e0; border-radius: 4px; box-sizing: border-box; }
-        .btn-submit { background: #3182ce; color: white; border: none; padding: 12px; width: 100%; margin-top: 20px; font-size: 15px; font-weight: bold; border-radius: 4px; cursor: pointer; grid-column: span 2; }
-        .btn-submit:hover { background: #2b6cb0; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #cbd5e0; padding: 10px; text-align: left; font-size: 14px; }
-        th { background: #2b6cb0; color: white; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; margin: 0; padding: 30px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
+        .header h2 { color: #0f172a; margin: 0; }
+        .btn-logout { background: #ef4444; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold; }
+        .btn-logout:hover { background: #dc2626; }
+        
+        .card-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 8px; margin-bottom: 30px; }
+        .card-box h3 { margin-top: 0; color: #0284c7; margin-bottom: 15px; font-size: 18px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 13px; color: #334155; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+        .btn-submit { background: #0284c7; color: white; border: none; padding: 12px; width: 100%; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        .btn-submit:hover { background: #0369a1; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+        th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; }
+        th { background: #1e293b; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="/admin/logout" class="logout-btn">Đăng Xuất</a>
-        <h2>Quản Trị Hệ Thống Chống Hàng Giả & Phát Hành Mã QR</h2>
-        
-        <!-- Form Tạo Lô Tem & Xuất Trọn Gói File Ngay Tại 1 Trang -->
-        <div class="section" style="border-left: 5px solid #3182ce;">
-            <h3>🛠️ Tạo Lô Tem & Xuất File Trọn Gói (Excel, PDF In Thử, Kho Ảnh)</h3>
-            <form action="/admin/generate_batch" method="POST">
+        <div class="header">
+            <h2>⚙️ Quản Trị Hệ Thống Chống Hàng Giả</h2>
+            <a href="/admin/logout" class="btn-logout">Đăng Xuất</a>
+        </div>
+
+        <div class="card-box">
+            <h3>🛠️ Tạo Lô Tem Mới & Xuất File Trọn Gói (.ZIP, Excel, PDF A4)</h3>
+            <form method="POST" action="/admin/generate_batch">
                 <div class="form-grid">
-                    <div>
+                    <div class="form-group">
                         <label>Tên Sản Phẩm:</label>
-                        <input type="text" name="prod_name" required placeholder="Ví dụ: Sâm Ngọc Linh Nguyên Chất">
+                        <input type="text" name="prod_name" placeholder="Ví dụ: Sâm Ngọc Linh" required>
                     </div>
-                    <div>
-                        <label>Tên Nhà Sản Xuất / Công Ty:</label>
-                        <input type="text" name="manufacturer" required placeholder="Ví dụ: Tập đoàn Dược phẩm VN">
+                    <div class="form-group">
+                        <label>Nhà Sản Xuất:</label>
+                        <input type="text" name="manufacturer" placeholder="Ví dụ: Công ty TNHH Vương Tùng" required>
                     </div>
-                    <div>
-                        <label>Giá Niêm Yết / Thị Trường:</label>
-                        <input type="text" name="price" required placeholder="Ví dụ: 2.500.000 VNĐ">
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Giá Niêm Yết:</label>
+                        <input type="text" name="price" value="2.500.000 VNĐ" required>
                     </div>
-                    <div>
-                        <label>Số Lượng Mã Cần Tạo (Tem):</label>
+                    <div class="form-group">
+                        <label>Số Lượng Tem Cần Tạo:</label>
                         <select name="quantity">
-                            <option value="100">100 Tem (Kiểm thử nhanh)</option>
+                            <option value="100">100 Tem (Kiểm tra nhanh)</option>
+                            <option value="500">500 Tem</option>
                             <option value="1000">1.000 Tem</option>
-                            <option value="5000">5.000 Tem</option>
-                            <option value="10000">10.000 Tem</option>
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn-submit">🚀 Tạo Lô & Tải Trọn Gói File (.ZIP)</button>
+                <button type="submit" class="btn-submit">🚀 Tạo Lô & Tải Về Trọn Gói File (.ZIP)</button>
             </form>
-            <p style="font-size: 12px; color: #718096; text-align: center; margin-top: 15px;">
-                Bằng việc bấm tạo lô, Doanh nghiệp cam kết tuân thủ <a href="/terms" target="_blank" style="color: #2b6cb0; font-weight: bold;">Điều khoản sử dụng & Chịu trách nhiệm pháp lý</a> đối với hàng hóa lưu thông.
-            </p>
         </div>
 
-        <!-- Bảng Kho Dữ Liệu Sản Phẩm & Tem Đang Hoạt Động -->
-        <div class="section">
-            <h3>📋 Kho Dữ Liệu Sản Phẩm & Lượt Quét Thực Tế</h3>
-            <table>
-                <tr>
-                    <th>Mã Code</th>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Nhà Sản Xuất</th>
-                    <th>Giá Niêm Yết</th>
-                    <th>Lượt Quét</th>
-                    <th>Trạng Thái</th>
-                </tr>
-                {% for p in products %}
-                <tr>
-                    <td><b>{{ p.code }}</b></td>
-                    <td>{{ p.name }}</td>
-                    <td>{{ p.manufacturer }}</td>
-                    <td>{{ p.price }}</td>
-                    <td style="text-align: center; font-weight: bold; color: #2b6cb0;">{{ p.scan_count }}</td>
-                    <td><span style="color: green; font-weight: bold;">{{ p.status }}</span></td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+        <h3>📦 Kho Dữ Liệu Sản Phẩm & Lượt Quét Thực Tế</h3>
+        <table>
+            <tr>
+                <th>Mã Code</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Nhà Sản Xuất</th>
+                <th>Giá Niêm Yết</th>
+                <th>Lượt Quét</th>
+                <th>Trạng Thái</th>
+            </tr>
+            {% for p in products %}
+            <tr>
+                <td><strong>{{ p.code }}</strong></td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.manufacturer }}</td>
+                <td>{{ p.price }}</td>
+                <td><span style="color: #0284c7; font-weight: bold;">{{ p.scan_count }}</span></td>
+                <td><span style="color: {% if p.status == 'Hàng thật' %}#16a34a{% else %}#dc2626{% endif %}; font-weight: bold;">{{ p.status }}</span></td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </body>
 </html>
