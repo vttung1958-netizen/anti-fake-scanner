@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -8,7 +7,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
         body { background: #f8fafc; color: #1e293b; line-height: 1.6; }
         
-        /* NAVBAR HIỆN ĐẠI ĐẲNG CẤP */
         .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .navbar .brand { font-size: 21px; font-weight: bold; color: #38bdf8; text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
         .navbar .nav-links { display: flex; align-items: center; gap: 15px; }
@@ -17,7 +15,6 @@
         .btn-register { background: #16a34a !important; color: white !important; font-weight: bold !important; }
         .btn-login { background: #0284c7 !important; color: white !important; font-weight: bold !important; }
 
-        /* HERO BANNER - ẤN TƯỢNG MẠNH */
         .hero { background: linear-gradient(135deg, #090d16, #1e293b); color: white; padding: 90px 20px; text-align: center; position: relative; overflow: hidden; }
         .hero h1 { font-size: 42px; margin-bottom: 15px; color: #38bdf8; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
         .hero p { font-size: 18px; color: #94a3b8; max-width: 850px; margin: 0 auto 35px auto; }
@@ -31,7 +28,6 @@
 
         .container { max-width: 1150px; margin: 40px auto; padding: 0 20px; }
 
-        /* KHU VỰC TRA CỨU MÃ TRUNG TÂM */
         .section-box { background: white; padding: 45px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 45px; text-align: center; border-top: 6px solid #22c55e; }
         .section-box h2 { font-size: 28px; color: #0f172a; margin-bottom: 10px; font-weight: 700; }
         .section-box p { color: #64748b; margin-bottom: 25px; font-size: 15px; }
@@ -45,7 +41,6 @@
         .fake { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
         .warning { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
 
-        /* KHU VỰC CÁC GIẢI PHÁP / SẢN PHẨM */
         .features-title { text-align: center; font-size: 26px; color: #0f172a; margin-bottom: 30px; font-weight: 700; }
         .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px; margin-bottom: 50px; }
         .feature-card { background: white; padding: 35px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.04); border-top: 5px solid #0284c7; transition: transform 0.2s; }
@@ -55,7 +50,6 @@
         .feature-card a { display: inline-block; padding: 10px 20px; background: #f1f5f9; color: #0284c7; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 14px; transition: 0.2s; }
         .feature-card a:hover { background: #0284c7; color: white; }
 
-        /* GIỚI THIỆU & LIÊN HỆ */
         .contact-section { background: #0f172a; color: white; padding: 50px; border-radius: 16px; text-align: center; margin-bottom: 40px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .contact-section h2 { color: #38bdf8; margin-bottom: 15px; font-size: 24px; }
         .contact-section p { color: #94a3b8; font-size: 15px; margin-bottom: 10px; }
@@ -65,7 +59,6 @@
 </head>
 <body>
 
-    <!-- NAVBAR THƯƠNG HIỆU MỚI -->
     <div class="navbar">
         <a href="/" class="brand">🌐 GIẢI PHÁP CUỘC SỐNG</a>
         <div class="nav-links">
@@ -79,7 +72,6 @@
         </div>
     </div>
 
-    <!-- HERO BANNER GIỚI THIỆU THƯƠNG HIỆU -->
     <div class="hero">
         <h1>GIẢI PHÁP CUỘC SỐNG</h1>
         <p>Hệ sinh thái công nghệ số thông minh tích hợp giải pháp chống hàng giả điện tử tiêu chuẩn Enterprise Shield và các ứng dụng nâng tầm chất lượng cuộc sống.</p>
@@ -90,8 +82,6 @@
     </div>
 
     <div class="container">
-
-        <!-- KHU VỰC TRA CỨU XÁC THỰC -->
         <div id="verify-section" class="section-box">
             <h2>🔍 Tra Cứu Xác Thực Sản Phẩm Chính Hãng</h2>
             <p>Nhập mã sản phẩm hoặc quét mã QR trực tiếp trên tem bảo mật để kiểm tra nguồn gốc</p>
@@ -118,7 +108,6 @@
             {% endif %}
         </div>
 
-        <!-- CÁC KHỐI GIẢI PHÁP / SẢN PHẨM -->
         <h2 id="solutions" class="features-title">Hệ Thống Giải Pháp & Tiện Ích</h2>
         <div class="features">
             <div class="feature-card">
@@ -134,13 +123,12 @@
             </div>
 
             <div class="feature-card" style="border-top-color: #f59e0b;">
-                <h3>⚙️️ Quản Trị Đa Tầng & Bảo Mật</h3>
+                <h3>⚙ Quản Trị Đa Tầng & Bảo Mật</h3>
                 <p>Khu vực quản lý bảo mật 4 cấp độ dành riêng cho doanh nghiệp để kiểm soát kho mã, theo dõi lượt quét và chống sao chép tuyệt đối.</p>
                 <a href="/admin">Truy Cập Quản Trị &rarr;</a>
             </div>
         </div>
 
-        <!-- VỀ THƯƠNG HIỆU & LIÊN HỆ -->
         <div id="about" class="contact-section">
             <h2>Về Thương Hiệu &bull; GIẢI PHÁP CUỘC SỐNG</h2>
             <p>Giải pháp công nghệ được nghiên cứu và phát triển bởi <strong>Vương Tùng &bull; Auto Vương Tùng</strong>.</p>
@@ -150,7 +138,6 @@
                 🌐 Tên miền: <strong>vuongtung.com.vn</strong>
             </p>
         </div>
-
     </div>
 
     <footer>
