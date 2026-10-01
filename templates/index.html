@@ -7,15 +7,15 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
         body { background: #f8fafc; color: #1e293b; line-height: 1.6; }
         
-        /* THANH ĐIỀU HƯỚNG HIỆN ĐẠI (NAVBAR) */
+        /* NAVBAR HIỆN ĐẠI */
         .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .navbar .nav-links { display: flex; align-items: center; gap: 20px; }
-        .navbar .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 15px; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: 0.2s; }
+        .navbar .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 15px; font-weight: 500; padding: 6px 14px; border-radius: 6px; transition: 0.2s; }
         .navbar .nav-links a:hover, .navbar .nav-links a.active { color: #38bdf8; background: #1e293b; }
-        .btn-cta { background: #0284c7 !important; color: white !important; font-weight: bold !important; }
+        .btn-login { background: #0284c7 !important; color: white !important; font-weight: bold !important; }
 
-        /* PHẦN GIỚI THIỆU CHÍNH (HERO SECTION) */
+        /* HERO SECTION */
         .hero { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 70px 20px; text-align: center; }
         .hero h1 { font-size: 36px; margin-bottom: 15px; color: #38bdf8; }
         .hero p { font-size: 18px; color: #94a3b8; max-width: 800px; margin: 0 auto 30px auto; }
@@ -26,10 +26,9 @@
         .btn-outline { border: 2px solid #38bdf8; color: #38bdf8; }
         .btn-outline:hover { background: #38bdf8; color: #0f172a; }
 
-        /* KHUNG CHÍNH */
         .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
 
-        /* KHU VỰC TRA CỨU MÃ TRỌNG TÂM */
+        /* KHU VỰC TRA CỨU MÃ */
         .section-box { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 40px; text-align: center; border-top: 5px solid #22c55e; }
         .section-box h2 { font-size: 26px; color: #0f172a; margin-bottom: 10px; }
         .section-box p { color: #64748b; margin-bottom: 25px; font-size: 15px; }
@@ -37,24 +36,20 @@
         .section-box button { background: #22c55e; color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-left: 10px; }
         .section-box button:hover { background: #16a34a; }
 
-        /* KẾT QUẢ TRA CỨU */
         .alert { margin-top: 25px; padding: 15px; border-radius: 8px; font-weight: bold; text-align: left; }
         .success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
         .fake { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
         .warning { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
 
-        /* PHẦN GIỚI THIỆU SẢN PHẨM & DỊCH VỤ (FEATURES) */
+        /* SẢN PHẨM & GIẢI PHÁP */
         .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 50px; }
         .feature-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); border-top: 4px solid #0284c7; }
         .feature-card h3 { font-size: 20px; color: #0f172a; margin-bottom: 12px; }
         .feature-card p { font-size: 14px; color: #64748b; margin-bottom: 20px; }
-        .feature-card ul { list-style: none; padding-left: 0; font-size: 14px; color: #334155; margin-bottom: 20px; }
-        .feature-card ul li { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .feature-card ul li::before { content: "✔"; color: #22c55e; font-weight: bold; }
         .feature-card a { display: inline-block; padding: 8px 16px; background: #f1f5f9; color: #0284c7; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 13px; }
         .feature-card a:hover { background: #0284c7; color: white; }
 
-        /* PHẦN LIÊN HỆ & CHÂN TRANG */
+        /* GIỚI THIỆU & LIÊN HỆ */
         .contact-section { background: #1e293b; color: white; padding: 40px; border-radius: 12px; text-align: center; margin-bottom: 30px; }
         .contact-section h2 { color: #38bdf8; margin-bottom: 15px; }
         .contact-section p { color: #94a3b8; font-size: 15px; margin-bottom: 10px; }
@@ -64,31 +59,29 @@
 </head>
 <body>
 
-    <!-- THANH MENU ĐIỀU HƯỚNG -->
     <div class="navbar">
         <a href="/" class="brand">🛡️ AUTO VƯƠNG TÙNG</a>
         <div class="nav-links">
             <a href="/" class="active">Trang Chủ</a>
             <a href="#about">Giới Thiệu</a>
-            <a href="#solutions">Giải Pháp Tem</a>
-            <a href="/buy" class="btn-cta">Đăng Ký & Mua Tem</a>
+            <a href="#solutions">Sản Phẩm & Dịch Vụ</a>
+            <a href="/buy">Mua Tem QR</a>
             <a href="/admin">Quản Trị Admin</a>
+            <a href="/admin/login" class="btn-login">Đăng Nhập</a>
         </div>
     </div>
 
-    <!-- BANNER GIỚI THIỆU -->
     <div class="hero">
         <h1>Hệ Thống Chống Hàng Giả Điện Tử Thông Minh</h1>
         <p>Bảo vệ thương hiệu doanh nghiệp bằng công nghệ mã hóa QR code chống sao chép, tích hợp thanh toán VietQR tự động và xuất file quản lý trọn gói.</p>
         <div class="hero-buttons">
-            <a href="/buy" class="btn-primary">Cấp Phát Lô Tem Ngay</a>
-            <a href="#verify-section" class="btn-outline">Kiểm Tra Sản Phẩm</a>
+            <a href="/buy" class="btn-primary">Đăng Ký Mua Tem Ngay</a>
+            <a href="#verify-section" class="btn-outline">Tra Cứu Sản Phẩm</a>
         </div>
     </div>
 
     <div class="container">
 
-        <!-- KHU VỰC TRA CỨU SẢN PHẨM TRỰC TIẾP -->
         <div id="verify-section" class="section-box">
             <h2>🔍 Tra Cứu Xác Thực Sản Phẩm</h2>
             <p>Nhập mã sản phẩm hoặc quét mã QR trực tiếp trên tem để kiểm tra tính chính hãng</p>
@@ -110,52 +103,35 @@
                     <p><strong>Nhà Sản Xuất:</strong> {{ product.manufacturer }}</p>
                     <p><strong>Ngày Sản Xuất:</strong> {{ product.mfg_date }}</p>
                     <p><strong>Số Lượt Quét:</strong> {{ product.scan_count }} lần</p>
-                    <p><strong>Trạng Thái Xác Thực:</strong> <span style="color: {% if product.status == 'Hàng thật' %}#16a34a{% else %}#dc2626{% endif %}; font-weight: bold;">{{ product.status }}</span></p>
+                    <p><strong>Trạng Thái:</strong> <span style="color: {% if product.status == 'Hàng thật' %}#16a34a{% else %}#dc2626{% endif %}; font-weight: bold;">{{ product.status }}</span></p>
                 </div>
             {% endif %}
         </div>
 
-        <!-- GIỚI THIỆU CÁC GIẢI PHÁP & SẢN PHẨM -->
         <div id="solutions" class="features">
             <div class="feature-card">
-                <h3>📦 Cấp Phát Lô Tem & Thanh Toán</h3>
-                <p>Doanh nghiệp tự đăng ký số lượng tem, hệ thống tự động tính giá ưu đãi và tạo mã QR hàng loạt.</p>
-                <ul>
-                    <li>Thanh toán qua VietQR tự động</li>
-                    <li>Xác nhận dòng tiền thời gian thực</li>
-                    <li>Giao diện quản lý đơn hàng minh bạch</li>
-                </ul>
+                <h3>📦 Cổng Mua Tem & Thanh Toán</h3>
+                <p>Doanh nghiệp tự chọn gói số lượng, hệ thống tự động tính giá và tạo mã thanh toán VietQR chuyển khoản trực tiếp.</p>
                 <a href="/buy">Trải Nghiệm Mua Tem &rarr;</a>
             </div>
 
             <div class="feature-card" style="border-top-color: #22c55e;">
-                <h3>📥 Xuất Dữ Liệu & In Ấn Trọn Gói</h3>
-                <p>Tự động đóng gói toàn bộ dữ liệu cần thiết cho việc sản xuất và in ấn tem chống giả thực tế.</p>
-                <ul>
-                    <li>Tệp Excel thống kê danh sách mã</li>
-                    <li>File PDF trang in thử mẫu chuẩn A4</li>
-                    <li>Thư mục chứa ảnh QR gốc định dạng `.ZIP`</li>
-                </ul>
-                <a href="/buy">Xem Mẫu Xuất File &rarr;</a>
+                <h3>📥 Xuất Kho Dữ Liệu .ZIP & In Ấn</h3>
+                <p>Tự động xuất tệp Excel thống kê, file PDF in thử mẫu chuẩn A4 và kho ảnh QR gốc để nhà in sản xuất.</p>
+                <a href="/buy">Xem Chi Tiết &rarr;</a>
             </div>
 
             <div class="feature-card" style="border-top-color: #f59e0b;">
                 <h3>⚙️ Quản Trị Hệ Thống & Bảo Mật</h3>
-                <p>Khu vực quản trị dành riêng cho chủ doanh nghiệp để kiểm soát kho mã và lượt quét.</p>
-                <ul>
-                    <li>Bảo mật bằng mật khẩu quản trị viên</li>
-                    <li>Theo dõi số lần quét để phát hiện hàng giả</li>
-                    <li>Thống kê tổng quan hoạt động hệ thống</li>
-                </ul>
+                <p>Khu vực quản lý dành cho chủ doanh nghiệp, bảo mật bằng mật khẩu, theo dõi lượt quét và phát hiện hàng giả.</p>
                 <a href="/admin">Truy Cập Quản Trị &rarr;</a>
             </div>
         </div>
 
-        <!-- PHẦN GIỚI THIỆU & LIÊN HỆ -->
         <div id="about" class="contact-section">
             <h2>Về Công Ty TNHH Vương Tùng &bull; Auto Vương Tùng</h2>
-            <p>Đơn vị tiên phong cung cấp giải pháp chuyển đổi số, tự động hóa dây chuyền và hệ thống xác thực chống hàng giả công nghệ cao.</p>
-            <p style="margin-top: 15px;">📞 Hotline hỗ trợ: <strong>01500215038690</strong> &bull; 🌐 Tên miền chính thức: <strong>vuongtung.com.vn</strong></p>
+            <p>Đơn vị tiên phong cung cấp giải pháp chuyển đổi số, tự động hóa dây chuyền và hệ thống xác thực chống hàng giả công nghệ cao tại Việt Nam.</p>
+            <p style="margin-top: 15px;">📞 Hotline hỗ trợ: <strong>01500215038690</strong> &bull; 🌐 Tên miền: <strong>vuongtung.com.vn</strong></p>
         </div>
 
     </div>
