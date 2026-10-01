@@ -222,7 +222,7 @@ def success_download(order_id):
         sample_qr_data = []
         
         for i in range(1, quantity + 1):
-            code = f"SP{len(products_db) + i:03d}"
+            code = f"SP{i:03d}"
             token = uuid.uuid4().hex[:12]
             verify_url = f"https://vuongtung.com.vn/verify?code={code}&token={token}"
             
