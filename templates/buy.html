@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cổng Đăng Ký Cấp Phát Lô Tem QR - Auto Vương Tùng</title>
+    <title>Cổng Đăng Ký Cấp Phát Lô Tem QR - Giải Pháp Cuộc Sống</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; margin: 0; padding: 20px; }
         .navbar { background: #0f172a; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px; margin-bottom: 30px; }
@@ -16,22 +16,21 @@
         .form-group { margin-bottom: 20px; }
         label { display: block; font-weight: bold; margin-bottom: 8px; color: #334155; font-size: 14px; }
         input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; }
-        .terms-box { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; font-size: 13px; color: #475569; }
-        .terms-box input { width: 18px; height: 18px; margin-top: 2px; }
-        .terms-box a { color: #0284c7; text-decoration: none; }
-        button { width: 100%; background: #22c55e; color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        .radio-group { display: flex; gap: 20px; margin-top: 8px; }
+        .radio-option { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; font-weight: normal; }
+        button { width: 100%; background: #22c55e; color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
         button:hover { background: #16a34a; }
     </style>
 </head>
 <body>
     <div class="navbar">
         <a href="/">&larr; Quay lại Trang Chủ</a>
-        <span>📦 Cổng Đăng Ký Mua Tem</span>
+        <span>📦 Cổng Đăng Ký Mua Tem & Tùy Chọn In Ấn</span>
     </div>
 
     <div class="card">
         <h2>Cổng Đăng Ký Cấp Phát Lô Tem QR</h2>
-        <p class="subtitle">Giải pháp chống hàng giả tự động hóa toàn diện cho Doanh nghiệp</p>
+        <p class="subtitle">Giải pháp chống hàng giả tiêu chuẩn Enterprise Shield</p>
         
         <table>
             <tr><th>Gói Số Lượng</th><th>Đơn Giá / Tem</th><th>Thành Tiền</th></tr>
@@ -58,12 +57,21 @@
                 </select>
             </div>
 
-            <!-- Bổ sung điều khoản pháp lý bắt buộc tích chọn -->
-            <div class="terms-box">
-                <input type="checkbox" id="agree" required>
-                <label for="agree" style="font-weight: normal; display: inline; margin: 0;">
-                    Tôi cam kết doanh nghiệp chịu hoàn toàn trách nhiệm pháp lý về nguồn gốc, chất lượng hàng hóa gắn tem và tuân thủ tuyệt đối <a href="/terms" target="_blank">Điều khoản pháp lý dịch vụ</a> của Auto Vương Tùng.
-                </label>
+            <!-- LỰA CHỌN CÔNG NGHỆ IN ẤN TEM -->
+            <div class="form-group">
+                <label>Lựa Chọn Công Nghệ In Tem:</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="print_type" value="black_white" checked>
+                        🖨️ Tem Trắng Đen Tiêu Chuẩn (Tối ưu chi phí)
+                    </label>
+                </div>
+                <div class="radio-group" style="margin-top: 8px;">
+                    <label class="radio-option">
+                        <input type="radio" name="print_type" value="hologram_7color">
+                        ✨ Tem QR Tích Hợp In 7 Màu / Hologram (Cao cấp - Chống bóc tách)
+                    </label>
+                </div>
             </div>
 
             <button type="submit">🚀 Tiến Hành Thanh Toán VietQR Tự Động</button>
