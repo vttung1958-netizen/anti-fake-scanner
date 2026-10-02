@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông Tin & Kiến Thức Chống Hàng Giả - Giải Pháp Cuộc Sống</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f8fafc; color: #1e293b; line-height: 1.6; }
+        
+        .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar a { color: #38bdf8; text-decoration: none; font-weight: bold; margin-left: 20px; }
+        .navbar .logo { font-size: 20px; font-weight: bold; color: white; }
+
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        
+        /* CỘT NỘI DUNG CHÍNH */
+        .main-content { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .article-card { display: flex; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid #e2e8f0; padding-bottom: 25px; }
+        .article-card img { width: 180px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; }
+        .article-info h3 { font-size: 18px; color: #0f172a; margin-bottom: 8px; }
+        .article-info h3 a { color: #0f172a; text-decoration: none; }
+        .article-info h3 a:hover { color: #0284c7; }
+        .article-info p { font-size: 14px; color: #64748b; margin-bottom: 10px; }
+        .read-more { font-size: 13px; color: #0284c7; font-weight: bold; text-decoration: none; }
+
+        /* CỘT BÀI VIẾT NỔI BẬT BÊN PHẢI */
+        .sidebar { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: fit-content; }
+        .sidebar h3 { font-size: 16px; color: #0f172a; border-bottom: 2px solid #0284c7; padding-bottom: 10px; margin-bottom: 15px; }
+        .sidebar-item { display: flex; gap: 12px; margin-bottom: 15px; align-items: flex-start; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
+        .sidebar-item img { width: 60px; height: 50px; object-fit: cover; border-radius: 4px; }
+        .sidebar-item a { font-size: 13px; color: #1e293b; text-decoration: none; font-weight: 600; line-height: 1.4; }
+        .sidebar-item a:hover { color: #0284c7; }
+
+        .footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 20px; margin-top: 50px; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">🛡️ GIẢI PHÁP CUỘC SỐNG - VƯƠNG TÙNG</div>
+        <div>
+            <a href="/">Trang Chủ</a>
+            <a href="/solutions">Giải Pháp</a>
+            <a href="/buy">Cấp Phát Lô Tem</a>
+            <a href="/news" style="color: white;">Thông Tin Chuyên Đề</a>
+            <a href="/admin">Quản Trị Admin</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- DANH SÁCH BÀI VIẾT CHUYÊN SÂU -->
+        <div class="main-content">
+            <h2 style="margin-bottom: 25px; color: #0f172a; font-size: 22px; border-left: 5px solid #0284c7; padding-left: 12px;">Kiến Thức & Tiêu Chuẩn Tem Chống Hàng Giả</h2>
+            
+            <div class="article-card">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300" alt="Tem QR Code">
+                <div class="article-info">
+                    <h3><a href="#">Tem QR Code Thông Minh: Giải Pháp Định Danh Vượt Trội Cho Doanh Nghiệp</a></h3>
+                    <p>Tem mã QR Code hiện nay được ứng dụng rộng rãi nhờ tính tiện dụng. Khi kết hợp với công nghệ mã hóa phần cứng và chữ ký số SHA-256 độc quyền, mỗi con tem mang một mã định danh duy nhất không thể làm giả hay sao chép.</p>
+                    <a href="#" class="read-more">Xem chi tiết &rarr;</a>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300" alt="Quản lý kho">
+                <div class="article-info">
+                    <h3><a href="#">Quy trình tạo mã QR Code tự động và xuất kho tệp .ZIP trọn gói</a></h3>
+                    <p>Hệ thống tự động hóa toàn bộ quy trình từ khâu tiếp nhận thông tin doanh nghiệp, sinh dải mã bảo mật, đóng gói tệp Excel thống kê, file PDF in ấn khổ A4 đến kho thư viện ảnh tem chuẩn hóa.</p>
+                    <a href="#" class="read-more">Xem chi tiết &rarr;</a>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=300" alt="Bảo mật đa tầng">
+                <div class="article-info">
+                    <h3><a href="#">Tiêu chuẩn quốc tế trong việc kiểm soát lượt quét và cảnh báo hàng giả</a></h3>
+                    <p>Công nghệ giám sát số lần quét thực tế giúp doanh nghiệp phát hiện ngay lập tức các lô hàng có dấu hiệu bị sao chép, làm giả khi số lần xác thực vượt ngưỡng cho phép.</p>
+                    <a href="#" class="read-more">Xem chi tiết &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- CỘT BÀI VIẾT NỔI BẬT -->
+        <div class="sidebar">
+            <h3>📌 Bài Viết Nổi Bật</h3>
+            
+            <div class="sidebar-item">
+                <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=100" alt="Icon">
+                <a href="#">Giải pháp bảo vệ người tiêu dùng với Tem Chống Hàng Giả công nghệ cao</a>
+            </div>
+
+            <div class="sidebar-item">
+                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=100" alt="Icon">
+                <a href="#">Cách nhận biết hàng thật - hàng giả bằng quét mã vạch và chữ ký số</a>
+            </div>
+
+            <div class="sidebar-item">
+                <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=100" alt="Icon">
+                <a href="#">Tổng hợp các loại tem chống hàng giả đang được sử dụng nhiều nhất</a>
+            </div>
+
+            <div class="sidebar-item">
+                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=100" alt="Icon">
+                <a href="#">Hướng dẫn chi tiết tra cứu nguồn gốc sản phẩm trên hệ thống</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2026 Bản quyền thuộc về Giải Pháp Cuộc Sống • Nghiên cứu và phát triển bởi Vương Tùng (Auto Vương Tùng).
+    </div>
+</body>
+</html>
