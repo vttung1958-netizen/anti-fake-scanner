@@ -2,43 +2,96 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quét Mã Chống Hàng Giả</title>
-    
-    <!-- Khai báo tệp cấu hình PWA để đưa ra màn hình chính điện thoại -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#27ae60">
-
+    <title>Giải Pháp Chống Hàng Giả Quốc Gia - Enterprise Shield</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { color: #2c3e50; }
-        .scanner-box { width: 100%; height: 220px; background: #222; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; position: relative; overflow: hidden; }
-        input[type="text"] { width: 80%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px; }
-        button { background-color: #27ae60; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; }
-        button:hover { background-color: #219653; }
-        .result { margin-top: 20px; padding: 15px; border-radius: 6px; text-align: left; background: #e8f8f5; border-left: 5px solid #27ae60; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f8fafc; color: #1e293b; line-height: 1.6; }
+
+        /* THANH ĐIỀU HƯỚNG CHUẨN CÔNG NGHỆ CAO */
+        .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 6px; transition: 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
+        
+        .btn-cta-nav { background: #22c55e !important; color: white !important; }
+        .btn-cta-nav:hover { background: #16a34a !important; }
+
+        /* HERO BANNER CHÍNH */
+        .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 80px 20px; text-align: center; border-bottom: 5px solid #38bdf8; }
+        .hero h1 { font-size: 36px; margin-bottom: 15px; color: #f8fafc; font-weight: 800; }
+        .hero p { font-size: 16px; color: #94a3b8; max-width: 700px; margin: 0 auto 30px auto; }
+        
+        .hero-btns { display: flex; justify-content: center; gap: 15px; }
+        .btn-main { background: #22c55e; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px; box-shadow: 0 4px 15px rgba(34,197,94,0.4); transition: 0.2s; }
+        .btn-main:hover { background: #16a34a; transform: translateY(-2px); }
+        .btn-sec { background: #334155; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px; transition: 0.2s; }
+        .btn-sec:hover { background: #475569; }
+
+        /* KHU VỰC TÍNH NĂNG & TIỆN ÍCH */
+        .container { max-width: 1100px; margin: 50px auto; padding: 0 20px; }
+        .section-title { text-align: center; font-size: 26px; color: #0f172a; margin-bottom: 40px; font-weight: 700; }
+        
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 50px; }
+        .feature-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid #38bdf8; transition: 0.3s; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .feature-card h3 { font-size: 18px; color: #0f172a; margin-bottom: 12px; }
+        .feature-card p { font-size: 14px; color: #64748b; }
+
+        /* FOOTER */
+        .footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 30px; font-size: 14px; margin-top: 60px; border-top: 1px solid #1e293b; }
+        .footer span { color: #38bdf8; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>🛡️ Quét Mã Chống Hàng Giả</h2>
-        <p>Sử dụng camera hoặc nhập mã để xác thực sản phẩm</p>
-        
-        <div class="scanner-box">
-            <span id="cam-status">📷 Đang bật camera quét thời gian thực...</span>
-        </div>
 
-        <form method="POST">
-            <input type="text" name="code" id="code-input" placeholder="Nhập mã sản phẩm (VD: SP001)" required>
-            <button type="submit">🔍 Xác Thực Ngay</button>
-        </form>
+    <!-- THANH MENU ĐIỀU HƯỚNG -->
+    <div class="navbar">
+        <div class="brand">
+            🛡️ GIẢI PHÁP CUỘC SỐNG
+        </div>
+        <div class="nav-links">
+            <a href="/" class="active">Trang Chủ</a>
+            <a href="/buy">Cấp Phát Lô Tem</a>
+            <a href="/news">Thông Tin Chuyên Đề</a>
+            <a href="/admin">Quản Trị Admin</a>
+            <a href="/buy" class="btn-cta-nav">Đăng Ký Tem Ngay</a>
+        </div>
     </div>
 
-    <script>
-        window.onload = function() {
-            document.getElementById('code-input').focus();
-        }
-    </script>
+    <!-- HERO BANNER -->
+    <div class="hero">
+        <h1>Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia</h1>
+        <p>Giải pháp công nghệ cao tích hợp mã hóa phần cứng, mã vạch bảo mật và mã QR chống sao chép dành riêng cho doanh nghiệp chính hãng Việt Nam.</p>
+        <div class="hero-btns">
+            <a href="/buy" class="btn-main">🚀 Đăng Ký Mua & Cấp Phát Tem</a>
+            <a href="/news" class="btn-sec">📖 Xem Cẩm Nang Pháp Lý</a>
+        </div>
+    </div>
+
+    <!-- KHU VỰC TIỆN ÍCH CHÍNH -->
+    <div class="container">
+        <h2 class="section-title">Ưu Điểm Vượt Trội Của Hệ Thống</h2>
+        <div class="features-grid">
+            <div class="feature-card" style="border-top-color: #22c55e;">
+                <h3>🛡️ Chống Sao Chép Tuyệt Đối</h3>
+                <p>Mỗi con tem tích hợp mã định danh phần cứng và mã hóa đa lớp, ngăn chặn hoàn toàn việc in sao chép hoặc làm giả tem thương mại.</p>
+            </div>
+            <div class="feature-card" style="border-top-color: #38bdf8;">
+                <h3>📊 Quản Lý & Định Giá Tức Thì</h3>
+                <p>Quản trị viên có thể dễ dàng thay đổi đơn giá tem, kích thước và phụ phí trực tiếp trên giao diện web mà không cần khởi động lại hệ thống.</p>
+            </div>
+            <div class="feature-card" style="border-top-color: #f59e0b;">
+                <h3>📑 Kê Khai & Pháp Lý Minh Bạch</h3>
+                <p>Tích hợp sẵn bộ luật hình sự, nghị định xử phạt vi phạm hành chính và biểu mẫu kê khai cam kết pháp lý chuẩn chỉnh cho doanh nghiệp.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHÂN TRANG -->
+    <div class="footer">
+        <p>Bản quyền thuộc về <span>Tác giả Vương Tùng</span> &copy; 2026 | Giải Pháp Chống Hàng Giả Doanh Nghiệp</p>
+    </div>
+
 </body>
 </html>
