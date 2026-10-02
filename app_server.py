@@ -1,5 +1,6 @@
 import os
 import uuid
+import json
 import platform
 import subprocess
 import hashlib
@@ -22,6 +23,28 @@ os.makedirs("static", exist_ok=True)
 os.makedirs("templates", exist_ok=True)
 
 ADMIN_PASS_FILE = "admin_pass.txt"
+CONFIG_FILE = "pricing_config.json"
+
+# Cấu hình giá mặc định ban đầu
+DEFAULT_CONFIG = {
+    "base_price": 890,          # Giá gốc cho mốc đầu tiên hoặc hệ số cơ bản
+    "hologram_fee": 150,        # Phụ phí tem 7 màu / Hologram (VNĐ/tem)
+    "size_fee_25": 50,          # Phụ phí khổ 2.5x2.5 cm (VNĐ/tem)
+    "size_fee_35": 120          # Phụ phí khổ 3.5x3.5 cm (VNĐ/tem)
+}
+
+def load_pricing_config():
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return DEFAULT_CONFIG
+
+def save_pricing_config(new_config):
+    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump(new_config, f, ensure_ascii=False, indent=4)
 
 def get_admin_password():
     if os.path.exists(ADMIN_PASS_FILE):
@@ -38,7 +61,11 @@ def generate_secure_digital_signature(code, manufacturer, hw_id):
     raw_string = f"{code}-{manufacturer}-{hw_id}-VUONGTUNG-ENTERPRISE-2026"
     return hashlib.sha256(raw_string.encode('utf-8')).hexdigest()[:16].upper()
 
+# HÀM TÍNH GIÁ ĐỘNG DỰA TRÊN CẤU HÌNH ADMIN
 def calculate_tem_price(quantity, print_type='black_white', qr_size=20):
+    config = load_pricing_config()
+    
+    # Biểu giá bậc thang chuẩn theo hệ thống
     if quantity <= 1000: base = quantity * 890
     elif quantity <= 2000: base = quantity * 810
     elif quantity <= 3000: base = quantity * 750
@@ -60,11 +87,15 @@ def calculate_tem_price(quantity, print_type='black_white', qr_size=20):
     elif quantity <= 60000: base = quantity * 270
     else: base = quantity * 266
     
-    hologram_fee = quantity * 150 if print_type == 'hologram_7color' else 0
-    size_fee = 0
-    if qr_size == 25: size_fee = quantity * 50
-    elif qr_size == 35: size_fee = quantity * 120
+    # Cộng phụ phí động từ cấu hình Admin
+    hologram_fee = quantity * int(config.get("hologram_fee", 150)) if print_type == 'hologram_7color' else 0
     
+    size_fee = 0
+    if qr_size == 25:
+        size_fee = quantity * int(config.get("size_fee_25", 50))
+    elif qr_size == 35:
+        size_fee = quantity * int(config.get("size_fee_35", 120))
+        
     return base + hologram_fee + size_fee
 
 orders_db = {}
@@ -209,6 +240,22 @@ def invoice(order_id):
 def approve_order(order_id):
     if not session.get('logged_in'): return redirect(url_for('admin_login'))
     if order_id in orders_db: orders_db[order_id]["status"] = "paid"
+    return redirect(url_for('admin'))
+
+# ROUTE LƯU CẤP NHẬT GIÁ TỪ TRANG QUẢN TRỊ
+@app.route('/admin/update_pricing', methods=['POST'])
+def update_pricing():
+    if not session.get('logged_in'): return redirect(url_for('admin_login'))
+    try:
+        new_config = {
+            "base_price": int(request.form.get('base_price', 890)),
+            "hologram_fee": int(request.form.get('hologram_fee', 150)),
+            "size_fee_25": int(request.form.get('size_fee_25', 50)),
+            "size_fee_35": int(request.form.get('size_fee_35', 120))
+        }
+        save_pricing_config(new_config)
+    except Exception:
+        pass
     return redirect(url_for('admin'))
 
 @app.route('/success/<order_id>')
@@ -431,7 +478,6 @@ def admin_generate_batch():
     except Exception as e:
         return f"Lỗi tạo tệp: {str(e)}", 500
 
-# ĐƯỜNG DẪN TRANG THÔNG TIN CHUYÊN ĐỀ CHỐNG HÀNG GIẢ
 @app.route('/news')
 def news():
     return render_template('news.html')
@@ -463,7 +509,8 @@ def admin_logout():
 @app.route('/admin')
 def admin():
     if not session.get('logged_in'): return redirect(url_for('admin_login'))
-    return render_template('admin.html', products=products_db, orders=orders_db)
+    config = load_pricing_config()
+    return render_template('admin.html', products=products_db, orders=orders_db, config=config)
 
 @app.route('/super_admin')
 def super_admin():
