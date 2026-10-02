@@ -2,149 +2,215 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Giải Pháp Cuộc Sống - Nền Tảng Công Nghệ & Xác Thực Điện Tử</title>
+    <title>Quản Trị Hệ Thống - Giải Pháp Cuộc Sống</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
-        body { background: #f8fafc; color: #1e293b; line-height: 1.6; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #0f172a; color: #f8fafc; line-height: 1.6; padding: 30px; }
         
-        .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .navbar .brand { font-size: 21px; font-weight: bold; color: #38bdf8; text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
-        .navbar .nav-links { display: flex; align-items: center; gap: 15px; }
-        .navbar .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 6px; transition: 0.2s; }
-        .navbar .nav-links a:hover, .navbar .nav-links a.active { color: #38bdf8; background: #1e293b; }
-        .btn-register { background: #16a34a !important; color: white !important; font-weight: bold !important; }
-        .btn-login { background: #0284c7 !important; color: white !important; font-weight: bold !important; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 20px 30px; border-radius: 12px; margin-bottom: 30px; border-left: 6px solid #38bdf8; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .header h1 { font-size: 20px; color: #38bdf8; }
+        .btn-logout { background: #ef4444; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        .btn-logout:hover { background: #dc2626; }
 
-        .hero { background: linear-gradient(135deg, #090d16, #1e293b); color: white; padding: 90px 20px; text-align: center; position: relative; overflow: hidden; }
-        .hero h1 { font-size: 42px; margin-bottom: 15px; color: #38bdf8; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-        .hero p { font-size: 18px; color: #94a3b8; max-width: 850px; margin: 0 auto 35px auto; }
-        .hero-buttons { display: flex; justify-content: center; gap: 15px; }
-        .hero-buttons a { padding: 14px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px; transition: transform 0.2s; }
-        .hero-buttons a:hover { transform: translateY(-2px); }
-        .btn-primary { background: #22c55e; color: white; box-shadow: 0 4px 12px rgba(34,197,94,0.3); }
-        .btn-primary:hover { background: #16a34a; }
-        .btn-outline { border: 2px solid #38bdf8; color: #38bdf8; }
-        .btn-outline:hover { background: #38bdf8; color: #0f172a; }
+        .card { background: #1e293b; padding: 25px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .card h3 { font-size: 18px; color: #38bdf8; margin-bottom: 15px; border-bottom: 2px solid #334155; padding-bottom: 10px; }
 
-        .container { max-width: 1150px; margin: 40px auto; padding: 0 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #334155; }
+        th { background: #0f172a; color: #38bdf8; font-weight: 600; }
+        tr:hover { background: #263548; }
 
-        .section-box { background: white; padding: 45px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 45px; text-align: center; border-top: 6px solid #22c55e; }
-        .section-box h2 { font-size: 28px; color: #0f172a; margin-bottom: 10px; font-weight: 700; }
-        .section-box p { color: #64748b; margin-bottom: 25px; font-size: 15px; }
-        .section-box input[type="text"] { width: 65%; max-width: 480px; padding: 14px 20px; font-size: 16px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; transition: border-color 0.2s; }
-        .section-box input[type="text"]:focus { border-color: #38bdf8; }
-        .section-box button { background: #22c55e; color: white; border: none; padding: 14px 28px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-left: 10px; box-shadow: 0 4px 10px rgba(34,197,94,0.2); }
-        .section-box button:hover { background: #16a34a; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 13px; color: #94a3b8; margin-bottom: 6px; font-weight: 500; }
+        .form-group input, .form-group select { padding: 12px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; font-size: 14px; outline: none; }
+        .form-group input:focus { border-color: #38bdf8; }
 
-        .alert { margin-top: 25px; padding: 18px; border-radius: 8px; font-weight: bold; text-align: left; font-size: 15px; }
-        .success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-        .fake { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-        .warning { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+        .btn-action { background: #22c55e; color: white; border: none; padding: 12px 25px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 15px; transition: 0.2s; margin-top: 10px; width: 100%; box-shadow: 0 4px 10px rgba(34,197,94,0.3); }
+        .btn-action:hover { background: #16a34a; }
 
-        .features-title { text-align: center; font-size: 26px; color: #0f172a; margin-bottom: 30px; font-weight: 700; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px; margin-bottom: 50px; }
-        .feature-card { background: white; padding: 35px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.04); border-top: 5px solid #0284c7; transition: transform 0.2s; }
-        .feature-card:hover { transform: translateY(-5px); }
-        .feature-card h3 { font-size: 20px; color: #0f172a; margin-bottom: 12px; font-weight: 700; }
-        .feature-card p { font-size: 14px; color: #64748b; margin-bottom: 25px; line-height: 1.7; }
-        .feature-card a { display: inline-block; padding: 10px 20px; background: #f1f5f9; color: #0284c7; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 14px; transition: 0.2s; }
-        .feature-card a:hover { background: #0284c7; color: white; }
-
-        .contact-section { background: #0f172a; color: white; padding: 50px; border-radius: 16px; text-align: center; margin-bottom: 40px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .contact-section h2 { color: #38bdf8; margin-bottom: 15px; font-size: 24px; }
-        .contact-section p { color: #94a3b8; font-size: 15px; margin-bottom: 10px; }
-
-        footer { text-align: center; padding: 30px; color: #64748b; font-size: 13px; border-top: 1px solid #e2e8f0; }
+        .badge-pending { background: #fef08a; color: #854d0e; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-paid { background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        
+        .nav-links-top { display: flex; gap: 15px; margin-bottom: 20px; }
+        .nav-links-top a { color: #38bdf8; text-decoration: none; font-size: 14px; font-weight: bold; background: #1e293b; padding: 8px 15px; border-radius: 6px; }
+        .nav-links-top a:hover { background: #38bdf8; color: #0f172a; }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
-        <a href="/" class="brand">🌐 GIẢI PHÁP CUỘC SỐNG</a>
-        <div class="nav-links">
-            <a href="/" class="active">Trang Chủ</a>
-            <a href="#about">Giới Thiệu</a>
-            <a href="#solutions">Giải Pháp & Sản Phẩm</a>
-            <a href="/buy">Cấp Phát Lô Tem</a>
-            <!-- BỔ SUNG ĐƯỜNG DẪN THÔNG TIN CHUYÊN ĐỀ -->
-            <a href="/news" style="color: #38bdf8; font-weight: bold;">📖 Thông Tin Chuyên Đề</a>
-            <a href="/admin">Quản Trị Admin</a>
-            <a href="/register" class="btn-register">Đăng Ký</a>
-            <a href="/admin/login" class="btn-login">Đăng Nhập</a>
-        </div>
+    <div class="nav-links-top">
+        <a href="/">&larr; Quay lại Trang Chủ</a>
+        <a href="/news">📖 Xem Cẩm Nang & Pháp Lý</a>
     </div>
 
-    <div class="hero">
-        <h1>GIẢI PHÁP CUỘC SỐNG</h1>
-        <p>Hệ sinh thái công nghệ số thông minh tích hợp giải pháp chống hàng giả điện tử tiêu chuẩn Enterprise Shield và các ứng dụng về giáo dục hỗ trợ AI nâng tầm chất lượng cuộc sống.</p>
-        <div class="hero-buttons">
-            <a href="/buy" class="btn-primary">Đăng Ký Cấp Phát Lô Tem Ngay</a>
-            <a href="#verify-section" class="btn-outline">Tra Cứu Xác Thực Sản Phẩm</a>
-        </div>
+    <div class="header">
+        <h1>🛡️ Khu Vực Quản Trị Tối Cao (Super Admin) - Tác Giả Vương Tùng</h1>
+        <a href="/admin/logout" class="btn-logout">Đăng Xuất Hệ Thống</a>
     </div>
 
-    <div class="container">
-        <div id="verify-section" class="section-box">
-            <h2>🔍 Tra Cứu Xác Thực Sản Phẩm Chính Hãng</h2>
-            <p>Nhập mã sản phẩm hoặc quét mã QR trực tiếp trên tem bảo mật để kiểm tra nguồn gốc</p>
-            
-            <form method="POST" action="/">
-                <input type="text" name="code" placeholder="Nhập mã sản phẩm (VD: SP001, SP002)..." required>
-                <button type="submit">Kiểm Tra Ngay</button>
-            </form>
+    <!-- QUẢN LÝ ĐƠN HÀNG & PHÊ DUYỆT -->
+    <div class="card">
+        <h3>📦 Quản Lý Đơn Hàng & Cấp Phát Tem Tự Động Cho Doanh Nghiệp</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã Đơn</th>
+                    <th>Doanh Nghiệp / Sản Phẩm</th>
+                    <th>Số Lượng & Phân Loại</th>
+                    <th>Thành Tiền</th>
+                    <th>Trạng Thái</th>
+                    <th>Thao Tác Quản Trị</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if orders %}
+                    {% for order_id, order in orders.items() %}
+                    <tr>
+                        <td><strong>{{ order_id }}</strong></td>
+                        <td>
+                            <strong>{{ order.prod_name }}</strong><br>
+                            <span style="color: #94a3b8; font-size: 12px;">{{ order.manufacturer }}</span>
+                        </td>
+                        <td>
+                            {{ order.quantity }} tem<br>
+                            <span style="color: #38bdf8; font-size: 12px;">Khổ: {{ order.qr_size }}mm | In: {{ order.print_type }}</span>
+                        </td>
+                        <td><strong>{{"{:,.0f}".format(order.total_price)}} VNĐ</strong></td>
+                        <td>
+                            {% if order.status == 'paid' %}
+                                <span class="badge-paid">Đã thanh toán</span>
+                            {% else %}
+                                <span class="badge-pending">Chờ thanh toán</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if order.status != 'paid' %}
+                                <a href="/admin/approve/{{ order_id }}" style="background: #0284c7; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; margin-right: 5px;">Duyệt Đơn</a>
+                            {% else %}
+                                <a href="/success/{{ order_id }}" style="background: #16a34a; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;">Tải Gói .ZIP</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">Chưa có đơn hàng nào đăng ký mới.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
 
-            {% if message %}
-                <div class="alert {% if status == 'success' %}success{% elif status == 'fake' %}fake{% else %}warning{% endif %}">
-                    {{ message }}
+    <!-- CẤU HÌNH ĐƠN GIÁ & PHỤ PHÍ ĐỘNG (THAY ĐỔI TỨC THÌ) -->
+    <div class="card" style="border-top: 5px solid #f59e0b;">
+        <h3>⚙️ Quản Lý & Thay Đổi Đơn Giá Tem Tức Thì</h3>
+        <p style="color: #94a3b8; font-size: 13px; margin-bottom: 20px;">Thay đổi trực tiếp phụ phí loại tem và kích thước. Hệ thống sẽ tự động áp dụng ngay lập tức cho khách hàng khi đặt mua mà không cần khởi động lại phần mềm.</p>
+        
+        <form action="/admin/update_pricing" method="POST">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Phụ Phí Tem 7 Màu / Hologram (VNĐ/tem):</label>
+                    <input type="number" name="hologram_fee" value="{{ config.hologram_fee }}" required>
                 </div>
-            {% endif %}
-
-            {% if product %}
-                <div style="margin-top: 25px; text-align: left; background: #f8fafc; padding: 22px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 14px;">
-                    <p><strong>Tên Sản Phẩm:</strong> {{ product.name }}</p>
-                    <p><strong>Nhà Sản Xuất:</strong> {{ product.manufacturer }}</p>
-                    <p><strong>Ngày Sản Xuất:</strong> {{ product.mfg_date }}</p>
-                    <p><strong>Số Lượt Quét:</strong> {{ product.scan_count }} lần</p>
-                    <p><strong>Trạng Thái Xác Thực:</strong> <span style="color: {% if product.status == 'Hàng thật' %}#16a34a{% else %}#dc2626{% endif %}; font-weight: bold;">{{ product.status }}</span></p>
+                <div class="form-group">
+                    <label>Phụ Phí Khổ Lớn 2.5x2.5 cm (VNĐ/tem):</label>
+                    <input type="number" name="size_fee_25" value="{{ config.size_fee_25 }}" required>
                 </div>
-            {% endif %}
-        </div>
-
-        <h2 id="solutions" class="features-title">Hệ Thống Giải Pháp & Tiện Ích</h2>
-        <div class="features">
-            <div class="feature-card">
-                <h3>📦 Cổng Mua Tem & Thanh Toán VietQR</h3>
-                <p>Doanh nghiệp tự chọn gói số lượng, hệ thống tự động tính giá ưu đãi và kết nối mã VietQR chuyển khoản ngân hàng thời gian thực.</p>
-                <a href="/buy">Trải Nghiệm Mua Tem &rarr;</a>
             </div>
-
-            <div class="feature-card" style="border-top-color: #22c55e;">
-                <h3>📥 Xuất Kho Dữ Liệu .ZIP & In Ấn</h3>
-                <p>Tự động đóng gói tệp Excel thống kê, file PDF trang in thử mẫu chuẩn A4 và kho ảnh QR độc quyền mã hóa phần cứng để sản xuất.</p>
-                <a href="/buy">Xem Chi Tiết Mẫu &rarr;</a>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Phụ Phí Khổ Đóng Thùng 3.5x3.5 cm (VNĐ/tem):</label>
+                    <input type="number" name="size_fee_35" value="{{ config.size_fee_35 }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Đơn Giá Cơ Bản Chuẩn (Tham chiếu VNĐ):</label>
+                    <input type="number" name="base_price" value="{{ config.base_price }}" required>
+                </div>
             </div>
-
-            <div class="feature-card" style="border-top-color: #f59e0b;">
-                <h3>⚙ Quản Trị Đa Tầng & Bảo Mật</h3>
-                <p>Khu vực quản lý bảo mật 4 cấp độ dành riêng cho doanh nghiệp để kiểm soát kho mã, theo dõi lượt quét và chống sao chép tuyệt đối.</p>
-                <a href="/admin">Truy Cập Quản Trị &rarr;</a>
-            </div>
-        </div>
-
-        <div id="about" class="contact-section">
-            <h2>Về Thương Hiệu &bull; GIẢI PHÁP CUỘC SỐNG</h2>
-            <p>Giải pháp công nghệ được nghiên cứu và phát triển bởi <strong>Vương Tùng &bull; Auto Vương Tùng</strong>.</p>
-            <p style="margin-top: 15px;">
-                📞 Hotline hỗ trợ: <strong>0868405499</strong> &bull; 
-                ✉️ Email: <strong>vttung1958@gmail.com</strong> &bull; 
-                🌐 Tên miền: <strong>vuongtung.com.vn</strong>
-            </p>
-        </div>
+            <button type="submit" class="btn-action" style="background: #f59e0b; color: #0f172a;">💾 Lưu Cập Nhật Đơn Giá Mới</button>
+        </form>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Bản quyền thuộc về Giải Pháp Cuộc Sống &bull; Bởi Vương Tùng. Mọi quyền được bảo lưu.</p>
-    </footer>
+    <!-- CÔNG CỤ TẠO LÔ TEM TRỰC TIẾP DÀNH CHO QUẢN TRỊ -->
+    <div class="card" style="border-top: 5px solid #22c55e;">
+        <h3>🛠️ Công Cụ Tạo Lô Tem Trực Tiếp (Dành Riêng Cho Quản Trị)</h3>
+        <p style="color: #94a3b8; font-size: 13px; margin-bottom: 20px;">Khởi tạo nhanh dải mã QR bảo mật, sinh file Excel thống kê, file PDF in mẫu A4 và kho ảnh QR độc quyền ngay lập tức.</p>
+        
+        <form action="/admin/generate_batch" method="POST">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Tên Sản Phẩm:</label>
+                    <input type="text" name="prod_name" placeholder="Ví dụ: Sâm Ngọc Linh Nguyên Chất" required>
+                </div>
+                <div class="form-group">
+                    <label>Tên Nhà Sản Xuất / Doanh Nghiệp:</label>
+                    <input type="text" name="manufacturer" placeholder="Ví dụ: Công ty TNHH Vương Tùng" required>
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Giá Niêm Yết Sản Phẩm:</label>
+                    <input type="text" name="price" value="2.500.000 VNĐ" required>
+                </div>
+                <div class="form-group">
+                    <label>Kích Thước Tem Thực Tế (mm):</label>
+                    <select name="qr_size">
+                        <option value="20">20x20 mm (Tiêu chuẩn)</option>
+                        <option value="25">25x25 mm (Khổ trung)</option>
+                        <option value="35">35x35 mm (Khổ lớn)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>Số Lượng Tem Cần Tạo:</label>
+                    <select name="quantity">
+                        <option value="100">100 Tem (Kiểm tra nhanh)</option>
+                        <option value="1000">1,000 Tem</option>
+                        <option value="5000">5,000 Tem</option>
+                        <option value="10000">10,000 Tem</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn-action">🚀 Khởi Tạo Lô & Tải Tệp .ZIP Trọn Gói (Excel, PDF A4, Kho Ảnh QR)</button>
+        </form>
+    </div>
+
+    <!-- KHO DỮ LIỆU VÀ THỐNG KÊ LƯỢT QUÉT THỰC TẾ -->
+    <div class="card">
+        <h3>📊 Kho Dữ Liệu & Thống Kê Lượt Quét Thực Tế</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã Code</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Nhà Sản Xuất</th>
+                    <th>Mã HW-ID Định Danh</th>
+                    <th>Lượt Quét</th>
+                    <th>Trạng Thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if products %}
+                    {% for p in products %}
+                    <tr>
+                        <td><strong>{{ p.code }}</strong></td>
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.manufacturer }}</td>
+                        <td><span style="font-family: monospace; color: #38bdf8;">{{ p.hardware_id }}</span></td>
+                        <td><strong style="color: {% if p.scan_count > 3 %}#ef4444{% else %}#22c55e{% endif %};">{{ p.scan_count }} lần</strong></td>
+                        <td><span style="color: {% if p.status == 'Hàng thật' %}#22c55e{% else %}#ef4444{% endif %}; font-weight: bold;">{{ p.status }}</span></td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #94a3b8;">Chưa có sản phẩm nào trong cơ sở dữ liệu.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
 
 </body>
 </html>
