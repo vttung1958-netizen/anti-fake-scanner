@@ -38,7 +38,6 @@ def generate_secure_digital_signature(code, manufacturer, hw_id):
     raw_string = f"{code}-{manufacturer}-{hw_id}-VUONGTUNG-ENTERPRISE-2026"
     return hashlib.sha256(raw_string.encode('utf-8')).hexdigest()[:16].upper()
 
-# HÀM TÍNH GIÁ THÔNG MINH: KẾT HỢP BẬC THANG + PHỤ PHÍ LOẠI TEM + PHỤ PHÍ KÍCH THƯỚC
 def calculate_tem_price(quantity, print_type='black_white', qr_size=20):
     if quantity <= 1000: base = quantity * 890
     elif quantity <= 2000: base = quantity * 810
@@ -61,10 +60,7 @@ def calculate_tem_price(quantity, print_type='black_white', qr_size=20):
     elif quantity <= 60000: base = quantity * 270
     else: base = quantity * 266
     
-    # Phụ phí tem 7 màu / Hologram cao cấp (+150 VNĐ/tem)
     hologram_fee = quantity * 150 if print_type == 'hologram_7color' else 0
-    
-    # Phụ phí kích thước khổ lớn
     size_fee = 0
     if qr_size == 25: size_fee = quantity * 50
     elif qr_size == 35: size_fee = quantity * 120
@@ -162,7 +158,6 @@ def buy():
         qr_size = int(request.form.get('qr_size', 20))
         company_hw_id = f"HW-CORP-{uuid.uuid4().hex[:10].upper()}"
         
-        # TÍNH TỔNG TIỀN ĐÃ GỘP PHỤ PHÍ LOẠI TEM VÀ KÍCH THƯỚC
         total_price = calculate_tem_price(quantity, print_type, qr_size)
         order_id = f"DH{uuid.uuid4().hex[:6].upper()}"
         
@@ -435,6 +430,11 @@ def admin_generate_batch():
         return send_file(zip_path, as_attachment=True)
     except Exception as e:
         return f"Lỗi tạo tệp: {str(e)}", 500
+
+# ĐƯỜNG DẪN TRANG THÔNG TIN CHUYÊN ĐỀ CHỐNG HÀNG GIẢ
+@app.route('/news')
+def news():
+    return render_template('news.html')
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
