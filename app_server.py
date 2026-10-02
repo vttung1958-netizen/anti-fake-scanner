@@ -38,27 +38,38 @@ def generate_secure_digital_signature(code, manufacturer, hw_id):
     raw_string = f"{code}-{manufacturer}-{hw_id}-VUONGTUNG-ENTERPRISE-2026"
     return hashlib.sha256(raw_string.encode('utf-8')).hexdigest()[:16].upper()
 
-def calculate_tem_price(quantity):
-    if quantity <= 1000: return quantity * 890
-    elif quantity <= 2000: return quantity * 810
-    elif quantity <= 3000: return quantity * 750
-    elif quantity <= 4000: return quantity * 710
-    elif quantity <= 5000: return quantity * 670
-    elif quantity <= 6000: return quantity * 630
-    elif quantity <= 7000: return quantity * 590
-    elif quantity <= 8000: return quantity * 545
-    elif quantity <= 9000: return quantity * 500
-    elif quantity <= 10000: return quantity * 456
-    elif quantity <= 15000: return quantity * 413
-    elif quantity <= 20000: return quantity * 383
-    elif quantity <= 25000: return quantity * 363
-    elif quantity <= 30000: return quantity * 345
-    elif quantity <= 35000: return quantity * 328
-    elif quantity <= 40000: return quantity * 312
-    elif quantity <= 45000: return quantity * 297
-    elif quantity <= 50000: return quantity * 283
-    elif quantity <= 60000: return quantity * 270
-    else: return quantity * 266
+# HÀM TÍNH GIÁ THÔNG MINH: KẾT HỢP BẬC THANG + PHỤ PHÍ LOẠI TEM + PHỤ PHÍ KÍCH THƯỚC
+def calculate_tem_price(quantity, print_type='black_white', qr_size=20):
+    if quantity <= 1000: base = quantity * 890
+    elif quantity <= 2000: base = quantity * 810
+    elif quantity <= 3000: base = quantity * 750
+    elif quantity <= 4000: base = quantity * 710
+    elif quantity <= 5000: base = quantity * 670
+    elif quantity <= 6000: base = quantity * 630
+    elif quantity <= 7000: base = quantity * 590
+    elif quantity <= 8000: base = quantity * 545
+    elif quantity <= 9000: base = quantity * 500
+    elif quantity <= 10000: base = quantity * 456
+    elif quantity <= 15000: base = quantity * 413
+    elif quantity <= 20000: base = quantity * 383
+    elif quantity <= 25000: base = quantity * 363
+    elif quantity <= 30000: base = quantity * 345
+    elif quantity <= 35000: base = quantity * 328
+    elif quantity <= 40000: base = quantity * 312
+    elif quantity <= 45000: base = quantity * 297
+    elif quantity <= 50000: base = quantity * 283
+    elif quantity <= 60000: base = quantity * 270
+    else: base = quantity * 266
+    
+    # Phụ phí tem 7 màu / Hologram cao cấp (+150 VNĐ/tem)
+    hologram_fee = quantity * 150 if print_type == 'hologram_7color' else 0
+    
+    # Phụ phí kích thước khổ lớn
+    size_fee = 0
+    if qr_size == 25: size_fee = quantity * 50
+    elif qr_size == 35: size_fee = quantity * 120
+    
+    return base + hologram_fee + size_fee
 
 orders_db = {}
 users_db = {}
@@ -136,22 +147,23 @@ def register():
         return redirect(url_for('buy'))
     return render_template('register.html')
 
-# HÀM BUY ĐÃ BỔ SUNG NHẬN THÔNG SỐ qr_size
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
     if request.method == 'POST':
         prod_name = request.form.get('prod_name')
         manufacturer = request.form.get('manufacturer')
-        tax_code = request.form.get('tax_code', 'Chura cung cap')
+        tax_code = request.form.get('tax_code', 'Chưa cung cấp')
         try:
             quantity = int(request.form.get('quantity', 1000))
         except ValueError:
             quantity = 1000
             
         print_type = request.form.get('print_type', 'black_white')
-        qr_size = int(request.form.get('qr_size', 20)) # Nhận kích thước tem (mm) từ form
+        qr_size = int(request.form.get('qr_size', 20))
         company_hw_id = f"HW-CORP-{uuid.uuid4().hex[:10].upper()}"
-        total_price = calculate_tem_price(quantity)
+        
+        # TÍNH TỔNG TIỀN ĐÃ GỘP PHỤ PHÍ LOẠI TEM VÀ KÍCH THƯỚC
+        total_price = calculate_tem_price(quantity, print_type, qr_size)
         order_id = f"DH{uuid.uuid4().hex[:6].upper()}"
         
         orders_db[order_id] = {
@@ -204,7 +216,6 @@ def approve_order(order_id):
     if order_id in orders_db: orders_db[order_id]["status"] = "paid"
     return redirect(url_for('admin'))
 
-# HÀM SUCCESS_DOWNLOAD ĐÃ TÍCH HỢP CO GIÃN PDF THEO qr_size (MM)
 @app.route('/success/<order_id>')
 def success_download(order_id):
     order = orders_db.get(order_id)
@@ -215,7 +226,7 @@ def success_download(order_id):
     quantity = order["quantity"]
     company_hw_id = order["hardware_id"]
     print_type = order.get("print_type", "black_white")
-    qr_size = order.get("qr_size", 20) # Lấy kích thước tem mm đã lưu
+    qr_size = order.get("qr_size", 20)
     price_str = f"{order['total_price']:,} VNĐ"
     print_name_desc = "Tem Trang Den Tieu Chuan" if print_type == "black_white" else "Tem QR 7 Mau / Hologram Cao Cap"
     
@@ -226,7 +237,7 @@ def success_download(order_id):
         ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - GIẢI PHÁP CUỘC SỐNG ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
         ws.append(["Công nghệ in ấn:", print_name_desc, "Kích thước thực tế:", f"{qr_size}x{qr_size} mm"])
-        ws.append(["Mã định danh HW-ID:", company_hw_id, "Số lượng tem:", quantity])
+        ws.append(["Mã định danh HW-ID:", company_hw_id, "Tổng chi phí:", price_str])
         ws.append([])
         
         header_row = 6
@@ -275,14 +286,13 @@ def success_download(order_id):
         excel_path = f"static/ThongKe_{order_id}.xlsx"
         wb.save(excel_path)
         
-        # TẠO FILE PDF IN THỬ A4 CO GIÃN CHÍNH XÁC THEO qr_size (MM)
         pdf_path = f"static/InThu_{order_id}.pdf"
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 12)
-        pdf.cell(0, 8, f"TRANG IN THU MAU - KICH THUOC THUC TE: {qr_size}x{qr_size} MM ({print_name_desc})", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, f"TRANG IN THU MAU - KICH THUOC: {qr_size}x{qr_size} MM ({print_name_desc})", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("helvetica", "I", 9)
-        pdf.cell(0, 6, f"Doanh nghiep: {manufacturer} | Ma HW-ID: {company_hw_id}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 6, f"Doanh nghiep: {manufacturer} | HW-ID: {company_hw_id}", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(4)
         
         col_width = qr_size + 35
@@ -319,17 +329,14 @@ def success_download(order_id):
     except Exception as e:
         return f"Lỗi tạo tệp: {str(e)}", 500
 
-# HÀM ADMIN_GENERATE_BATCH ĐÃ BỔ SUNG NHẬN THÔNG SỐ qr_size TỪ QUẢN TRỊ
 @app.route('/admin/generate_batch', methods=['POST'])
 def admin_generate_batch():
     if not session.get('logged_in'): return redirect(url_for('admin_login'))
-    
     prod_name = request.form.get('prod_name')
     manufacturer = request.form.get('manufacturer')
     price_str = request.form.get('price', '2.500.000 VNĐ')
-    qr_size = int(request.form.get('qr_size', 20)) # Nhận kích thước mm do Admin chọn
+    qr_size = int(request.form.get('qr_size', 20))
     company_hw_id = f"HW-ADMIN-{uuid.uuid4().hex[:10].upper()}"
-    
     try: quantity = int(request.form.get('quantity', 100))
     except ValueError: quantity = 100
     order_id = f"AD{uuid.uuid4().hex[:6].upper()}"
@@ -389,7 +396,6 @@ def admin_generate_batch():
         excel_path = f"static/ThongKe_{order_id}.xlsx"
         wb.save(excel_path)
         
-        # TẠO PDF IN THỬ A4 CO GIÃN THEO KHỔ ADMIN CHỌN
         pdf_path = f"static/InThu_{order_id}.pdf"
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
