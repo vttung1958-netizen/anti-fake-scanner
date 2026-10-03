@@ -25,12 +25,14 @@ os.makedirs("templates", exist_ok=True)
 ADMIN_PASS_FILE = "admin_pass.txt"
 CONFIG_FILE = "pricing_config.json"
 
-# Cấu hình giá mặc định ban đầu
+# Cấu hình giá mặc định bổ sung tem vỡ và tem nắp chai
 DEFAULT_CONFIG = {
-    "base_price": 890,          # Giá gốc cho mốc đầu tiên hoặc hệ số cơ bản
-    "hologram_fee": 150,        # Phụ phí tem 7 màu / Hologram (VNĐ/tem)
-    "size_fee_25": 50,          # Phụ phí khổ 2.5x2.5 cm (VNĐ/tem)
-    "size_fee_35": 120          # Phụ phí khổ 3.5x3.5 cm (VNĐ/tem)
+    "base_price": 890,              # Giá gốc cơ bản
+    "hologram_fee": 150,            # Phụ phí tem 7 màu / Hologram (VNĐ/tem)
+    "size_fee_25": 50,              # Phụ phí khổ 2.5x2.5 cm (VNĐ/tem)
+    "size_fee_35": 120,             # Phụ phí khổ 3.5x3.5 cm (VNĐ/tem)
+    "destructible_seal_fee": 200,   # Phụ phí tem vỡ linh kiện điện tử (VNĐ/tem)
+    "void_bottle_fee": 250          # Phụ phí tem niêm phong nắp chai (VNĐ/tem)
 }
 
 def load_pricing_config():
@@ -61,42 +63,39 @@ def generate_secure_digital_signature(code, manufacturer, hw_id):
     raw_string = f"{code}-{manufacturer}-{hw_id}-VUONGTUNG-ENTERPRISE-2026"
     return hashlib.sha256(raw_string.encode('utf-8')).hexdigest()[:16].upper()
 
-# HÀM TÍNH GIÁ ĐỘNG DỰA TRÊN CẤU HÌNH ADMIN
+# HÀM TÍNH GIÁ ĐỘNG DỰA TRÊN CẤU HÌNH ADMIN (HỖ TRỢ TEM THƯỜNG, 7 MÀU, TEM VỠ, TEM NẮP CHAI)
 def calculate_tem_price(quantity, print_type='black_white', qr_size=20):
     config = load_pricing_config()
     
-    # Biểu giá bậc thang chuẩn theo hệ thống
+    # Biểu giá bậc thang chuẩn theo số lượng
     if quantity <= 1000: base = quantity * 890
     elif quantity <= 2000: base = quantity * 810
     elif quantity <= 3000: base = quantity * 750
     elif quantity <= 4000: base = quantity * 710
     elif quantity <= 5000: base = quantity * 670
-    elif quantity <= 6000: base = quantity * 630
-    elif quantity <= 7000: base = quantity * 590
-    elif quantity <= 8000: base = quantity * 545
-    elif quantity <= 9000: base = quantity * 500
     elif quantity <= 10000: base = quantity * 456
-    elif quantity <= 15000: base = quantity * 413
     elif quantity <= 20000: base = quantity * 383
-    elif quantity <= 25000: base = quantity * 363
     elif quantity <= 30000: base = quantity * 345
-    elif quantity <= 35000: base = quantity * 328
-    elif quantity <= 40000: base = quantity * 312
-    elif quantity <= 45000: base = quantity * 297
     elif quantity <= 50000: base = quantity * 283
-    elif quantity <= 60000: base = quantity * 270
     else: base = quantity * 266
     
-    # Cộng phụ phí động từ cấu hình Admin
-    hologram_fee = quantity * int(config.get("hologram_fee", 150)) if print_type == 'hologram_7color' else 0
-    
+    # Tính phụ phí loại tem chuyên dụng
+    special_fee = 0
+    if print_type == 'hologram_7color':
+        special_fee = quantity * int(config.get("hologram_fee", 150))
+    elif print_type == 'destructible_seal':
+        special_fee = quantity * int(config.get("destructible_seal_fee", 200))
+    elif print_type == 'void_bottle':
+        special_fee = quantity * int(config.get("void_bottle_fee", 250))
+        
+    # Tính phụ phí kích thước tem
     size_fee = 0
     if qr_size == 25:
         size_fee = quantity * int(config.get("size_fee_25", 50))
     elif qr_size == 35:
         size_fee = quantity * int(config.get("size_fee_35", 120))
         
-    return base + hologram_fee + size_fee
+    return base + special_fee + size_fee
 
 orders_db = {}
 users_db = {}
@@ -115,7 +114,7 @@ products_db = [
     }
 ]
 
-# ROUTE TRANG CHỦ (Chuẩn hóa trả về index.html)
+# ROUTE TRANG CHỦ XÁC THỰC
 @app.route('/', methods=['GET', 'POST'])
 def index():
     code = None
@@ -149,7 +148,7 @@ def index():
     
     if product["scan_count"] > 3:
         status = "warning"
-        message = f"CẢNH BÁO: Tem này đã bị quét {product['scan_count']} lần! Có dấu hiệu bị sao chép hoặc in lậu."
+        message = f"CẢNH BÁO: Tem này đã bị quét {product['scan_count']} lần! Có dấu hiệu bị sao chép hoặc bóc mở trái phép."
     else:
         status = "success"
         message = "XÁC THỰC THÀNH CÔNG: Sản phẩm chính hãng 100% từ Giải Pháp Cuộc Sống."
@@ -243,7 +242,7 @@ def approve_order(order_id):
     if order_id in orders_db: orders_db[order_id]["status"] = "paid"
     return redirect(url_for('admin'))
 
-# ROUTE LƯU CẤP NHẬT GIÁ TỪ TRANG QUẢN TRỊ
+# ROUTE LƯU CẤP NHẬT GIÁ VÀ PHỤ PHÍ TỪ TRANG QUẢN TRỊ
 @app.route('/admin/update_pricing', methods=['POST'])
 def update_pricing():
     if not session.get('logged_in'): return redirect(url_for('admin_login'))
@@ -252,7 +251,9 @@ def update_pricing():
             "base_price": int(request.form.get('base_price', 890)),
             "hologram_fee": int(request.form.get('hologram_fee', 150)),
             "size_fee_25": int(request.form.get('size_fee_25', 50)),
-            "size_fee_35": int(request.form.get('size_fee_35', 120))
+            "size_fee_35": int(request.form.get('size_fee_35', 120)),
+            "destructible_seal_fee": int(request.form.get('destructible_seal_fee', 200)),
+            "void_bottle_fee": int(request.form.get('void_bottle_fee', 250))
         }
         save_pricing_config(new_config)
     except Exception:
@@ -271,7 +272,14 @@ def success_download(order_id):
     print_type = order.get("print_type", "black_white")
     qr_size = order.get("qr_size", 20)
     price_str = f"{order['total_price']:,} VNĐ"
-    print_name_desc = "Tem Trang Den Tieu Chuan" if print_type == "black_white" else "Tem QR 7 Mau / Hologram Cao Cap"
+    
+    print_names = {
+        "black_white": "Tem QR Trang Den Tieu Chuân",
+        "hologram_7color": "Tem QR 7 Mau / Hologram Cao Cap",
+        "destructible_seal": "Tem Vo Bao Hành Linh Kiện Điện Tử",
+        "void_bottle": "Tem Niêm Phong Nắp Chai / Chống Bóc Void"
+    }
+    print_name_desc = print_names.get(print_type, "Tem Chuyên Dụng")
     
     try:
         wb = Workbook()
@@ -279,7 +287,7 @@ def success_download(order_id):
         ws.title = "ThongKe_DanhSach"
         ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - GIẢI PHÁP CUỘC SỐNG ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
-        ws.append(["Công nghệ in ấn:", print_name_desc, "Kích thước thực tế:", f"{qr_size}x{qr_size} mm"])
+        ws.append(["Loại tem:", print_name_desc, "Kích thước thực tế:", f"{qr_size}x{qr_size} mm"])
         ws.append(["Mã định danh HW-ID:", company_hw_id, "Tổng chi phí:", price_str])
         ws.append([])
         
@@ -365,7 +373,7 @@ def success_download(order_id):
             zipf.write(excel_path, arcname="1_DanhSach_MaQR_DoanhNghiep.xlsx")
             zipf.write(pdf_path, arcname="2_TrangInThu_A4.pdf")
             for qr_file in generated_qr_files:
-                folder_name = "3_ThuVien_Anh_QR_Tem_7Mau_Hologram" if print_type == "hologram_7color" else "3_ThuVien_Anh_QR_Tem_TrangDen"
+                folder_name = f"3_ThuVien_Anh_{print_type}"
                 zipf.write(qr_file, arcname=f"{folder_name}/{os.path.basename(qr_file)}")
                 
         return send_file(zip_path, as_attachment=True)
