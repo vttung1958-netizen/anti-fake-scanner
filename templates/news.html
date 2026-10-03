@@ -2,113 +2,96 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Thông Tin Pháp Lý & Hướng Dẫn Chống Hàng Giả - Giải Pháp Cuộc Sống</title>
+    <title>Cẩm Nang Kiến Thức & Phân Loại Tem Chống Hàng Giả - Giải Pháp Cuộc Sống</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f8fafc; color: #1e293b; line-height: 1.7; }
-        
-        .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; text-decoration: none; }
-        .navbar .nav-links { display: flex; align-items: center; gap: 15px; }
-        .navbar .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 6px; transition: 0.2s; }
-        .navbar .nav-links a:hover, .navbar .nav-links a.active { color: #38bdf8; background: #1e293b; }
 
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-        
-        .main-content { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        .main-content h1 { font-size: 26px; color: #0f172a; margin-bottom: 25px; border-left: 6px solid #0284c7; padding-left: 15px; }
-        
-        .article-section { margin-bottom: 40px; border-bottom: 1px solid #e2e8f0; padding-bottom: 30px; }
-        .article-section h2 { font-size: 20px; color: #0f172a; margin-bottom: 12px; font-weight: 700; }
-        .article-section p { font-size: 15px; color: #475569; margin-bottom: 15px; text-align: justify; }
-        .article-section ul { padding-left: 20px; margin-bottom: 15px; color: #475569; font-size: 14px; }
-        .article-section li { margin-bottom: 8px; }
+        .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 6px; transition: 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
+        .btn-cta-nav { background: #22c55e !important; color: white !important; }
 
-        /* CỘT BÀI VIẾT NỔI BẬT & ĐIỀU HƯỚNG NHANH */
-        .sidebar { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 90px; }
-        .sidebar h3 { font-size: 17px; color: #0f172a; border-bottom: 2px solid #0284c7; padding-bottom: 10px; margin-bottom: 20px; font-weight: 700; }
-        .sidebar-item { display: block; padding: 12px 15px; margin-bottom: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; color: #1e293b; text-decoration: none; font-weight: 600; transition: 0.2s; }
-        .sidebar-item:hover { background: #0284c7; color: white; border-color: #0284c7; }
+        .container { max-width: 900px; margin: 40px auto; background: white; padding: 50px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        h1 { font-size: 32px; color: #0f172a; margin-bottom: 15px; font-weight: 800; line-height: 1.3; }
+        .meta { color: #64748b; font-size: 14px; margin-bottom: 30px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
 
-        .legal-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 20px; border-radius: 10px; margin-top: 15px; color: #166534; font-size: 14px; }
-        .legal-box h4 { font-size: 15px; margin-bottom: 8px; font-weight: bold; }
+        h2 { font-size: 22px; color: #0f172a; margin-top: 35px; margin-bottom: 15px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 12px; }
+        p { font-size: 16px; color: #334155; margin-bottom: 20px; }
 
-        .footer { text-align: center; padding: 30px; color: #64748b; font-size: 13px; border-top: 1px solid #e2e8f0; margin-top: 50px; background: white; }
+        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px; margin-bottom: 25px; transition: 0.2s; }
+        .tier-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-color: #38bdf8; }
+        .tier-card h3 { font-size: 18px; color: #0f172a; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .badge { background: #22c55e; color: white; font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: bold; }
+        .badge-high { background: #3b82f6; }
+        .badge-master { background: #8b5cf6; }
+
+        .footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 30px; font-size: 14px; margin-top: 60px; }
+        .footer span { color: #38bdf8; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="navbar">
-        <a href="/" class="brand">🌐 GIẢI PHÁP CUỘC SỐNG</a>
+        <div class="brand">🛡️ GIẢI PHÁP CUỘC SỐNG</div>
         <div class="nav-links">
             <a href="/">Trang Chủ</a>
             <a href="/buy">Cấp Phát Lô Tem</a>
-            <a href="/news" class="active">Thông Tin Chuyên Đề</a>
+            <a href="/news" class="active">Cẩm Nang Pháp Lý & Kiến Thức</a>
             <a href="/admin">Quản Trị Admin</a>
+            <a href="/buy" class="btn-cta-nav">Đăng Ký Tem Ngay</a>
         </div>
     </div>
 
     <div class="container">
-        <!-- NỘI DUNG CHUYÊN ĐỀ PHÁP LÝ & HƯỚNG DẪN CHI TIẾT -->
-        <div class="main-content">
-            <h1>📖 Cẩm Nang Pháp Lý & Hướng Dẫn Xác Thực Chống Hàng Giả</h1>
+        <h1>Cẩm Nang Chuyên Sâu: Tác Dụng, Phân Loại & Mức Độ Bảo Mật Của Tem Chống Hàng Giả</h1>
+        <div class="meta">Cập nhật tháng 10/2026 | Ban Biên Tập Công Nghệ & Pháp Lý Doanh Nghiệp</div>
 
-            <!-- MỤC 1: PHÁP LÝ & QUY ĐỊNH NHÀ NƯỚC -->
-            <div id="phap-luat" class="article-section">
-                <h2>1. Cơ Sở Pháp Lý & Chế Tài Xử Lý Hành Vi Sản Xuất, Buôn Bán Hàng Giả Tại Việt Nam</h2>
-                <p>Công tác phòng, chống hàng giả, hàng nhái và bảo vệ quyền sở hữu trí tuệ tại Việt Nam được quy định chặt chẽ trong hệ thống văn bản quy phạm pháp luật hiện hành nhằm bảo vệ quyền lợi hợp pháp của doanh nghiệp chính hãng và người tiêu dùng:</p>
-                <ul>
-                    <li><strong>Bộ Luật Hình Sự 2015 (sửa đổi, bổ sung 2017):</strong> Tại Điều 192 quy định rõ tội sản xuất, buôn bán hàng giả (lương thực, thực phẩm, thức ăn dùng để chăn nuôi, phụ gia thực phẩm, thuốc chữa bệnh, phòng bệnh, thức ăn chăn nuôi, phân bón, thuốc thú y, thuốc bảo vệ thực vật, giống vật nuôi, cây trồng) với mức phạt tù lên đến 15 năm hoặc phạt tiền đến hàng tỷ đồng.</li>
-                    <li><strong>Luật Bảo Vệ Quyền Lợi Người Tiêu Dùng:</strong> Quy định trách nhiệm liên đới của nhà sản xuất, nhà nhập khẩu và đơn vị phân phối trong việc minh bạch nguồn gốc xuất xứ sản phẩm.</li>
-                    <li><strong>Nghị Định Về Xử Phạt Vi Phạm Hành Chính Trong Lĩnh Vực Thương Mại:</strong> Xử phạt nặng các hành vi buôn bán tem giả, thiết bị làm giả tem nhãn hoặc gian lận thương mại điện tử.</li>
-                </ul>
-                <div class="legal-box">
-                    <h4>⚖️ Khuyến nghị pháp lý cho doanh nghiệp:</h4>
-                    <p>Mỗi doanh nghiệp khi đưa sản phẩm ra thị trường bắt buộc phải đăng ký nhãn hiệu độc quyền, kê khai mã số mã vạch và áp dụng giải pháp tem chống hàng giả công nghệ cao (như tiêu chuẩn Enterprise Shield tích hợp chữ ký số và mã hóa phần cứng) để đủ điều kiện pháp lý yêu cầu các cơ quan chức năng (Quản lý thị trường, Công an kinh tế) xử lý dứt điểm các hành vi xâm phạm sở hữu trí tuệ.</p>
-                </div>
-            </div>
+        <p>Trong bối cảnh hàng giả, hàng nhái ngày càng tinh vi, việc lựa chọn đúng loại tem chống hàng giả không chỉ giúp doanh nghiệp bảo vệ uy tín thương hiệu mà còn tiết kiệm chi phí tối đa. Dưới đây là phân tích chi tiết về các loại tem, tác dụng chuyên biệt và mức độ bảo mật tương ứng.</p>
 
-            <!-- MỤC 2: HƯỚNG DẪN KIỂM TRA BẰNG ĐIỆN THOẠI -->
-            <div id="huong-dan" class="article-section">
-                <h2>2. Hướng Dẫn Người Tiêu Dùng Kiểm Tra Hàng Thật Bằng Điện Thoại Thông Minh</h2>
-                <p>Với sự bùng nổ của công nghệ số, việc kiểm tra nguồn gốc sản phẩm trở nên vô cùng nhanh chóng và chính xác chỉ với một chiếc điện thoại thông minh (Smartphone) kết nối Internet:</p>
-                <ul>
-                    <li><strong>Bước 1: Quan sát trực quan con tem bảo mật trên bao bì sản phẩm.</strong> Kiểm tra xem tem có bị rách, dấu hiệu cạy mở, hoặc mờ nhòe hay không. Đối với tem tích hợp công nghệ cao, khi nghiêng góc nhìn sẽ thấy hiệu ứng ánh sáng lấp lánh (tem 7 màu / Hologram).</li>
-                    <li><strong>Bước 2: Sử dụng camera điện thoại hoặc ứng dụng quét mã QR.</strong> Mở ứng dụng chụp ảnh mặc định trên điện thoại (hoặc các ứng dụng quét mã QR chuyên dụng) hướng camera về phía mã QR trên con tem.</li>
-                    <li><strong>Bước 3: Nhấn vào đường dẫn (URL) xác thực hiển thị trên màn hình.</strong> Hệ thống sẽ tự động kết nối bảo mật đến cổng tra cứu chính thức của nền tảng (ví dụ: <code>vuongtung.com.vn/verify...</code>).</li>
-                    <li><strong>Bước 4: Đọc kết quả xác thực từ máy chủ.</strong>
-                        <ul>
-                            <li>🟢 <em>Màu xanh (Xác thực thành công):</em> Hiển thị rõ tên sản phẩm, tên nhà sản xuất chính hãng, ngày sản xuất và số lượng lượt quét lần đầu.</li>
-                            <li>🔴 <em>Màu đỏ (Cảnh báo giả mạo):</em> Hệ thống phát hiện chữ ký số phần cứng không khớp hoặc mã định danh không tồn tại.</li>
-                            <li>🟡 <em>Màu vàng (Cảnh báo lặp):</em> Tem đã bị quét quá nhiều lần cho phép, có nguy cơ bị sao chép hoặc in lậu.</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- MỤC 3: CÔNG NGHỆ CHỐNG SAO CHÉP -->
-            <div id="cong-nghe" class="article-section">
-                <h2>3. Công Nghệ Chống Sao Chép & Mã Hóa Phần Cứng Enterprise Shield</h2>
-                <p>Khác biệt hoàn toàn với các loại mã QR tĩnh thông thường (dễ dàng bị chụp ảnh lại và in lậu hàng loạt), hệ thống của <strong>Giải Pháp Cuộc Sống</strong> áp dụng kiến trúc bảo mật nhiều lớp:</p>
-                <ul>
-                    <li><strong>Chữ ký số SHA-256:</strong> Mỗi con tem chứa một mã token ngẫu nhiên được mã hóa bằng thuật toán đối xứng gắn liền với mã định danh phần cứng (HW-ID) của doanh nghiệp.</li>
-                    <li><strong>Kiểm soát số lượt quét thời gian thực:</strong> Ngay khi tem bị quét vượt ngưỡng an toàn (ví dụ trên 3 lần), hệ thống tự động đưa ra cảnh báo khẩn cấp tới cả người tiêu dùng lẫn quản trị viên nhà sản xuất.</li>
-                </ul>
-            </div>
+        <h2>1. Tem QR Tiêu Chuẩn (Phân khúc tiết kiệm)</h2>
+        <div class="tier-card">
+            <h3><span>Gói 1: Tem QR Decal Thường</span> <span class="badge">Bảo mật cơ bản</span></h3>
+            <p><b>Đặc điểm:</b> Sử dụng chất liệu decal giấy thông thường kết hợp mã QR định danh và mã hóa phần cứng.</p>
+            <p><b>Tác dụng:</b> Giúp người tiêu dùng dùng smartphone quét kiểm tra nguồn gốc xuất xứ, thông tin nhà sản xuất và lịch sử quét ngay lập tức.</p>
+            <p><b>Phù hợp cho:</b> Nông sản sạch, quần áo thời trang phổ thông, văn phòng phẩm, hàng tiêu dùng nhanh giá trị thấp.</p>
         </div>
 
-        <!-- CỘT ĐIỀU HƯỚNG NHANH BÊN PHẢI -->
-        <div class="sidebar">
-            <h3>📑 Mục Lục Chuyên Đề</h3>
-            <a href="#phap-luat" class="sidebar-item">⚖️ 1. Cơ Sở Pháp Lý & Chế Tài Xử Lý</a>
-            <a href="#huong-dan" class="sidebar-item">📱 2. Hướng Dẫn Kiểm Tra Bằng Smartphone</a>
-            <a href="#cong-nghe" class="sidebar-item">🛡️ 3. Công Nghệ Chống Sao Chép Mã Hóa</a>
-            <a href="/buy" class="sidebar-item" style="background: #22c55e; color: white; border-color: #22c55e; text-align: center; margin-top: 20px;">🚀 Đăng Ký Cấp Phát Lô Tem Ngay</a>
+        <h2>2. Tem Chống Sao Chép Trực Quan</h2>
+        <div class="tier-card">
+            <h3><span>Gói 2: Tem QR 7 Màu / Hologram</span> <span class="badge badge-high">Bảo mật trung bình</span></h3>
+            <p><b>Đặc điểm:</b> Tích hợp màng nhũ phản quang 7 màu, đổi màu theo góc nhìn, ngăn chặn tuyệt đối việc chụp ảnh hoặc dùng máy in màu thông thường để sao chép.</p>
+            <p><b>Tác dụng:</b> Khẳng định tính chính hãng bằng trực quan, người mua chỉ cần nhìn bằng mắt thường dưới ánh sáng là phân biệt được thật giả.</p>
+            <p><b>Phù hợp cho:</b> Mỹ phẩm, thực phẩm đóng hộp, thiết bị gia dụng.</p>
         </div>
+
+        <h2>3. Tem Vật Lý Chống Tráo Đổi (Tem Vỡ & Tem Nắp Chai)</h2>
+        <div class="tier-card">
+            <h3><span>Gói 3: Tem Vỡ Bảo Hành Linh Kiện Điện Tử</span> <span class="badge badge-high">Bảo mật vật lý</span></h3>
+            <p><b>Đặc điểm:</b> Làm bằng chất liệu decal giòn đặc biệt, khi đã dán vào linh kiện, nếu bóc ra sẽ vỡ vụn thành trăm mảnh, không thể tái sử dụng.</p>
+            <p><b>Tác dụng:</b> Chống tráo đổi linh kiện bên trong thiết bị, làm căn cứ bảo hành điện tử chính xác từ nhà sản xuất.</p>
+        </div>
+        <div class="tier-card">
+            <h3><span>Gói 4: Tem Niêm Phong Nắp Chai / Chống Bóc Void</span> <span class="badge badge-high">Chống bóc mở</span></h3>
+            <p><b>Đặc điểm:</b> Dán ngang nắp chai hoặc cổ lọ, khi xoáy mở sẽ để lại chữ "VOID" hoặc vạch rách rõ ràng.</p>
+            <p><b>Tác dụng:</b> Đảm bảo sản phẩm bên trong hoàn toàn nguyên bản, chưa từng bị mở nắp hay tráo đổi dung dịch.</p>
+            <p><b>Phù hợp cho:</b> Rượu ngoại, dược phẩm chai lọ, mật ong, thực phẩm chức năng.</p>
+        </div>
+
+        <h2>4. Tem Công Nghệ Cao Cấp Phát Quang (Tia UV)</h2>
+        <div class="tier-card">
+            <h3><span>Gói 5 & 6: Tem Phát Quang UV (1 & 2 Bước Sóng)</span> <span class="badge badge-master">Bảo mật tuyệt đối</span></h3>
+            <p><b>Đặc điểm:</b> Sử dụng mực phát quang đặc biệt ẩn hoàn toàn dưới ánh sáng thường. Chỉ khi chiếu đèn tia cực tím (UV) chuyên dụng (bước sóng 365nm hoặc 254nm), nội dung bảo mật mới rực sáng với các màu sắc thay đổi theo bước sóng.</p>
+            <p><b>Tác dụng:</b> Đây là công nghệ bảo mật cấp độ cao nhất (tương đương tiêu chuẩn chống giả trên tiền tệ và hộ chiếu), giúp lực lượng quản lý thị trường hoặc nhà máy kiểm tra nhanh chóng mà kẻ gian hoàn toàn không thể làm giả.</p>
+            <p><b>Phù hợp cho:</b> Hàng hóa phân khúc cao cấp, thiết bị kỹ thuật số đắt tiền, dược phẩm đặc trị.</p>
+        </div>
+
     </div>
 
     <div class="footer">
-        <p>&copy; 2026 Bản quyền thuộc về Giải Pháp Cuộc Sống &bull; Nghiên cứu và phát triển bởi Vương Tùng (Auto Vương Tùng).</p>
+        <p>Bản quyền thuộc về <span>Tác giả Vương Tùng</span> &copy; 2026 | Hệ Thống Giải Pháp Chống Hàng Giả Doanh Nghiệp</p>
     </div>
 
 </body>
