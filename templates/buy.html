@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cổng Mua Tem & Tùy Chọn Phân Khúc Bảo Vệ - Giải Pháp Cuộc Sống</title>
+    <title>Cổng Đăng Ký Tem & Công Nghệ Phát Quang UV - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f8fafc; color: #1e293b; line-height: 1.6; padding: 20px; }
@@ -13,7 +13,7 @@
 
         .container { max-width: 950px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 6px solid #22c55e; }
         h2 { font-size: 26px; color: #0f172a; margin-bottom: 10px; text-align: center; font-weight: 700; }
-        .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; font-size: 14px; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; font-size: 14px; max-width: 750px; margin-left: auto; margin-right: auto; }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
         .form-group { display: flex; flex-direction: column; }
@@ -44,7 +44,7 @@
 <body>
 
     <div class="navbar">
-        <div class="brand">🛡️ CỔNG ĐĂNG KÝ TEM & PHÂN KHÚC BẢO VỆ</div>
+        <div class="brand">🛡️ CỔNG ĐĂNG KÝ TEM & PHÂN KHÚC BẢO VỆ CAO CẤP</div>
         <div>
             <a href="/">&larr; Quay lại Trang Chủ</a> &nbsp;&nbsp;|&nbsp;&nbsp;
             <a href="/news">📖 Xem Cẩm Nang Pháp Lý</a>
@@ -52,14 +52,14 @@
     </div>
 
     <div class="container">
-        <h2>Lựa Chọn Gói Tem & Phân Khúc Bảo Vệ Phù Hợp</h2>
-        <p class="subtitle">Doanh nghiệp hoàn toàn chủ động lựa chọn cấp độ bảo vệ từ tiết kiệm cơ bản đến cao cấp chuyên dụng để tối ưu hóa chi phí sản xuất.</p>
+        <h2>Lựa Chọn Gói Tem & Công Nghệ Phát Quang UV</h2>
+        <p class="subtitle">Hệ thống cung cấp đa dạng giải pháp từ tem QR thông thường đến tem phát quang tia UV chuyên dụng chống giả mạo tinh vi bằng mắt thường và đèn chuyên dụng.</p>
 
         <form action="/buy" method="POST">
             <div class="form-grid">
                 <div class="form-group">
                     <label>Tên Sản Phẩm / Hàng Hóa:</label>
-                    <input type="text" name="prod_name" placeholder="Ví dụ: Nông sản sạch / Rượu sâm / Linh kiện IC" required>
+                    <input type="text" name="prod_name" placeholder="Ví dụ: Rượu ngoại cao cấp / Linh kiện điện tử" required>
                 </div>
                 <div class="form-group">
                     <label>Tên Doanh Nghiệp / Chủ Thể:</label>
@@ -92,6 +92,8 @@
                         <option value="hologram_7color">Gói 2: Tem QR 7 Màu / Hologram Chống Sao Chép (+150đ/tem)</option>
                         <option value="destructible_seal">Gói 3: Tem Vỡ Bảo Hành Linh Kiện Điện Tử (+200đ/tem)</option>
                         <option value="void_bottle">Gói 4: Tem Niêm Phong Nắp Chai / Chống Bóc Void (+250đ/tem)</option>
+                        <option value="uv_1wave">Gói 5: Tem Phát Quang 1 Bước Sóng UV (+350đ/tem)</option>
+                        <option value="uv_2wave" selected>Gói 6: Tem Phát Quang 2 Bước Sóng UV Cao Cấp (+550đ/tem)</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -110,7 +112,7 @@
             <div class="price-preview-box">
                 <div>
                     <div class="label">💰 Ước Tính Tổng Chi Phí Đăng Ký:</div>
-                    <div style="font-size: 13px; color: #15803d; margin-top: 2px;">Đã bao gồm mã hóa phần cứng, tạo file PDF A4 và xuất dữ liệu Excel</div>
+                    <div style="font-size: 13px; color: #15803d; margin-top: 2px;">Bao gồm mã hóa chữ ký số, tệp PDF A4 và kho dữ liệu Excel</div>
                 </div>
                 <div class="amount" id="display_total">0 VNĐ</div>
             </div>
@@ -135,18 +137,18 @@
                     </div>
                     <div class="declaration-item">
                         <label>Dòng Sản Phẩm / Tiêu Chuẩn:</label>
-                        <input type="text" name="legal_brand" placeholder="Ví dụ: Tiêu chuẩn cơ sở / Đóng chai khép kín" required>
+                        <input type="text" name="legal_brand" placeholder="Ví dụ: Tiêu chuẩn bảo mật phát quang UV" required>
                     </div>
                 </div>
 
                 <div class="checkbox-group">
                     <label class="checkbox-label">
                         <input type="checkbox" name="confirm_truth" required>
-                        <span>Tôi cam kết thông tin kê khai trên là hoàn toàn chính xác và chịu trách nhiệm pháp lý theo quy định về chất lượng hàng hóa, nguồn gốc xuất xứ.</span>
+                        <span>Tôi cam kết thông tin kê khai là chính xác và tuân thủ các quy định pháp luật về nguồn gốc xuất xứ hàng hóa.</span>
                     </label>
                     <label class="checkbox-label">
                         <input type="checkbox" name="confirm_ip" required>
-                        <span>Tôi cam kết gói tem đã chọn được sử dụng đúng mục đích bảo vệ thương hiệu và tuân thủ các quy định sở hữu trí tuệ.</span>
+                        <span>Tôi cam kết gói công nghệ tem phát quang UV được sử dụng đúng mục đích bảo mật chống hàng giả.</span>
                     </label>
                 </div>
             </div>
@@ -155,7 +157,7 @@
         </form>
     </div>
 
-    <!-- SCRIPT TỰ ĐỘNG TÍNH GIÁ DỰA TRÊN LỰA CHỌN CỦA KHÁCH HÀNG -->
+    <!-- SCRIPT TỰ ĐỘNG TÍNH GIÁ CHUẨN XÁC -->
     <script>
         function updateTotalPrice() {
             const qty = parseInt(document.getElementById('quantity').value) || 1000;
@@ -172,10 +174,12 @@
             
             let subtotal = qty * basePricePerTem;
             
-            // Cộng phụ phí loại tem chuyên dụng
+            // Cộng phụ phí loại tem chuyên dụng (bao gồm tem UV 1 và 2 bước sóng)
             if (printType === 'hologram_7color') subtotal += qty * 150;
             if (printType === 'destructible_seal') subtotal += qty * 200;
             if (printType === 'void_bottle') subtotal += qty * 250;
+            if (printType === 'uv_1wave') subtotal += qty * 350;
+            if (printType === 'uv_2wave') subtotal += qty * 550;
             
             // Cộng phụ phí kích thước tem
             if (qrSize === 25) subtotal += qty * 50;
