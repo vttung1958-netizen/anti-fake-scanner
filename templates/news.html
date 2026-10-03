@@ -2,22 +2,40 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cẩm Nang Mẫu Tem Thực Tế - Sâm Ngọc Linh & Sản Phẩm Cao Cấp - Giải Pháp Cuộc Sống</title>
+    <title>Cẩm Nang Mẫu Tem Thực Tế - Sâm Ngọc Linh & Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f1f5f9; color: #1e293b; line-height: 1.7; }
 
-        /* THANH TOPBAR THÔNG TIN */
+        /* THANH TOPBAR THÔNG TIN & ĐĂNG NHẬP NHANH */
         .topbar { background: #ffffff; padding: 10px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; flex-wrap: wrap; gap: 10px; }
-        .topbar-right { display: flex; gap: 20px; align-items: center; font-weight: 600; color: #0f172a; }
+        .topbar-left { display: flex; gap: 15px; align-items: center; }
+        .topbar-right { display: flex; gap: 15px; align-items: center; font-weight: 600; color: #0f172a; }
+        
+        .auth-links a { color: #0284c7; text-decoration: none; font-weight: bold; margin-left: 8px; transition: 0.2s; }
+        .auth-links a:hover { text-decoration: underline; }
 
         /* NAVBAR CHÍNH */
         .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .nav-links { display: flex; gap: 15px; align-items: center; }
         .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 12px; border-radius: 6px; transition: 0.2s; }
         .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
         .btn-cta-nav { background: #22c55e !important; color: white !important; }
+
+        /* MODAL ĐĂNG NHẬP / ĐĂNG KÝ NHANH (GOOGLE, FACEBOOK, ZALO) */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: white; width: 400px; padding: 35px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; text-align: center; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: #64748b; font-weight: bold; }
+        .modal-content h2 { color: #0f172a; font-size: 20px; margin-bottom: 20px; }
+        
+        .social-btn { width: 100%; padding: 12px; margin-bottom: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
+        .btn-google { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
+        .btn-google:hover { background: #e2e8f0; }
+        .btn-facebook { background: #1877f2; color: white; }
+        .btn-facebook:hover { background: #145dbf; }
+        .btn-zalo { background: #0068ff; color: white; }
+        .btn-zalo:hover { background: #0052cc; }
 
         /* THANH TRA CỨU MÃ NHANH */
         .quick-verify-bar { background: #0284c7; padding: 15px 50px; display: flex; justify-content: center; align-items: center; gap: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); flex-wrap: wrap; }
@@ -37,14 +55,14 @@
         h2 { font-size: 18px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 10px; scroll-margin-top: 100px; }
         p { font-size: 14px; color: #334155; margin-bottom: 14px; }
 
-        /* BANNER DEMO SẢN PHẨM THỰC TẾ */
+        /* BANNER SẢN PHẨM MẪU */
         .demo-product-banner { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: 10px; padding: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .demo-info h3 { color: #166534; font-size: 17px; margin-bottom: 5px; }
         .demo-info p { color: #15803d; font-size: 13px; margin: 0; }
         .btn-order-now { background: #16a34a; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; transition: 0.2s; }
         .btn-order-now:hover { background: #15803d; }
 
-        /* KHUNG THỂ HIỆN MẪU TEM CHI TIẾT SẮC NÉT */
+        /* KHUNG TEM */
         .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: center; transition: 0.2s; }
         .tier-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-color: #38bdf8; }
         .tier-info h3 { font-size: 16px; color: #0f172a; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
@@ -53,7 +71,6 @@
         .badge-high { background: #3b82f6; }
         .badge-master { background: #8b5cf6; }
 
-        /* THIẾT KẾ CON TEM NHƯ THẬT */
         .stamp-mockup { width: 100%; height: 180px; background: #ffffff; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; border: 2px solid #0f172a; padding: 8px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); position: relative; }
         .stamp-standard { border-color: #0f172a; background: #fff; }
         .stamp-hologram { background: linear-gradient(135deg, #e0f2fe 0%, #fce7f3 50%, #fef08a 100%); border-color: #0284c7; }
@@ -72,7 +89,7 @@
         .stamp-size-tag { font-size: 8px; background: #e2e8f0; color: #334155; padding: 1px 5px; border-radius: 3px; font-weight: bold; }
         .stamp-brand-bottom { font-size: 8px; font-weight: bold; text-transform: uppercase; }
 
-        /* SIDEBAR BÀI VIẾT NỔI BẬT */
+        /* SIDEBAR */
         .sidebar { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 90px; }
         .sidebar h3 { font-size: 16px; color: #0f172a; margin-bottom: 15px; border-bottom: 2px solid #38bdf8; padding-bottom: 8px; }
         .news-item { display: flex; gap: 12px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #f1f5f9; text-decoration: none; transition: 0.2s; }
@@ -91,24 +108,48 @@
 </head>
 <body>
 
-    <!-- THANH TOPBAR THÔNG TIN -->
+    <!-- THANH TOPBAR THÔNG TIN & ĐĂNG NHẬP THÔNG MINH -->
     <div class="topbar">
-        <div>🛡️ Hệ Thống Chống Hàng Giả, Hàng Nhái Quốc Gia</div>
+        <div class="topbar-left">
+            <span>🛡️ Hệ Thống Chống Hàng Giả, Hàng Nhái Quốc Gia</span>
+        </div>
         <div class="topbar-right">
             <span>📞 Hotline: 08 39 39 56 56</span>
-            <span>✉️ info@vuongtung.com.vn</span>
+            <div class="auth-links" id="auth-status-container">
+                <span id="user-welcome-text">Xin chào khách hàng!</span>
+                <a href="#" onclick="openAuthModal()">🔑 Đăng Nhập / Đăng Ký</a>
+            </div>
         </div>
     </div>
 
-    <!-- NAVBAR CHÍNH -->
+    <!-- NAVBAR CHÍNH (ĐÃ SỬA CHUẨN ĐƯỜNG DẪN ADMIN) -->
     <div class="navbar">
-        <div class="brand">🛡️ GIẢI PHÁP CUỘC SỐNG</div>
+        <a href="/" class="brand">🛡️ GIẢI PHÁP CUỘC SỐNG</a>
         <div class="nav-links">
             <a href="/">Trang Chủ</a>
             <a href="/buy">Cấp Phát Lô Tem</a>
             <a href="/news" class="active">Cẩm Nang Kiến Thức</a>
             <a href="/admin">Quản Trị Admin</a>
             <a href="/buy" class="btn-cta-nav">Đăng Ký Tem Ngay</a>
+        </div>
+    </div>
+
+    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ NHANH (GOOGLE, FACEBOOK, ZALO) -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeAuthModal()">&times;</span>
+            <h2>🔐 Đăng Nhập & Đăng Ký Nhanh</h2>
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Hệ thống tự động nhận diện tài khoản, giúp doanh nghiệp quản lý đơn hàng tem thuận tiện mà không cần nhập lại nhiều lần.</p>
+            
+            <button class="social-btn btn-google" onclick="socialLogin('Google')">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18" alt="Google"> Tiếp tục với Google
+            </button>
+            <button class="social-btn btn-facebook" onclick="socialLogin('Facebook')">
+                <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" width="18" alt="Facebook"> Tiếp tục với Facebook
+            </button>
+            <button class="social-btn btn-zalo" onclick="socialLogin('Zalo')">
+                🛡️ Tiếp tục với Zalo ID
+            </button>
         </div>
     </div>
 
@@ -119,7 +160,6 @@
         <button onclick="performQuickVerify()">Xác thực sản phẩm</button>
     </div>
 
-    <!-- BẢNG KẾT QUẢ XÁC THỰC -->
     <div id="verify-result-box">
         <span id="verify-result-text"></span>
     </div>
@@ -127,12 +167,11 @@
     <!-- BỐ CỤC CHÍNH 2 CỘT -->
     <div class="main-container">
 
-        <!-- CỘT TRÁI: NỘI DUNG & MẪU TEM THỰC TẾ TRÊN SẢN PHẨM MẪU -->
+        <!-- CỘT TRÁI -->
         <div class="content-card">
             <h1>Cẩm Nang Mẫu Tem Thực Tế: Ứng Dụng Trên Sản Phẩm Sâm Ngọc Linh</h1>
             <div class="meta">Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia | Tác Giả: Vương Tùng &copy; 2026</div>
 
-            <!-- BANNER GIỚI THIỆU SẢN PHẨM MẪU -->
             <div class="demo-product-banner">
                 <div class="demo-info">
                     <h3>🌿 Sản Phẩm Mẫu: Sâm Ngọc Linh Kon Tum (Mã: SP-NGOCLINH-001)</h3>
@@ -150,7 +189,6 @@
                     <p><b>Sản phẩm mẫu:</b> Hộp trà sâm, cao sâm hộp giấy.</p>
                     <p><b>Quy cách:</b> Kích thước chuẩn <b>2 x 2 cm</b>, in mã định danh lô sản xuất giúp khách hàng quét kiểm tra nguồn gốc lập tức.</p>
                 </div>
-                <!-- MẪU TEM 1 THỰC TẾ -->
                 <div class="stamp-mockup stamp-standard">
                     <div class="stamp-brand-top" style="color:#0f172a;">GIẢI PHÁP CUỘC SỐNG</div>
                     <div class="stamp-prod-name">SÂM NGỌC LINH (SP-001)</div>
@@ -176,7 +214,6 @@
                     <p><b>Sản phẩm mẫu:</b> Bình rượu ngâm Sâm Ngọc Linh cao cấp.</p>
                     <p><b>Quy cách:</b> Màng nhũ phản quang đa sắc <b>2 x 2 cm</b> chống chụp ảnh sao chép, nâng tầm đẳng cấp sản phẩm.</p>
                 </div>
-                <!-- MẪU TEM 2 THỰC TẾ -->
                 <div class="stamp-mockup stamp-hologram">
                     <div class="stamp-brand-top" style="color:#1e3a8a;">✨ GIẢI PHÁP CUỘC SỐNG ✨</div>
                     <div class="stamp-prod-name" style="background:#e0f2fe; color:#0369a1;">RƯỢU SÂM NGỌC LINH (SP-002)</div>
@@ -202,7 +239,6 @@
                     <p><b>Sản phẩm mẫu:</b> Nắp lọ tinh chất sâm cô đặc.</p>
                     <p><b>Quy cách:</b> Kích thước nhỏ gọn <b>1 x 1 cm</b>, tự rách vỡ thành trăm mảnh khi có hành vi bóc mở nắp hộp.</p>
                 </div>
-                <!-- MẪU TEM 3 THỰC TẾ -->
                 <div class="stamp-mockup stamp-destructible">
                     <div class="stamp-brand-top" style="color:#dc2626;">⚠ GIẢI PHÁP CUỘC SỐNG ⚠️</div>
                     <div class="stamp-prod-name" style="background:#fee2e2; color:#991b1b;">TINH CHẤT SÂM (SP-003)</div>
@@ -228,7 +264,6 @@
                     <p><b>Sản phẩm mẫu:</b> Phiên bản Sâm Ngọc Linh thượng hạng giới hạn.</p>
                     <p><b>Quy cách:</b> Kích thước <b>2 x 2 cm</b>, tích hợp mực ẩn phát quang rực sáng dưới đèn UV, cấp độ bảo mật tối cao.</p>
                 </div>
-                <!-- MẪU TEM 4 THỰC TẾ -->
                 <div class="stamp-mockup stamp-uv">
                     <div class="stamp-brand-top" style="color:#38bdf8;">GIẢI PHÁP CUỘC SỐNG</div>
                     <div class="stamp-prod-name" style="background:#1e293b; color:#38bdf8; border:1px solid #38bdf8;">SÂM THƯỢNG HẠNG (SP-004)</div>
@@ -248,30 +283,25 @@
             </div>
         </div>
 
-        <!-- CỘT PHẢI: BÀI VIẾT NỔI BẬT -->
+        <!-- CỘT PHẢI -->
         <div class="sidebar">
             <h3>📖 Bài Viết Nổi Bật & Giải Đáp</h3>
-            
             <a href="/buy" class="news-item">
                 <div class="news-icon">📦</div>
                 <div class="news-title">Tạo mã QR code cho sản phẩm nhanh, dễ dàng in ấn chỉ bằng một cú click</div>
             </a>
-
             <a href="#section-1" class="news-item">
                 <div class="news-icon">🛡️</div>
                 <div class="news-title">Ứng dụng tem chống giả cho Sâm Ngọc Linh và đặc sản cao cấp</div>
             </a>
-
             <a href="#section-3" class="news-item">
                 <div class="news-icon">⚡</div>
                 <div class="news-title">Cách Chống Hàng Giả, Hàng Nhái Bằng Tem Công Nghệ Cao</div>
             </a>
-
             <a href="#section-2" class="news-item">
                 <div class="news-icon">📊</div>
                 <div class="news-title">Các loại tem chống hàng giả đang được sử dụng hiện nay</div>
             </a>
-
             <a href="#section-4" class="news-item">
                 <div class="news-icon">🔍</div>
                 <div class="news-title">Hướng dẫn truy vấn Xác Thực Hàng thật - Hàng giả chính xác</div>
@@ -285,8 +315,42 @@
         <p>Bản quyền thuộc về <span>Tác giả Vương Tùng</span> &copy; 2026 | Hệ Thống Giải Pháp Chống Hàng Giả Doanh Nghiệp</p>
     </div>
 
-    <!-- JAVASCRIPT TRA CỨU MẪU -->
+    <!-- JAVASCRIPT XỬ LÝ ĐĂNG NHẬP / ĐĂNG KÝ VÀ TỰ ĐỘNG NHẬN DIỆN PHIÊN -->
     <script>
+        // Kiểm tra xem đã lưu phiên đăng nhập trước đó chưa (localStorage)
+        window.onload = function() {
+            const savedUser = localStorage.getItem('vt_logged_user');
+            if (savedUser) {
+                document.getElementById('user-welcome-text').innerHTML = '👤 Chào, <b>' + savedUser + '</b>';
+                document.querySelector('.auth-links a').innerHTML = '🚪 Đăng Xuất';
+                document.querySelector('.auth-links a').setAttribute('onclick', 'logoutUser()');
+            }
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-modal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+        }
+
+        function socialLogin(provider) {
+            // Giả lập đăng nhập qua Google, Facebook, Zalo thành công
+            const fakeEmail = 'doanhnghiep_' + provider.toLowerCase() + '@vuongtung.com.vn';
+            localStorage.setItem('vt_logged_user', fakeEmail);
+            
+            alert('🎉 Đăng nhập thành công qua ' + provider + '!\nHệ thống đã ghi nhớ tài khoản của bạn cho những lần truy cập sau.');
+            closeAuthModal();
+            location.reload();
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('vt_logged_user');
+            alert('Đã đăng xuất khỏi hệ thống.');
+            location.reload();
+        }
+
         function performQuickVerify() {
             const serial = document.getElementById('input-serial').value.trim();
             const code = document.getElementById('input-code').value.trim();
