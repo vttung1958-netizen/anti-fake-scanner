@@ -2,15 +2,16 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cẩm Nang Quy Cách & Kích Thước Tem - Giải Pháp Cuộc Sống</title>
+    <title>Cẩm Nang Quy Cách, Kích Thước & Hướng Dẫn Truy Vấn - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f1f5f9; color: #1e293b; line-height: 1.7; }
 
-        /* THANH TOPBAR THÔNG TIN */
+        /* THANH TOPBAR THÔNG TIN & ĐĂNG NHẬP / ĐĂNG KÝ NHANH */
         .topbar { background: #ffffff; padding: 10px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; flex-wrap: wrap; gap: 10px; }
         .topbar-right { display: flex; gap: 20px; align-items: center; font-weight: 600; color: #0f172a; }
-        .auth-links a { color: #0284c7; text-decoration: none; font-weight: bold; margin-left: 8px; }
+        .auth-links a { color: #0284c7; text-decoration: none; font-weight: bold; margin-left: 8px; cursor: pointer; }
+        .auth-links a:hover { text-decoration: underline; }
 
         /* NAVBAR CHÍNH */
         .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
@@ -20,15 +21,20 @@
         .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
         .btn-cta-nav { background: #22c55e !important; color: white !important; }
 
-        /* MODAL ĐĂNG NHẬP / ĐĂNG KÝ */
+        /* MODAL ĐĂNG NHẬP / ĐĂNG KÝ (GOOGLE, FACEBOOK, ZALO) */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 400px; padding: 35px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; text-align: center; }
         .modal-close { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: #64748b; font-weight: bold; }
-        .modal-content h2 { color: #0f172a; font-size: 20px; margin-bottom: 20px; }
+        .modal-content h2 { color: #0f172a; font-size: 20px; margin-bottom: 10px; }
+        .modal-content p { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+        
         .social-btn { width: 100%; padding: 12px; margin-bottom: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
         .btn-google { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
+        .btn-google:hover { background: #e2e8f0; }
         .btn-facebook { background: #1877f2; color: white; }
+        .btn-facebook:hover { background: #145dbf; }
         .btn-zalo { background: #0068ff; color: white; }
+        .btn-zalo:hover { background: #0052cc; }
 
         /* THANH TRA CỨU MÃ NHANH */
         .quick-verify-bar { background: #0284c7; padding: 15px 50px; display: flex; justify-content: center; align-items: center; gap: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); flex-wrap: wrap; }
@@ -84,6 +90,13 @@
         .stamp-size-tag { font-size: 8px; background: #e2e8f0; color: #334155; padding: 1px 5px; border-radius: 3px; font-weight: bold; }
         .stamp-brand-bottom { font-size: 8px; font-weight: bold; text-transform: uppercase; }
 
+        /* KHU VỰC HƯỚNG DẪN TRUY VẤN CHI TIẾT */
+        .guide-steps-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-top: 40px; }
+        .step-item { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; }
+        .step-number { background: #0284c7; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; flex-shrink: 0; }
+        .step-content h4 { font-size: 15px; color: #0f172a; margin-bottom: 4px; }
+        .step-content p { font-size: 13px; color: #475569; margin: 0; }
+
         /* SIDEBAR */
         .sidebar { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 90px; }
         .sidebar h3 { font-size: 16px; color: #0f172a; margin-bottom: 15px; border-bottom: 2px solid #38bdf8; padding-bottom: 8px; }
@@ -103,7 +116,7 @@
 </head>
 <body>
 
-    <!-- THANH TOPBAR THÔNG TIN -->
+    <!-- THANH TOPBAR THÔNG TIN & ĐĂNG NHẬP THÔNG MINH -->
     <div class="topbar">
         <div>🛡️ Hệ Thống Chống Hàng Giả, Hàng Nhái Quốc Gia</div>
         <div class="topbar-right">
@@ -127,15 +140,22 @@
         </div>
     </div>
 
-    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
+    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ NHANH (GOOGLE, FACEBOOK, ZALO) -->
     <div class="modal-overlay" id="auth-modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeAuthModal()">&times;</span>
             <h2>🔐 Đăng Nhập & Đăng Ký Nhanh</h2>
-            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Hệ thống tự động nhận diện tài khoản, giúp quản lý đơn hàng tem thuận tiện.</p>
-            <button class="social-btn btn-google" onclick="socialLogin('Google')">🌐 Tiếp tục với Google</button>
-            <button class="social-btn btn-facebook" onclick="socialLogin('Facebook')">📘 Tiếp tục với Facebook</button>
-            <button class="social-btn btn-zalo" onclick="socialLogin('Zalo')">🛡️ Tiếp tục với Zalo ID</button>
+            <p>Hệ thống tự động nhận diện tài khoản, giúp doanh nghiệp quản lý đơn hàng tem thuận tiện mà không cần nhập lại nhiều lần.</p>
+            
+            <button class="social-btn btn-google" onclick="socialLogin('Google')">
+                🌐 Tiếp tục với Google
+            </button>
+            <button class="social-btn btn-facebook" onclick="socialLogin('Facebook')">
+                📘 Tiếp tục với Facebook
+            </button>
+            <button class="social-btn btn-zalo" onclick="socialLogin('Zalo')">
+                🛡️ Tiếp tục với Zalo ID
+            </button>
         </div>
     </div>
 
@@ -153,7 +173,7 @@
     <!-- BỐ CỤC CHÍNH 2 CỘT -->
     <div class="main-container">
 
-        <!-- CỘT TRÁI -->
+        <!-- CỘT TRÁI: CẨM NANG & QUY CÁCH -->
         <div class="content-card">
             <h1>Cẩm Nang Chuyên Sâu: Phân Loại Tem & Ứng Dụng Ngành Hàng</h1>
             <div class="meta">Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia | Tác Giả: Vương Tùng &copy; 2026</div>
@@ -283,9 +303,35 @@
                     </div>
                 </div>
             </div>
+
+            <!-- PHẦN DIỄN GIẢI CHI TIẾT HƯỚNG DẪN TRUY VẤN XÁC THỰC -->
+            <h2 id="section-guide">5. Hướng Dẫn Truy Vấn Xác Thực Hàng Thật - Hàng Giả</h2>
+            <div class="guide-steps-box">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Quét mã QR hoặc nhập Serial</h4>
+                        <p>Khách hàng sử dụng điện thoại thông minh (Camera hoặc ứng dụng Zalo/VNeID) để quét trực tiếp mã QR in trên con tem dán trên sản phẩm.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Nhập mã xác thực bảo mật</h4>
+                        <p>Trong trường hợp tra cứu thủ công trên website, nhập chính xác <b>Số Serial</b> và <b>Mã xác thực</b> vào thanh tra cứu phía trên cùng của trang web.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Nhận kết quả từ cơ sở dữ liệu quốc gia</h4>
+                        <p>Hệ thống lập tức đối chiếu và trả về thông tin chi tiết: Tên doanh nghiệp sản xuất, ngày xuất xưởng, số lô và trạng thái nguyên bản 100% của sản phẩm.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- CỘT PHẢI -->
+        <!-- CỘT PHẢI: BÀI VIẾT NỔI BẬT & ĐIỀU HƯỚNG -->
         <div class="sidebar">
             <h3>📖 Bài Viết Nổi Bật & Giải Đáp</h3>
             <a href="/buy" class="news-item">
@@ -304,7 +350,7 @@
                 <div class="news-icon">📊</div>
                 <div class="news-title">Các loại tem chống hàng giả đang được sử dụng hiện nay</div>
             </a>
-            <a href="#section-4" class="news-item">
+            <a href="#section-guide" class="news-item">
                 <div class="news-icon">🔍</div>
                 <div class="news-title">Hướng dẫn truy vấn Xác Thực Hàng thật - Hàng giả chính xác</div>
             </a>
@@ -317,7 +363,7 @@
         <p>Bản quyền thuộc về <span>Tác giả Vương Tùng</span> &copy; 2026 | Hệ Thống Giải Pháp Chống Hàng Giả Doanh Nghiệp</p>
     </div>
 
-    <!-- JAVASCRIPT XỬ LÝ -->
+    <!-- JAVASCRIPT XỬ LÝ ĐĂNG NHẬP / ĐĂNG KÝ VÀ TỰ ĐỘNG NHẬN DIỆN PHIÊN -->
     <script>
         window.onload = function() {
             const savedUser = localStorage.getItem('vt_logged_user');
@@ -328,20 +374,25 @@
             }
         }
 
-        function openAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
-        function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+        function openAuthModal() {
+            document.getElementById('auth-modal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+        }
 
         function socialLogin(provider) {
             const fakeEmail = 'doanhnghiep_' + provider.toLowerCase() + '@vuongtung.com.vn';
             localStorage.setItem('vt_logged_user', fakeEmail);
-            alert('🎉 Đăng nhập thành công qua ' + provider + '!');
+            alert('🎉 Đăng nhập thành công qua ' + provider + '!\nHệ thống đã ghi nhớ tài khoản của bạn cho những lần truy cập sau.');
             closeAuthModal();
             location.reload();
         }
 
         function logoutUser() {
             localStorage.removeItem('vt_logged_user');
-            alert('Đã đăng xuất.');
+            alert('Đã đăng xuất khỏi hệ thống.');
             location.reload();
         }
 
