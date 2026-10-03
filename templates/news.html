@@ -14,22 +14,31 @@
         .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
         .btn-cta-nav { background: #22c55e !important; color: white !important; }
 
-        .container { max-width: 900px; margin: 40px auto; background: white; padding: 50px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        h1 { font-size: 32px; color: #0f172a; margin-bottom: 15px; font-weight: 800; line-height: 1.3; }
+        .container { max-width: 950px; margin: 40px auto; background: white; padding: 50px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        h1 { font-size: 30px; color: #0f172a; margin-bottom: 15px; font-weight: 800; line-height: 1.3; }
         .meta { color: #64748b; font-size: 14px; margin-bottom: 30px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
 
-        h2 { font-size: 22px; color: #0f172a; margin-top: 35px; margin-bottom: 15px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 12px; }
-        p { font-size: 16px; color: #334155; margin-bottom: 20px; }
+        h2 { font-size: 20px; color: #0f172a; margin-top: 35px; margin-bottom: 15px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 12px; }
+        p { font-size: 15px; color: #334155; margin-bottom: 15px; }
 
-        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px; margin-bottom: 25px; transition: 0.2s; }
+        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 200px; gap: 20px; align-items: center; transition: 0.2s; }
         .tier-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-color: #38bdf8; }
-        .tier-card h3 { font-size: 18px; color: #0f172a; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .badge { background: #22c55e; color: white; font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: bold; }
+        .tier-info h3 { font-size: 17px; color: #0f172a; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        
+        .badge { background: #22c55e; color: white; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
         .badge-high { background: #3b82f6; }
         .badge-master { background: #8b5cf6; }
 
+        .img-box { width: 100%; height: 130px; background: #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #cbd5e1; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .img-placeholder { font-size: 12px; color: #64748b; text-align: center; padding: 10px; }
+
         .footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 30px; font-size: 14px; margin-top: 60px; }
         .footer span { color: #38bdf8; font-weight: bold; }
+
+        @media (max-width: 768px) {
+            .tier-card { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -39,53 +48,80 @@
         <div class="nav-links">
             <a href="/">Trang Chủ</a>
             <a href="/buy">Cấp Phát Lô Tem</a>
-            <a href="/news" class="active">Cẩm Nang Pháp Lý & Kiến Thức</a>
+            <a href="/news" class="active">Cẩm Nang Kiến Thức</a>
             <a href="/admin">Quản Trị Admin</a>
             <a href="/buy" class="btn-cta-nav">Đăng Ký Tem Ngay</a>
         </div>
     </div>
 
     <div class="container">
-        <h1>Cẩm Nang Chuyên Sâu: Tác Dụng, Phân Loại & Mức Độ Bảo Mật Của Tem Chống Hàng Giả</h1>
-        <div class="meta">Cập nhật tháng 10/2026 | Ban Biên Tập Công Nghệ & Pháp Lý Doanh Nghiệp</div>
+        <h1>Cẩm Nang Chuyên Sâu: Tác Dụng, Phân Loại & Mức Độ Bảo Mật Các Loại Tem Chống Hàng Giả</h1>
+        <div class="meta">Cập nhật năm 2026 | Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia</div>
 
-        <p>Trong bối cảnh hàng giả, hàng nhái ngày càng tinh vi, việc lựa chọn đúng loại tem chống hàng giả không chỉ giúp doanh nghiệp bảo vệ uy tín thương hiệu mà còn tiết kiệm chi phí tối đa. Dưới đây là phân tích chi tiết về các loại tem, tác dụng chuyên biệt và mức độ bảo mật tương ứng.</p>
+        <p>Để bảo vệ thương hiệu hiệu quả và tối ưu hóa chi phí, doanh nghiệp cần nắm rõ đặc tính kỹ thuật, tác dụng chuyên biệt cũng như mức độ bảo mật của từng dòng tem hiện hành trên thị trường.</p>
 
         <h2>1. Tem QR Tiêu Chuẩn (Phân khúc tiết kiệm)</h2>
         <div class="tier-card">
-            <h3><span>Gói 1: Tem QR Decal Thường</span> <span class="badge">Bảo mật cơ bản</span></h3>
-            <p><b>Đặc điểm:</b> Sử dụng chất liệu decal giấy thông thường kết hợp mã QR định danh và mã hóa phần cứng.</p>
-            <p><b>Tác dụng:</b> Giúp người tiêu dùng dùng smartphone quét kiểm tra nguồn gốc xuất xứ, thông tin nhà sản xuất và lịch sử quét ngay lập tức.</p>
-            <p><b>Phù hợp cho:</b> Nông sản sạch, quần áo thời trang phổ thông, văn phòng phẩm, hàng tiêu dùng nhanh giá trị thấp.</p>
+            <div class="tier-info">
+                <h3><span>Gói 1: Tem QR Decal Thường</span> <span class="badge">Bảo mật cơ bản</span></h3>
+                <p><b>Đặc điểm:</b> In trên chất liệu decal giấy hoặc nhựa PVC, tích hợp mã QR kết nối trực tiếp với hệ thống xác thực điện tử.</p>
+                <p><b>Tác dụng:</b> Giúp người tiêu dùng dùng smartphone quét kiểm tra nguồn gốc, hạn sử dụng và lịch sử quét. Phù hợp cho nông sản, hàng tiêu dùng nhanh.</p>
+            </div>
+            <div class="img-box">
+                <img src="/static/tem_standard.jpg" alt="Mẫu Tem QR Tiêu Chuẩn" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="img-placeholder" style="display:none;">Ảnh mẫu Tem QR Tiêu Chuẩn<br>(Đặt file: static/tem_standard.jpg)</div>
+            </div>
         </div>
 
         <h2>2. Tem Chống Sao Chép Trực Quan</h2>
         <div class="tier-card">
-            <h3><span>Gói 2: Tem QR 7 Màu / Hologram</span> <span class="badge badge-high">Bảo mật trung bình</span></h3>
-            <p><b>Đặc điểm:</b> Tích hợp màng nhũ phản quang 7 màu, đổi màu theo góc nhìn, ngăn chặn tuyệt đối việc chụp ảnh hoặc dùng máy in màu thông thường để sao chép.</p>
-            <p><b>Tác dụng:</b> Khẳng định tính chính hãng bằng trực quan, người mua chỉ cần nhìn bằng mắt thường dưới ánh sáng là phân biệt được thật giả.</p>
-            <p><b>Phù hợp cho:</b> Mỹ phẩm, thực phẩm đóng hộp, thiết bị gia dụng.</p>
+            <div class="tier-info">
+                <h3><span>Gói 2: Tem QR 7 Màu / Hologram</span> <span class="badge badge-high">Bảo mật trung bình</span></h3>
+                <p><b>Đặc điểm:</b> Sử dụng màng nhũ laser phản quang 7 màu đổi góc nhìn, ngăn chặn việc chụp ảnh hoặc dùng máy in màu sao chép.</p>
+                <p><b>Tác dụng:</b> Khẳng định tính chính hãng bằng mắt thường, tạo sự sang trọng cho sản phẩm mỹ phẩm, thực phẩm đóng hộp.</p>
+            </div>
+            <div class="img-box">
+                <img src="/static/tem_hologram.jpg" alt="Mẫu Tem Hologram 7 Màu" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="img-placeholder" style="display:none;">Ảnh mẫu Tem Hologram<br>(Đặt file: static/tem_hologram.jpg)</div>
+            </div>
         </div>
 
-        <h2>3. Tem Vật Lý Chống Tráo Đổi (Tem Vỡ & Tem Nắp Chai)</h2>
+        <h2>3. Tem Vật Lý Chống Tráo Đổi (Tem Vỡ & Nắp Chai)</h2>
         <div class="tier-card">
-            <h3><span>Gói 3: Tem Vỡ Bảo Hành Linh Kiện Điện Tử</span> <span class="badge badge-high">Bảo mật vật lý</span></h3>
-            <p><b>Đặc điểm:</b> Làm bằng chất liệu decal giòn đặc biệt, khi đã dán vào linh kiện, nếu bóc ra sẽ vỡ vụn thành trăm mảnh, không thể tái sử dụng.</p>
-            <p><b>Tác dụng:</b> Chống tráo đổi linh kiện bên trong thiết bị, làm căn cứ bảo hành điện tử chính xác từ nhà sản xuất.</p>
+            <div class="tier-info">
+                <h3><span>Gói 3: Tem Vỡ Bảo Hành Linh Kiện</span> <span class="badge badge-high">Bảo mật vật lý</span></h3>
+                <p><b>Đặc điểm:</b> Chất liệu decal giòn, khi bóc sẽ vỡ vụn thành trăm mảnh, không thể tái sử dụng.</p>
+                <p><b>Tác dụng:</b> Chống tráo đổi linh kiện điện tử, làm căn cứ bảo hành thiết bị chính xác từ nhà sản xuất.</p>
+            </div>
+            <div class="img-box">
+                <img src="/static/tem_destructible.jpg" alt="Mẫu Tem Vỡ Bảo Hành" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="img-placeholder" style="display:none;">Ảnh mẫu Tem Vỡ<br>(Đặt file: static/tem_destructible.jpg)</div>
+            </div>
         </div>
+
         <div class="tier-card">
-            <h3><span>Gói 4: Tem Niêm Phong Nắp Chai / Chống Bóc Void</span> <span class="badge badge-high">Chống bóc mở</span></h3>
-            <p><b>Đặc điểm:</b> Dán ngang nắp chai hoặc cổ lọ, khi xoáy mở sẽ để lại chữ "VOID" hoặc vạch rách rõ ràng.</p>
-            <p><b>Tác dụng:</b> Đảm bảo sản phẩm bên trong hoàn toàn nguyên bản, chưa từng bị mở nắp hay tráo đổi dung dịch.</p>
-            <p><b>Phù hợp cho:</b> Rượu ngoại, dược phẩm chai lọ, mật ong, thực phẩm chức năng.</p>
+            <div class="tier-info">
+                <h3><span>Gói 4: Tem Niêm Phong Nắp Chai / Void</span> <span class="badge badge-high">Chống bóc mở</span></h3>
+                <p><b>Đặc điểm:</b> Dán ngang nắp chai lọ, khi mở sẽ hiện chữ "VOID" hoặc để lại dấu vết rõ ràng.</p>
+                <p><b>Tác dụng:</b> Đảm bảo sản phẩm bên trong nguyên bản 100%, chưa từng bị tráo đổi dung dịch (rượu ngoại, dược phẩm, mật ong).</p>
+            </div>
+            <div class="img-box">
+                <img src="/static/tem_void.jpg" alt="Mẫu Tem Niêm Phong Nắp Chai" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="img-placeholder" style="display:none;">Ảnh mẫu Tem Nắp Chai Void<br>(Đặt file: static/tem_void.jpg)</div>
+            </div>
         </div>
 
         <h2>4. Tem Công Nghệ Cao Cấp Phát Quang (Tia UV)</h2>
         <div class="tier-card">
-            <h3><span>Gói 5 & 6: Tem Phát Quang UV (1 & 2 Bước Sóng)</span> <span class="badge badge-master">Bảo mật tuyệt đối</span></h3>
-            <p><b>Đặc điểm:</b> Sử dụng mực phát quang đặc biệt ẩn hoàn toàn dưới ánh sáng thường. Chỉ khi chiếu đèn tia cực tím (UV) chuyên dụng (bước sóng 365nm hoặc 254nm), nội dung bảo mật mới rực sáng với các màu sắc thay đổi theo bước sóng.</p>
-            <p><b>Tác dụng:</b> Đây là công nghệ bảo mật cấp độ cao nhất (tương đương tiêu chuẩn chống giả trên tiền tệ và hộ chiếu), giúp lực lượng quản lý thị trường hoặc nhà máy kiểm tra nhanh chóng mà kẻ gian hoàn toàn không thể làm giả.</p>
-            <p><b>Phù hợp cho:</b> Hàng hóa phân khúc cao cấp, thiết bị kỹ thuật số đắt tiền, dược phẩm đặc trị.</p>
+            <div class="tier-info">
+                <h3><span>Gói 5 & 6: Tem Phát Quang UV (1 & 2 Bước Sóng)</span> <span class="badge badge-master">Bảo mật tuyệt đối</span></h3>
+                <p><b>Đặc điểm:</b> Ẩn hoàn toàn dưới ánh sáng thường[cite: 7]. Chỉ phát sáng rực rỡ với các bước sóng đổi màu khi chiếu đèn tia cực tím (UV) chuyên dụng[cite: 7].</p>
+                <p><b>Tác dụng:</b> Mức độ bảo mật cao nhất (tiêu chuẩn tiền tệ), giúp cơ quan chức năng kiểm tra nhanh chóng mà kẻ gian không thể làm giả.</p>
+            </div>
+            <div class="img-box">
+                <img src="/static/tem_uv.jpg" alt="Mẫu Tem Phát Quang UV" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="img-placeholder" style="display:none;">Ảnh mẫu Tem Phát Quang UV<br>(Đặt file: static/tem_uv.jpg)</div>
+            </div>
         </div>
 
     </div>
