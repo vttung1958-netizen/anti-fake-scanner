@@ -94,7 +94,7 @@ products_db = [
     {
         "code": "SP001",
         "token": "A1B2C3D4-MASTER",
-        "name": "Sâm ngọc linh nguyên chất",
+        "name": "Sản phẩm mẫu chính hãng",
         "manufacturer": "Công ty TNHH Vương Tùng",
         "hardware_id": "HW-MASTER-ROOT-01",
         "mfg_date": "2026-03-01",
@@ -374,6 +374,11 @@ def admin():
     if not session.get('logged_in'): return redirect(url_for('admin_login'))
     config = load_pricing_config()
     return render_template('admin.html', products=products_db, orders=orders_db, config=config)
+
+# Bổ sung route phụ dự phòng để đảm bảo 100% không bao giờ mất quyền quản trị
+@app.route('/quan_tri')
+def quan_tri():
+    return redirect(url_for('admin'))
 
 @app.route('/super_admin')
 def super_admin():
