@@ -21,6 +21,11 @@
         .form-group input, .form-group select { padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; transition: 0.2s; background: #fff; }
         .form-group input:focus, .form-group select:focus { border-color: #38bdf8; }
 
+        /* KHUNG TÍCH CHỌN MÃ VẠCH (BARCODE) NỔI BẬT */
+        .barcode-addon-box { background: #f0fdf4; border: 2px dashed #22c55e; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .barcode-addon-box input[type="checkbox"] { width: 20px; height: 20px; accent-color: #22c55e; cursor: pointer; }
+        .barcode-addon-box label { font-size: 14px; color: #166534; font-weight: bold; cursor: pointer; margin: 0; }
+
         .price-preview-box { background: #f0fdf4; border: 2px solid #22c55e; padding: 20px; border-radius: 12px; margin: 25px 0; display: flex; justify-content: space-between; align-items: center; }
         .price-preview-box .label { font-size: 16px; font-weight: bold; color: #166534; }
         .price-preview-box .amount { font-size: 24px; font-weight: 800; color: #15803d; }
@@ -52,8 +57,8 @@
     </div>
 
     <div class="container">
-        <h2>Lựa Chọn Gói Tem & Công Nghệ Phát Quang UV</h2>
-        <p class="subtitle">Hệ thống cung cấp đa dạng giải pháp từ tem QR thông thường đến tem phát quang tia UV chuyên dụng chống giả mạo tinh vi bằng mắt thường và đèn chuyên dụng.</p>
+        <h2>Lựa Chọn Gói Tem & Tích Hợp Mã Vạch (Barcode)</h2>
+        <p class="subtitle">Hệ thống cung cấp đa dạng giải pháp từ tem QR thông thường, tem phát quang tia UV đến mã vạch chuẩn công nghiệp (Code 128) phục vụ kho vận và siêu thị.</p>
 
         <form action="/buy" method="POST">
             <div class="form-grid">
@@ -108,11 +113,17 @@
                 </div>
             </div>
 
+            <!-- TÙY CHỌN TÍCH HỢP MÃ VẠCH (BARCODE) SONG SONG -->
+            <div class="barcode-addon-box">
+                <input type="checkbox" id="include_barcode" name="include_barcode" value="yes" checked>
+                <label for="include_barcode">📊 Tích hợp song song Mã Vạch Barcode (Code 128) lên lô tem (+100đ/tem) - Phục vụ quản lý kho & siêu thị</label>
+            </div>
+
             <!-- HIỂN THỊ TỔNG TIỀN TỰ ĐỘNG CẬP NHẬT -->
             <div class="price-preview-box">
                 <div>
                     <div class="label">💰 Ước Tính Tổng Chi Phí Đăng Ký:</div>
-                    <div style="font-size: 13px; color: #15803d; margin-top: 2px;">Bao gồm mã hóa chữ ký số, tệp PDF A4 và kho dữ liệu Excel</div>
+                    <div style="font-size: 13px; color: #15803d; margin-top: 2px;">Bao gồm mã hóa chữ ký số, thư viện ảnh QR, Barcode, tệp PDF A4 và Excel</div>
                 </div>
                 <div class="amount" id="display_total">0 VNĐ</div>
             </div>
@@ -157,12 +168,13 @@
         </form>
     </div>
 
-    <!-- SCRIPT TỰ ĐỘNG TÍNH GIÁ CHUẨN XÁC -->
+    <!-- SCRIPT TỰ ĐỘNG TÍNH GIÁ CHUẨN XÁC KÈM PHÍ MÃ VẠCH -->
     <script>
         function updateTotalPrice() {
             const qty = parseInt(document.getElementById('quantity').value) || 1000;
             const printType = document.getElementById('print_type').value;
             const qrSize = parseInt(document.getElementById('qr_size').value) || 20;
+            const includeBarcode = document.getElementById('include_barcode').checked;
             
             // Biểu giá bậc thang cơ bản theo số lượng
             let basePricePerTem = 890;
@@ -174,7 +186,7 @@
             
             let subtotal = qty * basePricePerTem;
             
-            // Cộng phụ phí loại tem chuyên dụng (bao gồm tem UV 1 và 2 bước sóng)
+            // Cộng phụ phí loại tem chuyên dụng
             if (printType === 'hologram_7color') subtotal += qty * 150;
             if (printType === 'destructible_seal') subtotal += qty * 200;
             if (printType === 'void_bottle') subtotal += qty * 250;
@@ -184,6 +196,11 @@
             // Cộng phụ phí kích thước tem
             if (qrSize === 25) subtotal += qty * 50;
             if (qrSize === 35) subtotal += qty * 120;
+
+            // Cộng phụ phí mã vạch Barcode (+100đ/tem nếu chọn)
+            if (includeBarcode) {
+                subtotal += qty * 100;
+            }
             
             // Hiển thị ra màn hình
             document.getElementById('display_total').innerText = subtotal.toLocaleString('vi-VN') + " VNĐ";
@@ -193,6 +210,7 @@
         document.getElementById('quantity').addEventListener('change', updateTotalPrice);
         document.getElementById('print_type').addEventListener('change', updateTotalPrice);
         document.getElementById('qr_size').addEventListener('change', updateTotalPrice);
+        document.getElementById('include_barcode').addEventListener('change', updateTotalPrice);
         
         // Tính toán ngay khi tải trang
         window.onload = updateTotalPrice;
