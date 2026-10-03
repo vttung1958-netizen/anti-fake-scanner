@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cẩm Nang Mẫu Tem Chuẩn & Tra Cứu Xác Thực - Giải Pháp Cuộc Sống</title>
+    <title>Cẩm Nang Quy Cách & Kích Thước Tem - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f1f5f9; color: #1e293b; line-height: 1.7; }
@@ -48,7 +48,12 @@
         h2 { font-size: 18px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 10px; scroll-margin-top: 100px; }
         p { font-size: 14px; color: #334155; margin-bottom: 14px; }
 
-        /* KHUNG THỂ HIỆN MẪU TEM DO HỆ THỐNG PHÁT HÀNH */
+        /* BẢNG KÍCH THƯỚC CHUẨN (CHO KHÁCH LỰA CHỌN) */
+        .size-guide-box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; font-size: 13px; }
+        .size-tags-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .size-badge-item { background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; border: 1px solid #bae6fd; }
+
+        /* KHUNG TEM */
         .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: center; transition: 0.2s; }
         .tier-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-color: #38bdf8; }
         .tier-info h3 { font-size: 16px; color: #0f172a; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
@@ -56,6 +61,9 @@
         .badge { background: #22c55e; color: white; font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
         .badge-high { background: #3b82f6; }
         .badge-master { background: #8b5cf6; }
+
+        .btn-register-tier { display: inline-block; margin-top: 12px; background: #0284c7; color: white; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; text-decoration: none; transition: 0.2s; }
+        .btn-register-tier:hover { background: #0369a1; }
 
         .stamp-mockup { width: 100%; height: 180px; background: #ffffff; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; border: 2px solid #0f172a; padding: 8px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); position: relative; }
         .stamp-standard { border-color: #0f172a; background: #fff; }
@@ -66,10 +74,8 @@
 
         .stamp-brand-top { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        /* KHUNG MÃ QR THỰC TẾ CHUẨN IN ẤN TRONG HỆ THỐNG */
         .qr-real-box { width: 55px; height: 55px; background: #fff; border: 1.5px solid #000; padding: 2px; display: flex; align-items: center; justify-content: center; }
         .qr-real-box img { width: 100%; height: 100%; object-fit: contain; }
-        /* Fallback nếu chưa có file ảnh QR cụ thể: hiển thị ma trận chuẩn */
         .qr-fallback-matrix { width: 100%; height: 100%; background: #000; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 1px; padding: 2px; }
         .qrc { background: #fff; }
         .qrc.dark { background: #000; }
@@ -135,7 +141,7 @@
 
     <!-- THANH TRA CỨU MÃ NHANH -->
     <div class="quick-verify-bar">
-        <input type="text" id="input-serial" placeholder="Nhập SỐ SERIAL (VD: VN-PROD-01)..." value="VN-SYS-2026-9999">
+        <input type="text" id="input-serial" placeholder="Nhập SỐ SERIAL..." value="VN-SYS-2026-9999">
         <input type="text" id="input-code" placeholder="Nhập MÃ XÁC THỰC..." value="123456">
         <button onclick="performQuickVerify()">Xác thực sản phẩm</button>
     </div>
@@ -149,24 +155,35 @@
 
         <!-- CỘT TRÁI -->
         <div class="content-card">
-            <h1>Cẩm Nang Chuyên Sâu: Mẫu Tem & Quy Cách Phát Hành Chính Thức</h1>
+            <h1>Cẩm Nang Chuyên Sâu: Phân Loại Tem & Hướng Dẫn Kích Thước Chuẩn</h1>
             <div class="meta">Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia | Tác Giả: Vương Tùng &copy; 2026</div>
 
-            <p>Hệ thống cung cấp giải pháp tem xác thực điện tử tiêu chuẩn cao, được thiết kế tối ưu cho mọi ngành hàng sản xuất. Dưới đây là mô phỏng mẫu tem thực tế phát hành bởi hệ thống, tích hợp mã QR mã hóa định danh và thông tin xác thực chống giả:</p>
+            <p>Hệ thống cung cấp đa dạng các chủng loại tem chống hàng giả với các tiêu chuẩn kích thước linh hoạt, phù hợp từ các linh kiện điện tử nhỏ gọn đến các thùng hàng, hộp quà tặng lớn[cite: 7].</p>
+
+            <!-- HƯỚNG DẪN TÙY CHỌN KÍCH THƯỚC -->
+            <div class="size-guide-box">
+                <b>📏 Các tùy chọn kích thước tem tiêu chuẩn trong hệ thống:</b>
+                <div class="size-tags-row">
+                    <span class="size-badge-item">1 x 1 cm (Tem vỡ linh kiện)</span>
+                    <span class="size-badge-item">1.5 x 1.5 cm (Tem niêm phong nhỏ)</span>
+                    <span class="size-badge-item">2 x 2 cm (Tem QR phổ thông)</span>
+                    <span class="size-badge-item">2.5 x 2.5 cm (Tem QR lớn / Hologram)</span>
+                    <span class="size-badge-item">3 x 3 cm (Tem nhãn quà tặng / Chai lọ)</span>
+                </div>
+            </div>
 
             <h2 id="section-1">1. Tem QR Tiêu Chuẩn (Phân khúc tiết kiệm phổ thông)</h2>
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 1: Tem QR Decal Thường</span> <span class="badge">Bảo mật cơ bản</span></h3>
-                    <p><b>Đặc điểm:</b> In trên chất liệu decal giấy hoặc nhựa PVC cao cấp.</p>
-                    <p><b>Quy cách:</b> Kích thước chuẩn <b>2 x 2 cm</b>, tích hợp mã QR do hệ thống tự động phát hành và mã hóa chống giả[cite: 7].</p>
+                    <p><b>Đặc điểm:</b> In trên chất liệu decal giấy trắng, tích hợp mã QR định danh[cite: 7].</p>
+                    <p><b>Kích thước khuyên dùng:</b> <b>2 x 2 cm</b> hoặc <b>2.5 x 2.5 cm</b> cho hộp sản phẩm.</p>
+                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Gói Này Ngay</a>
                 </div>
-                <!-- MẪU TEM 1 -->
                 <div class="stamp-mockup stamp-standard">
                     <div class="stamp-brand-top" style="color:#0f172a;">GIẢI PHÁP CUỘC SỐNG</div>
                     <div class="qr-real-box">
-                        <!-- Hiển thị ảnh QR thực tế nếu có trong static/qr_sample.png, nếu không sẽ hiển thị ma trận chuẩn -->
-                        <img src="/static/qr_sample.png" alt="Mã QR Phát Hành" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                        <img src="/static/qr_sample.png" alt="Mã QR" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
                         <div class="qr-fallback-matrix" style="display:none;">
                             <div class="qrc dark"></div><div class="qrc"></div><div class="qrc dark"></div><div class="qrc dark"></div><div class="qrc"></div>
                             <div class="qrc"></div><div class="qrc dark"></div><div class="qrc"></div><div class="qrc dark"></div><div class="qrc dark"></div>
@@ -187,14 +204,14 @@
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 2: Tem QR Hologram 3D</span> <span class="badge badge-high">Bảo mật trung bình</span></h3>
-                    <p><b>Đặc điểm:</b> Màng nhũ phản quang đa sắc chống chụp ảnh sao chép[cite: 7].</p>
-                    <p><b>Quy cách:</b> Kích thước chuẩn <b>2 x 2 cm</b>, hiển thị hiệu ứng đổi màu theo góc nhìn[cite: 7].</p>
+                    <p><b>Đặc điểm:</b> Màng nhũ phản quang đa sắc chuyển màu theo góc nhìn[cite: 7].</p>
+                    <p><b>Kích thước khuyên dùng:</b> <b>2 x 2 cm</b> hoặc <b>3 x 3 cm</b> cho mỹ phẩm, rượu ngoại.</p>
+                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Gói Này Ngay</a>
                 </div>
-                <!-- MẪU TEM 2 -->
                 <div class="stamp-mockup stamp-hologram">
                     <div class="stamp-brand-top" style="color:#1e3a8a;">✨ GIẢI PHÁP CUỘC SỐNG ✨</div>
                     <div class="qr-real-box" style="border-color:#2563eb;">
-                        <img src="/static/qr_sample.png" alt="Mã QR 3D" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                        <img src="/static/qr_sample.png" alt="Mã QR" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
                         <div class="qr-fallback-matrix" style="display:none; background:#2563eb;">
                             <div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div>
                             <div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc dark" style="background:#2563eb;"></div>
@@ -215,14 +232,14 @@
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 3 & 4: Tem Vỡ & Niêm Phong Void</span> <span class="badge badge-high">Bảo mật vật lý</span></h3>
-                    <p><b>Đặc điểm:</b> Chất liệu decal giòn tự hủy khi bóc mở[cite: 7].</p>
-                    <p><b>Quy cách:</b> Kích thước nhỏ gọn <b>1 x 1 cm</b>, chống tráo đổi linh kiện hoặc niêm phong nắp hộp[cite: 7].</p>
+                    <p><b>Đặc điểm:</b> Chất liệu decal giòn tự hủy hoặc hiện chữ "VOID" khi bóc[cite: 7].</p>
+                    <p><b>Kích thước khuyên dùng:</b> <b>1 x 1 cm</b> hoặc <b>1.5 x 1.5 cm</b> dán mép hộp hoặc linh kiện.</p>
+                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Gói Này Ngay</a>
                 </div>
-                <!-- MẪU TEM 3 -->
                 <div class="stamp-mockup stamp-destructible">
                     <div class="stamp-brand-top" style="color:#dc2626;">⚠ GIẢI PHÁP CUỘC SỐNG ⚠️</div>
                     <div class="qr-real-box" style="border-color:#dc2626;">
-                        <img src="/static/qr_sample.png" alt="Mã QR Vỡ" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                        <img src="/static/qr_sample.png" alt="Mã QR" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
                         <div class="qr-fallback-matrix" style="display:none; background:#dc2626;">
                             <div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div>
                             <div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc dark" style="background:#dc2626;"></div>
@@ -243,14 +260,14 @@
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 5 & 6: Tem Phát Quang UV</span> <span class="badge badge-master">Bảo mật tuyệt đối</span></h3>
-                    <p><b>Đặc điểm:</b> Tích hợp mực ẩn phát quang dưới tia cực tím[cite: 7].</p>
-                    <p><b>Quy cách:</b> Kích thước <b>2 x 2 cm</b>, cấp độ bảo mật tối cao chống làm giả hoàn toàn[cite: 7].</p>
+                    <p><b>Đặc điểm:</b> Tích hợp mực ẩn phát quang rực sáng dưới đèn UV[cite: 7].</p>
+                    <p><b>Kích thước khuyên dùng:</b> <b>2 x 2 cm</b> hoặc <b>2.5 x 2.5 cm</b> cho hàng cao cấp giới hạn.</p>
+                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Gói Này Ngay</a>
                 </div>
-                <!-- MẪU TEM 4 -->
                 <div class="stamp-mockup stamp-uv">
                     <div class="stamp-brand-top" style="color:#38bdf8;">GIẢI PHÁP CUỘC SỐNG</div>
                     <div class="qr-real-box" style="border-color:#38bdf8; background:#0f172a;">
-                        <img src="/static/qr_sample.png" alt="Mã QR UV" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                        <img src="/static/qr_sample.png" alt="Mã QR" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
                         <div class="qr-fallback-matrix" style="display:none; background:#0f172a;">
                             <div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div>
                             <div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#38bdf8;"></div>
