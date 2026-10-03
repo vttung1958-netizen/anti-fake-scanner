@@ -303,19 +303,15 @@ def success_download(order_id):
             
             if len(sample_qr_data) < 12: sample_qr_data.append((code, batch_img_path))
             
-            bc_filename_str = None
             if include_barcode:
-                # Tạo Barcode Code128
                 bc = Code128(code, writer=ImageWriter())
                 bc_path_base = os.path.join(BARCODE_OUTPUT_DIR, f"bc_{code}")
                 bc_saved_file = bc.save(bc_path_base, options={'write_text': True, 'font_size': 10, 'text_distance': 5})
                 
                 batch_bc_path = os.path.join(batch_bc_dir, f"{code}.png")
-                # Move/copy barcode to batch folder
                 if os.path.exists(bc_saved_file):
                     os.replace(bc_saved_file, batch_bc_path)
                     generated_bc_files.append(batch_bc_path)
-                    bc_filename_str = f"{code}.png"
                 
             new_prod = {
                 "code": code, "token": token, "name": prod_name, "manufacturer": manufacturer,
@@ -339,7 +335,7 @@ def success_download(order_id):
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 11)
-        pdf.cell(0, 8, f"TRANG IN THU MAU - KICH THUOC QR: {qr_size}x{qr_size} MM {('(Kem Ma Vach Barcode)') if include_barcode else ''}", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, f"TRANG IN THU MAU - KICH THUOC QR: {qr_size}x{qr_size} MM", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("helvetica", "I", 9)
         pdf.cell(0, 6, f"Doanh nghiep: {manufacturer} | HW-ID: {company_hw_id}", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(4)
@@ -410,7 +406,10 @@ def admin_logout():
 
 @app.route('/admin')
 def admin():
-    if not session.get('logged_in'): return redirect(url_for('admin_login'))
+    # KIỂM TRA PHÂN QUYỀN QUẢN TRỊ: Nếu chưa đăng nhập, buộc chuyển hướng sang trang đăng nhập admin
+    if not session.get('logged_in'):
+        return redirect(url_for('admin_login'))
+    
     config = load_pricing_config()
     return render_template('admin.html', products=products_db, orders=orders_db, config=config)
 
@@ -427,5 +426,4 @@ def super_admin():
 def terms(): return render_template('terms.html')
 
 if __name__ == '__main__':
-    # Lưu ý: Nếu máy thầy chưa có thư viện python-barcode, chạy lệnh: pip install python-barcode
     app.run(host='0.0.0.0', port=5000, debug=True)
