@@ -3,6 +3,8 @@ import uuid
 import json
 import hashlib
 import qrcode
+import barcode
+from barcode.writer import ImageWriter
 import zipfile
 from openpyxl import Workbook
 from flask import Flask, render_template, request, redirect, url_for, session, send_file, jsonify
@@ -13,7 +15,9 @@ app = Flask(__name__)
 app.secret_key = 'vuong_thanh_tung_secret_key_2026'
 
 QR_OUTPUT_DIR = "static/qrs"
+BARCODE_OUTPUT_DIR = "static/barcodes"
 os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
+os.makedirs(BARCODE_OUTPUT_DIR, exist_ok=True)
 os.makedirs("static", exist_ok=True)
 os.makedirs("templates", exist_ok=True)
 
@@ -28,7 +32,8 @@ DEFAULT_CONFIG = {
     "uv_1wave_fee": 350,
     "uv_2wave_fee": 550,
     "size_fee_25": 50,
-    "size_fee_35": 120
+    "size_fee_35": 120,
+    "barcode_addon_fee": 100
 }
 
 def load_pricing_config():
@@ -59,7 +64,7 @@ def generate_secure_digital_signature(code, manufacturer, hw_id):
     raw_string = f"{code}-{manufacturer}-{hw_id}-VUONGTUNG-ENTERPRISE-2026"
     return hashlib.sha256(raw_string.encode('utf-8')).hexdigest()[:16].upper()
 
-def calculate_tem_price(quantity, print_type='black_white', qr_size=20):
+def calculate_tem_price(quantity, print_type='black_white', qr_size=20, include_barcode=False):
     config = load_pricing_config()
     
     if quantity <= 1000: base = quantity * 890
@@ -86,7 +91,11 @@ def calculate_tem_price(quantity, print_type='black_white', qr_size=20):
     elif qr_size == 35:
         size_fee = quantity * int(config.get("size_fee_35", 120))
         
-    return base + special_fee + size_fee
+    barcode_fee = 0
+    if include_barcode:
+        barcode_fee = quantity * int(config.get("barcode_addon_fee", 100))
+        
+    return base + special_fee + size_fee + barcode_fee
 
 orders_db = {}
 users_db = {}
@@ -163,15 +172,16 @@ def buy():
             
         print_type = request.form.get('print_type', 'black_white')
         qr_size = int(request.form.get('qr_size', 20))
-        company_hw_id = f"HW-CORP-{uuid.uuid4().hex[:10].upper()}"
+        include_barcode = True if request.form.get('include_barcode') == 'yes' else False
         
-        total_price = calculate_tem_price(quantity, print_type, qr_size)
+        company_hw_id = f"HW-CORP-{uuid.uuid4().hex[:10].upper()}"
+        total_price = calculate_tem_price(quantity, print_type, qr_size, include_barcode)
         order_id = f"DH{uuid.uuid4().hex[:6].upper()}"
         
         orders_db[order_id] = {
             "prod_name": prod_name, "manufacturer": manufacturer, "tax_code": tax_code,
             "hardware_id": company_hw_id, "quantity": quantity, "print_type": print_type,
-            "qr_size": qr_size, "total_price": total_price, "status": "pending",
+            "qr_size": qr_size, "include_barcode": include_barcode, "total_price": total_price, "status": "pending",
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         return redirect(url_for('checkout', order_id=order_id))
@@ -213,7 +223,8 @@ def update_pricing():
             "uv_1wave_fee": int(request.form.get('uv_1wave_fee', 350)),
             "uv_2wave_fee": int(request.form.get('uv_2wave_fee', 550)),
             "size_fee_25": int(request.form.get('size_fee_25', 50)),
-            "size_fee_35": int(request.form.get('size_fee_35', 120))
+            "size_fee_35": int(request.form.get('size_fee_35', 120)),
+            "barcode_addon_fee": int(request.form.get('barcode_addon_fee', 100))
         }
         save_pricing_config(new_config)
     except Exception:
@@ -231,6 +242,7 @@ def success_download(order_id):
     company_hw_id = order["hardware_id"]
     print_type = order.get("print_type", "black_white")
     qr_size = order.get("qr_size", 20)
+    include_barcode = order.get("include_barcode", False)
     price_str = f"{order['total_price']:,} VNĐ"
     
     print_names = {
@@ -247,10 +259,10 @@ def success_download(order_id):
         wb = Workbook()
         ws = wb.active
         ws.title = "ThongKe_DanhSach"
-        ws.append(["--- HỆ THỐNG XÁC THỰC CHỐNG HÀNG GIẢ - GIẢI PHÁP CUỘC SỐNG ---"])
+        ws.append(["--- HỆ THỐNG XÁC THỰC & MÃ VẠCH QUỐC GIA - GIẢI PHÁP CUỘC SỐNG ---"])
         ws.append(["Tên sản phẩm:", prod_name, "Nhà sản xuất:", manufacturer])
-        ws.append(["Loại tem:", print_name_desc, "Kích thước:", f"{qr_size}x{qr_size} mm"])
-        ws.append(["Mã định danh HW-ID:", company_hw_id, "Tổng chi phí:", price_str])
+        ws.append(["Loại tem:", print_name_desc, "Kích thước QR:", f"{qr_size}x{qr_size} mm"])
+        ws.append(["Tích hợp Mã Vạch (Barcode):", "Có (Code 128)" if include_barcode else "Không", "Tổng chi phí:", price_str])
         ws.append([])
         
         header_row = 6
@@ -259,11 +271,19 @@ def success_download(order_id):
         ws.cell(row=header_row, column=3, value="Chữ Ký Số & Token Bảo Mật")
         ws.cell(row=header_row, column=4, value="Kích Thước")
         ws.cell(row=header_row, column=5, value="Link Xác Thực Ngầm")
+        ws.cell(row=header_row, column=6, value="Mã Vạch Barcode")
         
-        batch_img_dir = f"static/batch_{uuid.uuid4().hex[:8]}"
+        batch_id = uuid.uuid4().hex[:8]
+        batch_img_dir = f"static/batch_qr_{batch_id}"
+        batch_bc_dir = f"static/batch_bc_{batch_id}"
         os.makedirs(batch_img_dir, exist_ok=True)
+        if include_barcode: os.makedirs(batch_bc_dir, exist_ok=True)
+        
         generated_qr_files = []
+        generated_bc_files = []
         sample_qr_data = []
+        
+        Code128 = barcode.get_class('code128')
         
         for i in range(1, quantity + 1):
             code = f"SP{i:03d}"
@@ -271,6 +291,7 @@ def success_download(order_id):
             token = f"{uuid.uuid4().hex[:6]}-{digital_sign}"
             verify_url = f"https://vuongtung.com.vn/verify?code={code}&token={token}"
             
+            # Tạo QR Code
             img = qrcode.make(verify_url)
             img_filename = f"{code}.png"
             img_path = os.path.join(QR_OUTPUT_DIR, img_filename)
@@ -281,6 +302,20 @@ def success_download(order_id):
             generated_qr_files.append(batch_img_path)
             
             if len(sample_qr_data) < 12: sample_qr_data.append((code, batch_img_path))
+            
+            bc_filename_str = None
+            if include_barcode:
+                # Tạo Barcode Code128
+                bc = Code128(code, writer=ImageWriter())
+                bc_path_base = os.path.join(BARCODE_OUTPUT_DIR, f"bc_{code}")
+                bc_saved_file = bc.save(bc_path_base, options={'write_text': True, 'font_size': 10, 'text_distance': 5})
+                
+                batch_bc_path = os.path.join(batch_bc_dir, f"{code}.png")
+                # Move/copy barcode to batch folder
+                if os.path.exists(bc_saved_file):
+                    os.replace(bc_saved_file, batch_bc_path)
+                    generated_bc_files.append(batch_bc_path)
+                    bc_filename_str = f"{code}.png"
                 
             new_prod = {
                 "code": code, "token": token, "name": prod_name, "manufacturer": manufacturer,
@@ -295,6 +330,7 @@ def success_download(order_id):
             ws.cell(row=row_idx, column=3, value=token)
             ws.cell(row=row_idx, column=4, value=f"{qr_size}x{qr_size}mm")
             ws.cell(row=row_idx, column=5, value=verify_url)
+            ws.cell(row=row_idx, column=6, value="Có sẵn Barcode" if include_barcode else "Không")
             
         excel_path = f"static/ThongKe_{order_id}.xlsx"
         wb.save(excel_path)
@@ -303,7 +339,7 @@ def success_download(order_id):
         pdf = FPDF(orientation='L', unit='mm', format='A4')
         pdf.add_page()
         pdf.set_font("helvetica", "B", 11)
-        pdf.cell(0, 8, f"TRANG IN THU MAU - KICH THUOC: {qr_size}x{qr_size} MM ({print_name_desc})", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 8, f"TRANG IN THU MAU - KICH THUOC QR: {qr_size}x{qr_size} MM {('(Kem Ma Vach Barcode)') if include_barcode else ''}", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("helvetica", "I", 9)
         pdf.cell(0, 6, f"Doanh nghiep: {manufacturer} | HW-ID: {company_hw_id}", align="C", new_x="LMARGIN", new_y="NEXT")
         pdf.ln(4)
@@ -332,10 +368,13 @@ def success_download(order_id):
         
         zip_path = f"static/Goi_Tem_{order_id}.zip"
         with zipfile.ZipFile(zip_path, 'w') as zipf:
-            zipf.write(excel_path, arcname="1_DanhSach_MaQR_DoanhNghiep.xlsx")
+            zipf.write(excel_path, arcname="1_DanhSach_MaQR_Va_Barcode.xlsx")
             zipf.write(pdf_path, arcname="2_TrangInThu_A4.pdf")
             for qr_file in generated_qr_files:
-                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_{print_type}/{os.path.basename(qr_file)}")
+                zipf.write(qr_file, arcname=f"3_ThuVien_Anh_QR/{os.path.basename(qr_file)}")
+            if include_barcode:
+                for bc_file in generated_bc_files:
+                    zipf.write(bc_file, arcname=f"4_ThuVien_Anh_Barcode_Code128/{os.path.basename(bc_file)}")
                 
         return send_file(zip_path, as_attachment=True)
     except Exception as e:
@@ -375,7 +414,6 @@ def admin():
     config = load_pricing_config()
     return render_template('admin.html', products=products_db, orders=orders_db, config=config)
 
-# Bổ sung route phụ dự phòng để đảm bảo 100% không bao giờ mất quyền quản trị
 @app.route('/quan_tri')
 def quan_tri():
     return redirect(url_for('admin'))
@@ -389,4 +427,5 @@ def super_admin():
 def terms(): return render_template('terms.html')
 
 if __name__ == '__main__':
+    # Lưu ý: Nếu máy thầy chưa có thư viện python-barcode, chạy lệnh: pip install python-barcode
     app.run(host='0.0.0.0', port=5000, debug=True)
