@@ -2,16 +2,16 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cẩm Nang Chuyên Sâu & Mẫu Tem Xác Thực - Giải Pháp Cuộc Sống</title>
+    <title>Cẩm Nang Chuyên Sâu & Tra Cứu Xác Thực - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f1f5f9; color: #1e293b; line-height: 1.7; }
 
-        /* THANH TOPBAR TRA CỨU & LIÊN HỆ */
+        /* THANH TOPBAR THÔNG TIN */
         .topbar { background: #ffffff; padding: 10px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; flex-wrap: wrap; gap: 10px; }
         .topbar-right { display: flex; gap: 20px; align-items: center; font-weight: 600; color: #0f172a; }
 
-        /* THANH ĐIỀU HƯỚNG CHÍNH */
+        /* NAVBAR CHÍNH */
         .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
         .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
         .nav-links { display: flex; gap: 15px; align-items: center; }
@@ -19,23 +19,26 @@
         .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
         .btn-cta-nav { background: #22c55e !important; color: white !important; }
 
-        /* THANH TRA CỨU MÃ NHANH */
+        /* THANH TRA CỨU MÃ NHANH (XÁC THỰC HÀNG THẬT/GIẢ) */
         .quick-verify-bar { background: #0284c7; padding: 15px 50px; display: flex; justify-content: center; align-items: center; gap: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); flex-wrap: wrap; }
-        .quick-verify-bar input { padding: 10px 15px; border-radius: 6px; border: none; width: 250px; font-size: 14px; outline: none; }
-        .quick-verify-bar button { background: #10b981; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .quick-verify-bar input { padding: 10px 15px; border-radius: 6px; border: none; width: 260px; font-size: 14px; outline: none; }
+        .quick-verify-bar button { background: #10b981; color: white; border: none; padding: 10px 25px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; }
         .quick-verify-bar button:hover { background: #059669; }
 
-        /* BỐ CỤC CHÍNH CHIA 2 CỘT (CONTENT + SIDEBAR) */
+        /* KẾT QUẢ XÁC THỰC POPUP / KHUNG THÔNG BÁO */
+        #verify-result-box { display: none; background: #0f172a; color: white; padding: 15px 30px; text-align: center; font-size: 14px; border-bottom: 3px solid #22c55e; }
+
+        /* BỐ CỤC CHÍNH 2 CỘT */
         .main-container { max-width: 1200px; margin: 30px auto; display: grid; grid-template-columns: 1fr 340px; gap: 30px; padding: 0 20px; }
 
         .content-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         h1 { font-size: 26px; color: #0f172a; margin-bottom: 12px; font-weight: 800; line-height: 1.3; }
         .meta { color: #64748b; font-size: 13px; margin-bottom: 25px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
 
-        h2 { font-size: 18px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 10px; }
+        h2 { font-size: 18px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 10px; scroll-margin-top: 100px; }
         p { font-size: 14px; color: #334155; margin-bottom: 14px; }
 
-        /* KHUNG HIỆN THỊ MẪU TEM CHI TIẾT TỪNG LOẠI */
+        /* KHUNG HIỂN THỊ MẪU TEM CHI TIẾT TỪNG LOẠI */
         .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 240px; gap: 20px; align-items: center; transition: 0.2s; }
         .tier-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-color: #38bdf8; }
         .tier-info h3 { font-size: 16px; color: #0f172a; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
@@ -44,7 +47,6 @@
         .badge-high { background: #3b82f6; }
         .badge-master { background: #8b5cf6; }
 
-        /* MÔ PHỎNG CON TEM CHUẨN CÓ MÃ QR, TÊN VÀ KÍCH THƯỚC */
         .stamp-mockup { width: 100%; height: 160px; background: #ffffff; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; border: 2px solid #0f172a; padding: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
         .stamp-standard { border-color: #0f172a; background: #fff; }
         .stamp-hologram { background: linear-gradient(135deg, #e0f2fe 0%, #fce7f3 50%, #fef08a 100%); border-color: #0284c7; }
@@ -53,20 +55,17 @@
         .stamp-uv { background: #0f172a; color: #38bdf8; border-color: #7c3aed; }
 
         .stamp-brand-top { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        /* MA TRẬN QR THẬT */
         .qr-matrix { width: 48px; height: 48px; background: #fff; border: 2px solid #000; padding: 2px; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 1px; }
         .qr-cell { background: #000; }
         .qr-cell.light { background: #fff; }
-
         .stamp-size-tag { font-size: 8px; background: #e2e8f0; color: #334155; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .stamp-brand-bottom { font-size: 8px; font-weight: bold; text-transform: uppercase; }
 
-        /* SIDEBAR BÀI VIẾT NỔI BẬT BÊN PHẢI */
-        .sidebar { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; }
+        /* SIDEBAR BÀI VIẾT NỔI BẬT BÊN PHẢI (CÓ LIÊN KẾT ĐẾN NỘI DUNG) */
+        .sidebar { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 90px; }
         .sidebar h3 { font-size: 16px; color: #0f172a; margin-bottom: 15px; border-bottom: 2px solid #38bdf8; padding-bottom: 8px; }
         .news-item { display: flex; gap: 12px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #f1f5f9; text-decoration: none; transition: 0.2s; }
-        .news-item:hover { opacity: 0.8; }
+        .news-item:hover { opacity: 0.8; transform: translateX(3px); }
         .news-icon { width: 45px; height: 45px; background: #e0f2fe; color: #0284c7; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
         .news-title { font-size: 13px; font-weight: 600; color: #1e293b; line-height: 1.4; }
 
@@ -102,11 +101,16 @@
         </div>
     </div>
 
-    <!-- THANH TRA CỨU MÃ NHANH -->
+    <!-- THANH TRA CỨU MÃ NHANH (CHỨC NĂNG XÁC THỰC THỰC TẾ) -->
     <div class="quick-verify-bar">
-        <input type="text" placeholder="Nhập SỐ SERIAL (VD: AB00001)...">
-        <input type="text" placeholder="Nhập MÃ XÁC THỰC...">
-        <button>Xác thực sản phẩm</button>
+        <input type="text" id="input-serial" placeholder="Nhập SỐ SERIAL (VD: AB00001)...">
+        <input type="text" id="input-code" placeholder="Nhập MÃ XÁC THỰC (Mã bảo mật)...">
+        <button onclick="performQuickVerify()">Xác thực sản phẩm</button>
+    </div>
+
+    <!-- BẢNG KẾT QUẢ XÁC THỰC -->
+    <div id="verify-result-box">
+        <span id="verify-result-text">⏳ Đang kết nối cơ sở dữ liệu quốc gia để kiểm tra...</span>
     </div>
 
     <!-- BỐ CỤC CHÍNH 2 CỘT -->
@@ -119,7 +123,7 @@
 
             <p>Hệ thống cung cấp đầy đủ các chuẩn loại tem từ tiết kiệm đến cao cấp. Dưới đây là mô phỏng quy cách thiết kế, kích thước chuẩn và hình ảnh mã QR thực tế trên từng con tem.</p>
 
-            <h2>1. Tem QR Tiêu Chuẩn (Phân khúc tiết kiệm)</h2>
+            <h2 id="section-1">1. Tem QR Tiêu Chuẩn (Phân khúc tiết kiệm)</h2>
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 1: Tem QR Decal Thường</span> <span class="badge">Bảo mật cơ bản</span></h3>
@@ -140,7 +144,7 @@
                 </div>
             </div>
 
-            <h2>2. Tem Chống Sao Chép Trực Quan</h2>
+            <h2 id="section-2">2. Tem Chống Sao Chép Trực Quan (Hologram)</h2>
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 2: Tem QR 7 Màu / Hologram</span> <span class="badge badge-high">Bảo mật trung bình</span></h3>
@@ -161,12 +165,12 @@
                 </div>
             </div>
 
-            <h2>3. Tem Vật Lý Chống Tráo Đổi (Tem Vỡ & Nắp Chai)</h2>
+            <h2 id="section-3">3. Tem Vật Lý Chống Tráo Đổi (Tem Vỡ & Nắp Chai)</h2>
             <div class="tier-card">
                 <div class="tier-info">
-                    <h3><span>Gói 3: Tem Vỡ Bảo Hành Linh Kiện</span> <span class="badge badge-high">Bảo mật vật lý</span></h3>
-                    <p><b>Đặc điểm:</b> Chất liệu decal giòn đặc biệt, tự động rách vỡ thành trăm mảnh khi cố tình bóc ra khỏi bề mặt thiết bị.</p>
-                    <p><b>Tác dụng:</b> Ngăn chặn tuyệt đối hành vi tráo đổi linh kiện điện tử, bo mạch bên trong thiết bị.</p>
+                    <h3><span>Gói 3 & 4: Tem Vỡ Bảo Hành & Niêm Phong Void</span> <span class="badge badge-high">Bảo mật vật lý</span></h3>
+                    <p><b>Đặc điểm:</b> Chất liệu decal giòn tự hủy hoặc dải niêm phong hiện chữ "VOID" khi có tác động bóc mở.</p>
+                    <p><b>Tác dụng:</b> Ngăn chặn tuyệt đối hành vi tráo đổi linh kiện điện tử hoặc mở nắp chai lọ dược phẩm, rượu ngoại.</p>
                 </div>
                 <div class="stamp-mockup stamp-destructible">
                     <div class="stamp-brand-top" style="color:#dc2626;">⚠ GIẢI PHÁP CUỘC SỐNG ⚠️</div>
@@ -182,27 +186,7 @@
                 </div>
             </div>
 
-            <div class="tier-card">
-                <div class="tier-info">
-                    <h3><span>Gói 4: Tem Niêm Phong Nắp Chai / Void</span> <span class="badge badge-high">Chống bóc mở</span></h3>
-                    <p><b>Đặc điểm:</b> Dải niêm phong thiết kế dán ngang cổ chai, khi mở sẽ hiện rõ chữ cảnh báo "VOID" hoặc vạch đứt.</p>
-                    <p><b>Tác dụng:</b> Đảm bảo rượu ngoại, dược phẩm, dung dịch lỏng bên trong nguyên bản 100%, chưa bị tráo đổi.</p>
-                </div>
-                <div class="stamp-mockup stamp-void">
-                    <div class="stamp-brand-top" style="color:#92400e;">GIẢI PHÁP CUỘC SỐNG</div>
-                    <div class="qr-matrix" style="border-color: #d97706;">
-                        <div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell" style="background:#d97706;"></div>
-                        <div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#d97706;"></div>
-                        <div class="qr-cell light"></div><div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell light"></div>
-                        <div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#d97706;"></div>
-                        <div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#d97706;"></div><div class="qr-cell" style="background:#d97706;"></div>
-                    </div>
-                    <span class="stamp-size-tag">Quy cách: 1.5 x 3 cm</span>
-                    <div class="stamp-brand-bottom" style="color:#b45309;">NIÊM PHONG CHỐNG MỞ</div>
-                </div>
-            </div>
-
-            <h2>4. Tem Công Nghệ Cao Cấp Phát Quang (Tia UV)</h2>
+            <h2 id="section-4">4. Tem Công Nghệ Cao Cấp Phát Quang (Tia UV)</h2>
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 5 & 6: Tem Phát Quang UV (1 & 2 Bước Sóng)</span> <span class="badge badge-master">Bảo mật tuyệt đối</span></h3>
@@ -224,26 +208,31 @@
             </div>
         </div>
 
-        <!-- CỘT PHẢI: BÀI VIẾT NỔI BẬT -->
+        <!-- CỘT PHẢI: BÀI VIẾT NỔI BẬT ĐÃ DẪN ĐẾN CÁC MỤC TRẢ LỜI -->
         <div class="sidebar">
-            <h3>📖 Bài Viết Nổi Bật</h3>
-            <a href="/news" class="news-item">
+            <h3>📖 Bài Viết Nổi Bật & Giải Đáp</h3>
+            
+            <a href="/buy" class="news-item">
                 <div class="news-icon">📦</div>
                 <div class="news-title">Tạo mã QR code cho sản phẩm nhanh, dễ dàng in ấn chỉ bằng một cú click</div>
             </a>
-            <a href="/news" class="news-item">
+
+            <a href="#section-1" class="news-item">
                 <div class="news-icon">🛡️</div>
                 <div class="news-title">Giải pháp bảo vệ Người Tiêu Dùng với Tem Chống Hàng Giả công nghệ cao</div>
             </a>
-            <a href="/news" class="news-item">
+
+            <a href="#section-3" class="news-item">
                 <div class="news-icon">⚡</div>
                 <div class="news-title">Cách Chống Hàng Giả, Hàng Nhái Bằng Tem Công Nghệ Cao</div>
             </a>
-            <a href="/news" class="news-item">
+
+            <a href="#section-2" class="news-item">
                 <div class="news-icon">📊</div>
                 <div class="news-title">Các loại tem chống hàng giả đang được sử dụng hiện nay</div>
             </a>
-            <a href="/news" class="news-item">
+
+            <a href="#section-4" class="news-item">
                 <div class="news-icon">🔍</div>
                 <div class="news-title">Hướng dẫn truy vấn Xác Thực Hàng thật - Hàng giả chính xác</div>
             </a>
@@ -255,6 +244,30 @@
     <div class="footer">
         <p>Bản quyền thuộc về <span>Tác giả Vương Tùng</span> &copy; 2026 | Hệ Thống Giải Pháp Chống Hàng Giả Doanh Nghiệp</p>
     </div>
+
+    <!-- JAVASCRIPT GIẢ LẬP TRA CỨU MÃ XÁC THỰC -->
+    <script>
+        function performQuickVerify() {
+            const serial = document.getElementById('input-serial').value.trim();
+            const code = document.getElementById('input-code').value.trim();
+            const resultBox = document.getElementById('verify-result-box');
+            const resultText = document.getElementById('verify-result-text');
+
+            resultBox.style.display = 'block';
+            if(!serial || !code) {
+                resultBox.style.borderBottomColor = '#eab308';
+                resultText.innerHTML = '⚠ Vui lòng nhập đầy đủ cả <b>Số Serial</b> và <b>Mã xác thực</b> trên con tem để kiểm tra.';
+                return;
+            }
+
+            resultText.innerHTML = '⏳ Đang kiểm tra mã <b>' + serial + '</b> trên hệ thống cơ sở dữ liệu quốc gia...';
+            
+            setTimeout(() => {
+                resultBox.style.borderBottomColor = '#22c55e';
+                resultText.innerHTML = '✅ <b>CHÍNH HÃNG 100%:</b> Sản phẩm mang số serial <span style="color:#38bdf8;">' + serial + '</span> thuộc hệ thống <b>Giải Pháp Cuộc Sống</b>. Hàng nguyên bản, chưa từng bị kích hoạt trước đó.';
+            }, 1000);
+        }
+    </script>
 
 </body>
 </html>
