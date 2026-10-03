@@ -2,23 +2,28 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cổng Mua Tem & Cấp Phát Mã QR - Giải Pháp Cuộc Sống</title>
+    <title>Cổng Mua Tem & Tùy Chọn Phân Khúc Bảo Vệ - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f8fafc; color: #1e293b; line-height: 1.6; padding: 20px; }
         
-        .navbar { background: #0f172a; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px; margin-bottom: 30px; }
+        .navbar { background: #0f172a; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .navbar a { color: #38bdf8; text-decoration: none; font-weight: bold; font-size: 14px; }
         .navbar .brand { font-size: 18px; color: white; }
 
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 6px solid #22c55e; }
-        h2 { font-size: 24px; color: #0f172a; margin-bottom: 20px; text-align: center; font-weight: 700; }
+        .container { max-width: 950px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 6px solid #22c55e; }
+        h2 { font-size: 26px; color: #0f172a; margin-bottom: 10px; text-align: center; font-weight: 700; }
+        .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; font-size: 14px; max-width: 700px; margin-left: auto; margin-right: auto; }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
         .form-group { display: flex; flex-direction: column; }
         .form-group label { font-size: 14px; color: #334155; margin-bottom: 8px; font-weight: 600; }
-        .form-group input, .form-group select { padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; transition: 0.2s; }
+        .form-group input, .form-group select { padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; transition: 0.2s; background: #fff; }
         .form-group input:focus, .form-group select:focus { border-color: #38bdf8; }
+
+        .price-preview-box { background: #f0fdf4; border: 2px solid #22c55e; padding: 20px; border-radius: 12px; margin: 25px 0; display: flex; justify-content: space-between; align-items: center; }
+        .price-preview-box .label { font-size: 16px; font-weight: bold; color: #166534; }
+        .price-preview-box .amount { font-size: 24px; font-weight: 800; color: #15803d; }
 
         .legal-declaration-box { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 25px; border-radius: 12px; margin: 30px 0; }
         .legal-declaration-box h3 { font-size: 16px; color: #0f172a; margin-bottom: 15px; font-weight: 700; }
@@ -33,13 +38,13 @@
         .checkbox-label input[type="checkbox"] { width: 20px; height: 20px; accent-color: #22c55e; margin-top: 2px; cursor: pointer; }
 
         .btn-submit { background: #22c55e; color: white; border: none; padding: 16px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(34,197,94,0.3); transition: 0.2s; text-align: center; }
-        .btn-submit:hover { background: #16a34a; }
+        .btn-submit:hover { background: #16a34a; transform: translateY(-1px); }
     </style>
 </head>
 <body>
 
     <div class="navbar">
-        <div class="brand">🛡️ CỔNG MUA TEM & CẤP PHÁT MÃ QR</div>
+        <div class="brand">🛡️ CỔNG ĐĂNG KÝ TEM & PHÂN KHÚC BẢO VỆ</div>
         <div>
             <a href="/">&larr; Quay lại Trang Chủ</a> &nbsp;&nbsp;|&nbsp;&nbsp;
             <a href="/news">📖 Xem Cẩm Nang Pháp Lý</a>
@@ -47,18 +52,18 @@
     </div>
 
     <div class="container">
-        <h2>Biểu Mẫu Đăng Ký Cấp Phát Tem Chuyên Dụng</h2>
-        <p style="text-align: center; color: #64748b; margin-bottom: 30px; font-size: 14px;">Hệ thống cung cấp tem vỡ bảo hành linh kiện điện tử và tem niêm phong nắp chai chống bóc mở.</p>
+        <h2>Lựa Chọn Gói Tem & Phân Khúc Bảo Vệ Phù Hợp</h2>
+        <p class="subtitle">Doanh nghiệp hoàn toàn chủ động lựa chọn cấp độ bảo vệ từ tiết kiệm cơ bản đến cao cấp chuyên dụng để tối ưu hóa chi phí sản xuất.</p>
 
         <form action="/buy" method="POST">
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Tên Sản Phẩm / Linh Kiện:</label>
-                    <input type="text" name="prod_name" placeholder="Ví dụ: Bo mạch điện tử IC / Rượu sâm đóng chai" required>
+                    <label>Tên Sản Phẩm / Hàng Hóa:</label>
+                    <input type="text" name="prod_name" placeholder="Ví dụ: Nông sản sạch / Rượu sâm / Linh kiện IC" required>
                 </div>
                 <div class="form-group">
-                    <label>Tên Doanh Nghiệp / Nhà Sản Xuất:</label>
-                    <input type="text" name="manufacturer" placeholder="Ví dụ: Công ty Điện Tử & Dược Phẩm VN" required>
+                    <label>Tên Doanh Nghiệp / Chủ Thể:</label>
+                    <input type="text" name="manufacturer" placeholder="Ví dụ: Công ty Cổ phần Thương mại VN" required>
                 </div>
             </div>
 
@@ -68,30 +73,30 @@
                     <input type="text" name="tax_code" placeholder="Ví dụ: 0101234567" required>
                 </div>
                 <div class="form-group">
-                    <label>Chọn Số Lượng Tem Cần Đặt:</label>
-                    <select name="quantity">
-                        <option value="1000">1,000 Tem</option>
-                        <option value="5000">5,000 Tem</option>
-                        <option value="10000">10,000 Tem</option>
-                        <option value="30000" selected>30,000 Tem</option>
-                        <option value="50000">50,000 Tem</option>
+                    <label>Số Lượng Tem Đặt Sản Xuất:</label>
+                    <select name="quantity" id="quantity">
+                        <option value="1000">1,000 Tem (Dùng thử / Lô nhỏ)</option>
+                        <option value="5000">5,000 Tem (Lô vừa)</option>
+                        <option value="10000">10,000 Tem (Lô lớn)</option>
+                        <option value="30000" selected>30,000 Tem (Sản xuất công nghiệp)</option>
+                        <option value="50000">50,000 Tem (Phân phối toàn quốc)</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Lựa Chọn Loại Tem & Công Nghệ Chuyên Dụng:</label>
-                    <select name="print_type">
-                        <option value="black_white">Tem QR Tiêu Chuẩn (Decal thường)</option>
-                        <option value="hologram_7color">Tem QR 7 Màu / Hologram Cao Cấp (+150đ/tem)</option>
-                        <option value="destructible_seal">Tem Vỡ Bảo Hành Linh Kiện Điện Tử (+200đ/tem)</option>
-                        <option value="void_bottle">Tem Niêm Phong Nắp Chai / Chống Bóc Void (+250đ/tem)</option>
+                    <label>Lựa Chọn Gói Công Nghệ Tem:</label>
+                    <select name="print_type" id="print_type">
+                        <option value="black_white">Gói 1: Tem QR Tiêu Chuẩn (Tiết kiệm tối đa cho hàng thông thường)</option>
+                        <option value="hologram_7color">Gói 2: Tem QR 7 Màu / Hologram Chống Sao Chép (+150đ/tem)</option>
+                        <option value="destructible_seal">Gói 3: Tem Vỡ Bảo Hành Linh Kiện Điện Tử (+200đ/tem)</option>
+                        <option value="void_bottle">Gói 4: Tem Niêm Phong Nắp Chai / Chống Bóc Void (+250đ/tem)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Kích Thước Tem Phù Hợp:</label>
-                    <select name="qr_size">
+                    <label>Kích Thước Khổ Tem:</label>
+                    <select name="qr_size" id="qr_size">
                         <option value="10">Khổ Siêu Nhỏ: 1.0 x 1.0 cm (Linh kiện điện tử)</option>
                         <option value="15">Khổ Nhỏ: 1.5 x 1.5 cm (Nắp chai / Mạch)</option>
                         <option value="20" selected>Khổ Tiêu Chuẩn: 2.0 x 2.0 cm</option>
@@ -101,12 +106,21 @@
                 </div>
             </div>
 
+            <!-- HIỂN THỊ TỔNG TIỀN TỰ ĐỘNG CẬP NHẬT -->
+            <div class="price-preview-box">
+                <div>
+                    <div class="label">💰 Ước Tính Tổng Chi Phí Đăng Ký:</div>
+                    <div style="font-size: 13px; color: #15803d; margin-top: 2px;">Đã bao gồm mã hóa phần cứng, tạo file PDF A4 và xuất dữ liệu Excel</div>
+                </div>
+                <div class="amount" id="display_total">0 VNĐ</div>
+            </div>
+
             <div class="legal-declaration-box">
-                <h3>📋 Bản Kê Khai Pháp Lý & Cam Kết Chủ Thể</h3>
+                <h3>📋 Bản Kê Khai Pháp Lý & Cam Kết Chất Lượng</h3>
                 <div class="declaration-grid">
                     <div class="declaration-item">
                         <label>Địa Chỉ Xưởng / Nhà Máy Sản Xuất:</label>
-                        <input type="text" name="legal_address" placeholder="Ví dụ: KCN Bắc Thăng Long, Hà Nội" required>
+                        <input type="text" name="legal_address" placeholder="Ví dụ: KCN Nam Thăng Long, Hà Nội" required>
                     </div>
                     <div class="declaration-item">
                         <label>Số Điện Thoại Kỹ Thuật / Pháp Lý:</label>
@@ -120,19 +134,19 @@
                         <input type="text" name="legal_license" placeholder="Ví dụ: GPKD số 0102030405" required>
                     </div>
                     <div class="declaration-item">
-                        <label>Dòng Sản Phẩm / Model Thiết Bị:</label>
-                        <input type="text" name="legal_brand" placeholder="Ví dụ: Linh kiện bo mạch / Chai lọ cao cấp" required>
+                        <label>Dòng Sản Phẩm / Tiêu Chuẩn:</label>
+                        <input type="text" name="legal_brand" placeholder="Ví dụ: Tiêu chuẩn cơ sở / Đóng chai khép kín" required>
                     </div>
                 </div>
 
                 <div class="checkbox-group">
                     <label class="checkbox-label">
                         <input type="checkbox" name="confirm_truth" required>
-                        <span>Tôi cam kết thông tin kê khai trên là hoàn toàn chính xác và chịu trách nhiệm pháp lý theo quy định về chất lượng linh kiện điện tử và hàng hóa đóng chai.</span>
+                        <span>Tôi cam kết thông tin kê khai trên là hoàn toàn chính xác và chịu trách nhiệm pháp lý theo quy định về chất lượng hàng hóa, nguồn gốc xuất xứ.</span>
                     </label>
                     <label class="checkbox-label">
                         <input type="checkbox" name="confirm_ip" required>
-                        <span>Tôi cam kết tem vỡ và tem niêm phong được sử dụng đúng mục đích bảo hành thiết bị, chống bóc mở trái phép.</span>
+                        <span>Tôi cam kết gói tem đã chọn được sử dụng đúng mục đích bảo vệ thương hiệu và tuân thủ các quy định sở hữu trí tuệ.</span>
                     </label>
                 </div>
             </div>
@@ -141,5 +155,43 @@
         </form>
     </div>
 
+    <!-- SCRIPT TỰ ĐỘNG TÍNH GIÁ DỰA TRÊN LỰA CHỌN CỦA KHÁCH HÀNG -->
+    <script>
+        function updateTotalPrice() {
+            const qty = parseInt(document.getElementById('quantity').value) || 1000;
+            const printType = document.getElementById('print_type').value;
+            const qrSize = parseInt(document.getElementById('qr_size').value) || 20;
+            
+            // Biểu giá bậc thang cơ bản theo số lượng
+            let basePricePerTem = 890;
+            if (qty > 50000) basePricePerTem = 266;
+            else if (qty > 30000) basePricePerTem = 283;
+            else if (qty > 10000) basePricePerTem = 345;
+            else if (qty > 5000) basePricePerTem = 456;
+            else if (qty > 1000) basePricePerTem = 670;
+            
+            let subtotal = qty * basePricePerTem;
+            
+            // Cộng phụ phí loại tem chuyên dụng
+            if (printType === 'hologram_7color') subtotal += qty * 150;
+            if (printType === 'destructible_seal') subtotal += qty * 200;
+            if (printType === 'void_bottle') subtotal += qty * 250;
+            
+            // Cộng phụ phí kích thước tem
+            if (qrSize === 25) subtotal += qty * 50;
+            if (qrSize === 35) subtotal += qty * 120;
+            
+            // Hiển thị ra màn hình
+            document.getElementById('display_total').innerText = subtotal.toLocaleString('vi-VN') + " VNĐ";
+        }
+        
+        // Lắng nghe sự kiện thay đổi trên form
+        document.getElementById('quantity').addEventListener('change', updateTotalPrice);
+        document.getElementById('print_type').addEventListener('change', updateTotalPrice);
+        document.getElementById('qr_size').addEventListener('change', updateTotalPrice);
+        
+        // Tính toán ngay khi tải trang
+        window.onload = updateTotalPrice;
+    </script>
 </body>
 </html>
