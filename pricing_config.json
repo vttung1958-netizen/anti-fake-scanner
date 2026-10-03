@@ -1,0 +1,10 @@
+{
+    "base_price": 890,
+    "hologram_fee": 150,
+    "destructible_seal_fee": 200,
+    "void_bottle_fee": 250,
+    "uv_1wave_fee": 350,
+    "uv_2wave_fee": 550,
+    "size_fee_25": 50,
+    "size_fee_35": 120
+}
