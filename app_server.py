@@ -115,6 +115,7 @@ products_db = [
     }
 ]
 
+# ROUTE TRANG CHỦ (Chuẩn hóa trả về index.html)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     code = None
