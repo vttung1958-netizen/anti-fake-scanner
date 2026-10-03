@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cẩm Nang Chuyên Sâu & Tra Cứu Xác Thực - Giải Pháp Cuộc Sống</title>
+    <title>Cẩm Nang Mẫu Tem Thực Tế - Sâm Ngọc Linh & Sản Phẩm Cao Cấp - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f1f5f9; color: #1e293b; line-height: 1.7; }
@@ -19,13 +19,12 @@
         .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
         .btn-cta-nav { background: #22c55e !important; color: white !important; }
 
-        /* THANH TRA CỨU MÃ NHANH (XÁC THỰC HÀNG THẬT/GIẢ) */
+        /* THANH TRA CỨU MÃ NHANH */
         .quick-verify-bar { background: #0284c7; padding: 15px 50px; display: flex; justify-content: center; align-items: center; gap: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); flex-wrap: wrap; }
         .quick-verify-bar input { padding: 10px 15px; border-radius: 6px; border: none; width: 260px; font-size: 14px; outline: none; }
         .quick-verify-bar button { background: #10b981; color: white; border: none; padding: 10px 25px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; }
         .quick-verify-bar button:hover { background: #059669; }
 
-        /* KẾT QUẢ XÁC THỰC POPUP / KHUNG THÔNG BÁO */
         #verify-result-box { display: none; background: #0f172a; color: white; padding: 15px 30px; text-align: center; font-size: 14px; border-bottom: 3px solid #22c55e; }
 
         /* BỐ CỤC CHÍNH 2 CỘT */
@@ -38,8 +37,15 @@
         h2 { font-size: 18px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 10px; scroll-margin-top: 100px; }
         p { font-size: 14px; color: #334155; margin-bottom: 14px; }
 
-        /* KHUNG HIỂN THỊ MẪU TEM CHI TIẾT TỪNG LOẠI */
-        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 240px; gap: 20px; align-items: center; transition: 0.2s; }
+        /* BANNER DEMO SẢN PHẨM THỰC TẾ */
+        .demo-product-banner { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: 10px; padding: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .demo-info h3 { color: #166534; font-size: 17px; margin-bottom: 5px; }
+        .demo-info p { color: #15803d; font-size: 13px; margin: 0; }
+        .btn-order-now { background: #16a34a; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; transition: 0.2s; }
+        .btn-order-now:hover { background: #15803d; }
+
+        /* KHUNG THỂ HIỆN MẪU TEM CHI TIẾT SẮC NÉT */
+        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: center; transition: 0.2s; }
         .tier-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-color: #38bdf8; }
         .tier-info h3 { font-size: 16px; color: #0f172a; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         
@@ -47,7 +53,8 @@
         .badge-high { background: #3b82f6; }
         .badge-master { background: #8b5cf6; }
 
-        .stamp-mockup { width: 100%; height: 160px; background: #ffffff; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; border: 2px solid #0f172a; padding: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+        /* THIẾT KẾ CON TEM NHƯ THẬT */
+        .stamp-mockup { width: 100%; height: 180px; background: #ffffff; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; border: 2px solid #0f172a; padding: 8px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); position: relative; }
         .stamp-standard { border-color: #0f172a; background: #fff; }
         .stamp-hologram { background: linear-gradient(135deg, #e0f2fe 0%, #fce7f3 50%, #fef08a 100%); border-color: #0284c7; }
         .stamp-destructible { border: 2px dashed #dc2626; background: #fff; }
@@ -55,13 +62,17 @@
         .stamp-uv { background: #0f172a; color: #38bdf8; border-color: #7c3aed; }
 
         .stamp-brand-top { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        .qr-matrix { width: 48px; height: 48px; background: #fff; border: 2px solid #000; padding: 2px; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 1px; }
+        .stamp-prod-name { font-size: 8px; font-weight: bold; color: #166534; background: #dcfce7; padding: 1px 6px; border-radius: 3px; }
+        
+        .qr-matrix { width: 45px; height: 45px; background: #fff; border: 2px solid #000; padding: 2px; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 1px; }
         .qr-cell { background: #000; }
         .qr-cell.light { background: #fff; }
-        .stamp-size-tag { font-size: 8px; background: #e2e8f0; color: #334155; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        
+        .stamp-serial-code { font-size: 8px; font-weight: bold; color: #dc2626; }
+        .stamp-size-tag { font-size: 8px; background: #e2e8f0; color: #334155; padding: 1px 5px; border-radius: 3px; font-weight: bold; }
         .stamp-brand-bottom { font-size: 8px; font-weight: bold; text-transform: uppercase; }
 
-        /* SIDEBAR BÀI VIẾT NỔI BẬT BÊN PHẢI (CÓ LIÊN KẾT ĐẾN NỘI DUNG) */
+        /* SIDEBAR BÀI VIẾT NỔI BẬT */
         .sidebar { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 90px; }
         .sidebar h3 { font-size: 16px; color: #0f172a; margin-bottom: 15px; border-bottom: 2px solid #38bdf8; padding-bottom: 8px; }
         .news-item { display: flex; gap: 12px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #f1f5f9; text-decoration: none; transition: 0.2s; }
@@ -101,37 +112,48 @@
         </div>
     </div>
 
-    <!-- THANH TRA CỨU MÃ NHANH (CHỨC NĂNG XÁC THỰC THỰC TẾ) -->
+    <!-- THANH TRA CỨU MÃ NHANH -->
     <div class="quick-verify-bar">
-        <input type="text" id="input-serial" placeholder="Nhập SỐ SERIAL (VD: AB00001)...">
-        <input type="text" id="input-code" placeholder="Nhập MÃ XÁC THỰC (Mã bảo mật)...">
+        <input type="text" id="input-serial" placeholder="Nhập SỐ SERIAL (VD: VN-GPL-01)..." value="VN-GPL-2026-0888">
+        <input type="text" id="input-code" placeholder="Nhập MÃ XÁC THỰC..." value="888999">
         <button onclick="performQuickVerify()">Xác thực sản phẩm</button>
     </div>
 
     <!-- BẢNG KẾT QUẢ XÁC THỰC -->
     <div id="verify-result-box">
-        <span id="verify-result-text">⏳ Đang kết nối cơ sở dữ liệu quốc gia để kiểm tra...</span>
+        <span id="verify-result-text"></span>
     </div>
 
     <!-- BỐ CỤC CHÍNH 2 CỘT -->
     <div class="main-container">
 
-        <!-- CỘT TRÁI: NỘI DUNG CHI TIẾT CÁC LOẠI TEM -->
+        <!-- CỘT TRÁI: NỘI DUNG & MẪU TEM THỰC TẾ TRÊN SẢN PHẨM MẪU -->
         <div class="content-card">
-            <h1>Cẩm Nang Chuyên Sâu: Tác Dụng, Phân Loại & Quy Cách Mẫu Tem</h1>
+            <h1>Cẩm Nang Mẫu Tem Thực Tế: Ứng Dụng Trên Sản Phẩm Sâm Ngọc Linh</h1>
             <div class="meta">Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia | Tác Giả: Vương Tùng &copy; 2026</div>
 
-            <p>Hệ thống cung cấp đầy đủ các chuẩn loại tem từ tiết kiệm đến cao cấp. Dưới đây là mô phỏng quy cách thiết kế, kích thước chuẩn và hình ảnh mã QR thực tế trên từng con tem.</p>
+            <!-- BANNER GIỚI THIỆU SẢN PHẨM MẪU -->
+            <div class="demo-product-banner">
+                <div class="demo-info">
+                    <h3>🌿 Sản Phẩm Mẫu: Sâm Ngọc Linh Kon Tum (Mã: SP-NGOCLINH-001)</h3>
+                    <p>Được bảo vệ toàn diện bằng hệ thống tem xác thực điện tử chống giả cao cấp của <b>Giải Pháp Cuộc Sống</b>.</p>
+                </div>
+                <a href="/buy" class="btn-order-now">🚀 Đăng Ký Tem Cho Lô Hàng Ngay</a>
+            </div>
 
-            <h2 id="section-1">1. Tem QR Tiêu Chuẩn (Phân khúc tiết kiệm)</h2>
+            <p>Dưới đây là mô phỏng thực tế hình ảnh các loại tem được thiết kế riêng cho sản phẩm đặc sản quý hiếm, thể hiện đầy đủ tên thương hiệu, mã định danh lô hàng, mã QR xác thực và quy cách kích thước chuẩn:</p>
+
+            <h2 id="section-1">1. Tem QR Tiêu Chuẩn (Dùng cho bao bì hộp giấy Sâm Ngọc Linh)</h2>
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 1: Tem QR Decal Thường</span> <span class="badge">Bảo mật cơ bản</span></h3>
-                    <p><b>Đặc điểm:</b> In trên chất liệu decal giấy trắng, tích hợp mã QR định danh và mã hóa phần cứng chống sao chép đường dẫn.</p>
-                    <p><b>Tác dụng:</b> Giúp người tiêu dùng dùng smartphone quét kiểm tra nhanh nguồn gốc hàng hóa. Tối ưu chi phí cho nông sản, văn phòng phẩm.</p>
+                    <p><b>Sản phẩm mẫu:</b> Hộp trà sâm, cao sâm hộp giấy.</p>
+                    <p><b>Quy cách:</b> Kích thước chuẩn <b>2 x 2 cm</b>, in mã định danh lô sản xuất giúp khách hàng quét kiểm tra nguồn gốc lập tức.</p>
                 </div>
+                <!-- MẪU TEM 1 THỰC TẾ -->
                 <div class="stamp-mockup stamp-standard">
                     <div class="stamp-brand-top" style="color:#0f172a;">GIẢI PHÁP CUỘC SỐNG</div>
+                    <div class="stamp-prod-name">SÂM NGỌC LINH (SP-001)</div>
                     <div class="qr-matrix">
                         <div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell light"></div><div class="qr-cell"></div><div class="qr-cell"></div>
                         <div class="qr-cell"></div><div class="qr-cell light"></div><div class="qr-cell"></div><div class="qr-cell light"></div><div class="qr-cell"></div>
@@ -139,20 +161,25 @@
                         <div class="qr-cell"></div><div class="qr-cell light"></div><div class="qr-cell"></div><div class="qr-cell light"></div><div class="qr-cell"></div>
                         <div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell light"></div><div class="qr-cell"></div><div class="qr-cell"></div>
                     </div>
-                    <span class="stamp-size-tag">Quy cách: 2 x 2 cm</span>
-                    <div class="stamp-brand-bottom" style="color:#22c55e;">CHÍNH HÃNG 100%</div>
+                    <div class="stamp-serial-code">Serial: VN-GPL-2026-0888</div>
+                    <div style="display:flex; gap:5px; align-items:center;">
+                        <span class="stamp-size-tag">2 x 2 cm</span>
+                        <span class="stamp-brand-bottom" style="color:#16a34a;">CHÍNH HÃNG</span>
+                    </div>
                 </div>
             </div>
 
-            <h2 id="section-2">2. Tem Chống Sao Chép Trực Quan (Hologram)</h2>
+            <h2 id="section-2">2. Tem Chống Sao Chép Trực Quan (Dùng cho nhãn chai rượu sâm)</h2>
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 2: Tem QR 7 Màu / Hologram</span> <span class="badge badge-high">Bảo mật trung bình</span></h3>
-                    <p><b>Đặc điểm:</b> Màng nhũ phản quang đa sắc chuyển màu theo góc nhìn, ngăn chặn chụp ảnh hoặc in sao chép bằng máy in màu thông thường.</p>
-                    <p><b>Tác dụng:</b> Khẳng định đẳng cấp thương hiệu, nhận diện trực quan bằng mắt thường cho mỹ phẩm và thực phẩm cao cấp.</p>
+                    <p><b>Sản phẩm mẫu:</b> Bình rượu ngâm Sâm Ngọc Linh cao cấp.</p>
+                    <p><b>Quy cách:</b> Màng nhũ phản quang đa sắc <b>2 x 2 cm</b> chống chụp ảnh sao chép, nâng tầm đẳng cấp sản phẩm.</p>
                 </div>
+                <!-- MẪU TEM 2 THỰC TẾ -->
                 <div class="stamp-mockup stamp-hologram">
                     <div class="stamp-brand-top" style="color:#1e3a8a;">✨ GIẢI PHÁP CUỘC SỐNG ✨</div>
+                    <div class="stamp-prod-name" style="background:#e0f2fe; color:#0369a1;">RƯỢU SÂM NGỌC LINH (SP-002)</div>
                     <div class="qr-matrix" style="border-color: #2563eb;">
                         <div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell" style="background:#2563eb;"></div>
                         <div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#2563eb;"></div>
@@ -160,20 +187,25 @@
                         <div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#2563eb;"></div>
                         <div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#2563eb;"></div><div class="qr-cell" style="background:#2563eb;"></div>
                     </div>
-                    <span class="stamp-size-tag">Quy cách: 2 x 2 cm</span>
-                    <div class="stamp-brand-bottom" style="color:#9333ea;">HOLOGRAM CHỐNG GIẢ</div>
+                    <div class="stamp-serial-code" style="color:#1d4ed8;">Serial: VN-RSL-2026-0999</div>
+                    <div style="display:flex; gap:5px; align-items:center;">
+                        <span class="stamp-size-tag">2 x 2 cm</span>
+                        <span class="stamp-brand-bottom" style="color:#7e22ce;">HOLOGRAM 3D</span>
+                    </div>
                 </div>
             </div>
 
-            <h2 id="section-3">3. Tem Vật Lý Chống Tráo Đổi (Tem Vỡ & Nắp Chai)</h2>
+            <h2 id="section-3">3. Tem Vật Lý Chống Tráo Đổi (Tem Vỡ Bảo Hành)</h2>
             <div class="tier-card">
                 <div class="tier-info">
-                    <h3><span>Gói 3 & 4: Tem Vỡ Bảo Hành & Niêm Phong Void</span> <span class="badge badge-high">Bảo mật vật lý</span></h3>
-                    <p><b>Đặc điểm:</b> Chất liệu decal giòn tự hủy hoặc dải niêm phong hiện chữ "VOID" khi có tác động bóc mở.</p>
-                    <p><b>Tác dụng:</b> Ngăn chặn tuyệt đối hành vi tráo đổi linh kiện điện tử hoặc mở nắp chai lọ dược phẩm, rượu ngoại.</p>
+                    <h3><span>Gói 3 & 4: Tem Vỡ & Niêm Phong Void</span> <span class="badge badge-high">Bảo mật vật lý</span></h3>
+                    <p><b>Sản phẩm mẫu:</b> Nắp lọ tinh chất sâm cô đặc.</p>
+                    <p><b>Quy cách:</b> Kích thước nhỏ gọn <b>1 x 1 cm</b>, tự rách vỡ thành trăm mảnh khi có hành vi bóc mở nắp hộp.</p>
                 </div>
+                <!-- MẪU TEM 3 THỰC TẾ -->
                 <div class="stamp-mockup stamp-destructible">
                     <div class="stamp-brand-top" style="color:#dc2626;">⚠ GIẢI PHÁP CUỘC SỐNG ⚠️</div>
+                    <div class="stamp-prod-name" style="background:#fee2e2; color:#991b1b;">TINH CHẤT SÂM (SP-003)</div>
                     <div class="qr-matrix" style="border-color: #dc2626;">
                         <div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell" style="background:#dc2626;"></div>
                         <div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#dc2626;"></div>
@@ -181,8 +213,11 @@
                         <div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#dc2626;"></div>
                         <div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell light"></div><div class="qr-cell" style="background:#dc2626;"></div><div class="qr-cell" style="background:#dc2626;"></div>
                     </div>
-                    <span class="stamp-size-tag">Quy cách: 1 x 1 cm</span>
-                    <div class="stamp-brand-bottom" style="color:#dc2626;">TEM BẢO HÀNH TỰ HỦY</div>
+                    <div class="stamp-serial-code">Serial: VN-TCS-2026-0555</div>
+                    <div style="display:flex; gap:5px; align-items:center;">
+                        <span class="stamp-size-tag">1 x 1 cm</span>
+                        <span class="stamp-brand-bottom" style="color:#dc2626;">TEM VỠ TỰ HỦY</span>
+                    </div>
                 </div>
             </div>
 
@@ -190,11 +225,13 @@
             <div class="tier-card">
                 <div class="tier-info">
                     <h3><span>Gói 5 & 6: Tem Phát Quang UV (1 & 2 Bước Sóng)</span> <span class="badge badge-master">Bảo mật tuyệt đối</span></h3>
-                    <p><b>Đặc điểm:</b> Sử dụng mực phát quang cao cấp ẩn hoàn toàn dưới ánh sáng thường, chỉ rực sáng đổi màu dưới đèn UV chuyên dụng.</p>
-                    <p><b>Tác dụng:</b> Cấp độ bảo mật tối cao tương đương tiêu chuẩn tiền tệ, giúp kiểm tra nhanh chóng và chống làm giả tuyệt đối.</p>
+                    <p><b>Sản phẩm mẫu:</b> Phiên bản Sâm Ngọc Linh thượng hạng giới hạn.</p>
+                    <p><b>Quy cách:</b> Kích thước <b>2 x 2 cm</b>, tích hợp mực ẩn phát quang rực sáng dưới đèn UV, cấp độ bảo mật tối cao.</p>
                 </div>
+                <!-- MẪU TEM 4 THỰC TẾ -->
                 <div class="stamp-mockup stamp-uv">
                     <div class="stamp-brand-top" style="color:#38bdf8;">GIẢI PHÁP CUỘC SỐNG</div>
+                    <div class="stamp-prod-name" style="background:#1e293b; color:#38bdf8; border:1px solid #38bdf8;">SÂM THƯỢNG HẠNG (SP-004)</div>
                     <div class="qr-matrix" style="border-color: #38bdf8; background:#0f172a;">
                         <div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell light" style="background:#0f172a;"></div><div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell" style="background:#38bdf8;"></div>
                         <div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell light" style="background:#0f172a;"></div><div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell light" style="background:#0f172a;"></div><div class="qr-cell" style="background:#38bdf8;"></div>
@@ -202,13 +239,16 @@
                         <div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell light" style="background:#0f172a;"></div><div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell light" style="background:#0f172a;"></div><div class="qr-cell" style="background:#38bdf8;"></div>
                         <div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell light" style="background:#0f172a;"></div><div class="qr-cell" style="background:#38bdf8;"></div><div class="qr-cell" style="background:#38bdf8;"></div>
                     </div>
-                    <span class="stamp-size-tag" style="background:#1e293b; color:#38bdf8; border: 1px solid #38bdf8;">Quy cách: 2 x 2 cm</span>
-                    <div class="stamp-brand-bottom" style="color:#a78bfa;">PHÁT QUANG TIA UV</div>
+                    <div class="stamp-serial-code" style="color:#38bdf8;">Serial: VN-VIP-2026-9999</div>
+                    <div style="display:flex; gap:5px; align-items:center;">
+                        <span class="stamp-size-tag" style="background:#1e293b; color:#38bdf8;">2 x 2 cm</span>
+                        <span class="stamp-brand-bottom" style="color:#a78bfa;">PHÁT QUANG UV</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- CỘT PHẢI: BÀI VIẾT NỔI BẬT ĐÃ DẪN ĐẾN CÁC MỤC TRẢ LỜI -->
+        <!-- CỘT PHẢI: BÀI VIẾT NỔI BẬT -->
         <div class="sidebar">
             <h3>📖 Bài Viết Nổi Bật & Giải Đáp</h3>
             
@@ -219,7 +259,7 @@
 
             <a href="#section-1" class="news-item">
                 <div class="news-icon">🛡️</div>
-                <div class="news-title">Giải pháp bảo vệ Người Tiêu Dùng với Tem Chống Hàng Giả công nghệ cao</div>
+                <div class="news-title">Ứng dụng tem chống giả cho Sâm Ngọc Linh và đặc sản cao cấp</div>
             </a>
 
             <a href="#section-3" class="news-item">
@@ -245,7 +285,7 @@
         <p>Bản quyền thuộc về <span>Tác giả Vương Tùng</span> &copy; 2026 | Hệ Thống Giải Pháp Chống Hàng Giả Doanh Nghiệp</p>
     </div>
 
-    <!-- JAVASCRIPT GIẢ LẬP TRA CỨU MÃ XÁC THỰC -->
+    <!-- JAVASCRIPT TRA CỨU MẪU -->
     <script>
         function performQuickVerify() {
             const serial = document.getElementById('input-serial').value.trim();
@@ -256,15 +296,15 @@
             resultBox.style.display = 'block';
             if(!serial || !code) {
                 resultBox.style.borderBottomColor = '#eab308';
-                resultText.innerHTML = '⚠ Vui lòng nhập đầy đủ cả <b>Số Serial</b> và <b>Mã xác thực</b> trên con tem để kiểm tra.';
+                resultText.innerHTML = '⚠ Vui lòng nhập đầy đủ Số Serial và Mã xác thực.';
                 return;
             }
 
-            resultText.innerHTML = '⏳ Đang kiểm tra mã <b>' + serial + '</b> trên hệ thống cơ sở dữ liệu quốc gia...';
+            resultText.innerHTML = '⏳ Đang kiểm tra mã số <span style="color:#38bdf8;">' + serial + '</span> trong cơ sở dữ liệu...';
             
             setTimeout(() => {
                 resultBox.style.borderBottomColor = '#22c55e';
-                resultText.innerHTML = '✅ <b>CHÍNH HÃNG 100%:</b> Sản phẩm mang số serial <span style="color:#38bdf8;">' + serial + '</span> thuộc hệ thống <b>Giải Pháp Cuộc Sống</b>. Hàng nguyên bản, chưa từng bị kích hoạt trước đó.';
+                resultText.innerHTML = '✅ <b>XÁC THỰC THÀNH CÔNG (CHÍNH HÃNG):</b> Sản phẩm <b>Sâm Ngọc Linh Kon Tum (SP-NGOCLINH-001)</b> mang số serial <span style="color:#38bdf8;">' + serial + '</span> thuộc hệ thống <b>Giải Pháp Cuộc Sống</b>. Đảm bảo nguyên bản 100% từ nhà sản xuất!';
             }, 1000);
         }
     </script>
