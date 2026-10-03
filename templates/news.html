@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cẩm Nang Chuyên Sâu & Mẫu Tem Độc Quyền - Giải Pháp Cuộc Sống</title>
+    <title>Cẩm Nang Chuyên Sâu & Mẫu Tem Chuẩn - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f8fafc; color: #1e293b; line-height: 1.7; }
@@ -21,7 +21,7 @@
         h2 { font-size: 20px; color: #0f172a; margin-top: 35px; margin-bottom: 15px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 12px; }
         p { font-size: 15px; color: #334155; margin-bottom: 15px; }
 
-        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 240px; gap: 25px; align-items: center; transition: 0.2s; }
+        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 260px; gap: 25px; align-items: center; transition: 0.2s; }
         .tier-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-color: #38bdf8; }
         .tier-info h3 { font-size: 17px; color: #0f172a; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         
@@ -29,18 +29,19 @@
         .badge-high { background: #3b82f6; }
         .badge-master { background: #8b5cf6; }
 
-        /* KHUNG THIẾT KẾ MẪU TEM ĐỘC QUYỀN (TỰ TẠO TRỰC QUAN) */
-        .stamp-mockup { width: 100%; height: 140px; background: #ffffff; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed #cbd5e1; position: relative; overflow: hidden; padding: 10px; text-align: center; }
+        /* KHUNG MÔ PHỎNG MẪU TEM CHUẨN CÓ TÊN THƯƠNG HIỆU VÀ KÍCH THƯỚC */
+        .stamp-mockup { width: 100%; height: 160px; background: #ffffff; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; border: 2px solid #cbd5e1; position: relative; overflow: hidden; padding: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         
-        .stamp-standard { border: 2px solid #0f172a; background: #fff; }
-        .stamp-hologram { background: linear-gradient(135deg, #e0f2fe 0%, #fce7f3 50%, #fef08a 100%); border: 2px solid #38bdf8; }
-        .stamp-destructible { background: #fff; border: 2px dashed #ef4444; clip-path: polygon(0% 0%, 100% 5%, 95% 100%, 5% 95%); }
-        .stamp-void { background: #f1f5f9; border: 2px solid #f59e0b; }
-        .stamp-uv { background: #0f172a; color: #38bdf8; border: 2px solid #8b5cf6; }
+        .stamp-standard { border-color: #0f172a; background: #fff; }
+        .stamp-hologram { background: linear-gradient(135deg, #e0f2fe 0%, #fce7f3 50%, #fef08a 100%); border-color: #38bdf8; }
+        .stamp-destructible { border: 2px dashed #ef4444; background: #fff; }
+        .stamp-void { border-color: #f59e0b; background: #fef3c7; }
+        .stamp-uv { background: #0f172a; color: #38bdf8; border-color: #8b5cf6; }
 
-        .stamp-title { font-size: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; }
-        .stamp-qr-box { width: 45px; height: 45px; background: #000; margin: 4px auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 8px; font-weight: bold; }
-        .stamp-sub { font-size: 9px; color: #475569; }
+        .stamp-brand-top { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stamp-qr-graphic { width: 50px; height: 50px; background: #000; display: flex; align-items: center; justify-content: center; color: white; font-size: 8px; font-weight: bold; border-radius: 4px; }
+        .stamp-size-tag { font-size: 9px; background: #e2e8f0; color: #334155; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .stamp-brand-bottom { font-size: 9px; font-weight: bold; text-transform: uppercase; }
 
         .footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 30px; font-size: 14px; margin-top: 60px; }
         .footer span { color: #38bdf8; font-weight: bold; }
@@ -64,22 +65,26 @@
     </div>
 
     <div class="container">
-        <h1>Cẩm Nang Chuyên Sâu: Tác Dụng, Phân Loại & Mức Độ Bảo Mật Tem Doanh Nghiệp</h1>
-        <div class="meta">Hệ Thống Thiết Kế & Xác Thực Độc Quyền | Tác Giả: Vương Tùng &copy; 2026</div>
+        <h1>Cẩm Nang Chuyên Sâu: Tác Dụng, Phân Loại & Quy Cách Mẫu Tem</h1>
+        <div class="meta">Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia | Tác Giả: Vương Tùng &copy; 2026</div>
 
-        <p>Hệ thống tự động tích hợp các mẫu tem độc quyền từ tiêu chuẩn đến cao cấp, giúp doanh nghiệp chủ động lựa chọn giải pháp bảo vệ tối ưu nhất cho từng dòng sản phẩm mà không cần phụ thuộc vào bên thứ ba.</p>
+        <p>Hệ thống cung cấp đầy đủ các chuẩn loại tem từ tiết kiệm đến cao cấp. Dưới đây là mô phỏng quy cách thiết kế, kích thước chuẩn và vị trí nhận diện thương hiệu trên từng con tem.</p>
 
         <h2>1. Tem QR Tiêu Chuẩn (Phân khúc tiết kiệm)</h2>
         <div class="tier-card">
             <div class="tier-info">
                 <h3><span>Gói 1: Tem QR Decal Thường</span> <span class="badge">Bảo mật cơ bản</span></h3>
-                <p><b>Đặc điểm:</b> Thiết kế đơn giản trên nền giấy decal trắng, mã hóa định danh phần cứng kết hợp liên kết xác thực nhanh.</p>
-                <p><b>Tác dụng:</b> Giúp người tiêu dùng quét mã truy xuất nguồn gốc, hạn sử dụng. Tối ưu chi phí cho hàng nông sản và văn phòng phẩm.</p>
+                <p><b>Đặc điểm:</b> In trên chất liệu decal giấy trắng, tích hợp mã QR định danh và mã hóa phần cứng chống sao chép đường dẫn.</p>
+                <p><b>Tác dụng:</b> Giúp người tiêu dùng dùng smartphone quét kiểm tra nhanh nguồn gốc hàng hóa. Tối ưu chi phí cho nông sản, văn phòng phẩm.</p>
             </div>
+            <!-- MÔ PHỎNG MẪU TEM 1 -->
             <div class="stamp-mockup stamp-standard">
-                <div class="stamp-title" style="color:#0f172a;">CHÍNH HÃNG VN</div>
-                <div class="stamp-qr-box">QR CODE</div>
-                <div class="stamp-sub">Mã: SP-STANDARD-01</div>
+                <div class="stamp-brand-top" style="color:#0f172a;">GIẢI PHÁP CUỘC SỐNG</div>
+                <div class="stamp-qr-graphic">MÃ QR</div>
+                <div style="display: flex; gap: 5px; align-items: center;">
+                    <span class="stamp-size-tag">Kích thước: 2 x 2 cm</span>
+                </div>
+                <div class="stamp-brand-bottom" style="color:#22c55e;">CHÍNH HÃNG 100%</div>
             </div>
         </div>
 
@@ -90,10 +95,12 @@
                 <p><b>Đặc điểm:</b> Màng nhũ phản quang đa sắc chuyển màu theo góc nhìn, ngăn chặn chụp ảnh hoặc in sao chép bằng máy in màu thông thường.</p>
                 <p><b>Tác dụng:</b> Khẳng định đẳng cấp thương hiệu, nhận diện trực quan bằng mắt thường cho mỹ phẩm và thực phẩm cao cấp.</p>
             </div>
+            <!-- MÔ PHỎNG MẪU TEM 2 -->
             <div class="stamp-mockup stamp-hologram">
-                <div class="stamp-title" style="color:#2563eb;">✨ HOLOGRAM 7 MÀU ✨</div>
-                <div class="stamp-qr-box" style="background:#2563eb;">QR 3D</div>
-                <div class="stamp-sub" style="color:#1e293b; font-weight:bold;">Chống sao chép trực quan</div>
+                <div class="stamp-brand-top" style="color:#1e3a8a;">✨ GIẢI PHÁP CUỘC SỐNG ✨</div>
+                <div class="stamp-qr-graphic" style="background:#2563eb;">QR 3D</div>
+                <span class="stamp-size-tag">Kích thước: 2 x 2 cm</span>
+                <div class="stamp-brand-bottom" style="color:#9333ea;">HOLOGRAM CHỐNG GIẢ</div>
             </div>
         </div>
 
@@ -104,10 +111,12 @@
                 <p><b>Đặc điểm:</b> Chất liệu decal giòn đặc biệt, tự động rách vỡ thành trăm mảnh khi cố tình bóc ra khỏi bề mặt thiết bị.</p>
                 <p><b>Tác dụng:</b> Ngăn chặn tuyệt đối hành vi tráo đổi linh kiện điện tử, bo mạch bên trong thiết bị.</p>
             </div>
+            <!-- MÔ PHỎNG MẪU TEM 3 -->
             <div class="stamp-mockup stamp-destructible">
-                <div class="stamp-title" style="color:#dc2626;">⚠️ TEM BẢO HÀNH VỠ ⚠️</div>
-                <div class="stamp-qr-box" style="background:#dc2626;">QR VỠ</div>
-                <div class="stamp-sub">Tự hủy khi bóc mở</div>
+                <div class="stamp-brand-top" style="color:#dc2626;">⚠️️ GIẢI PHÁP CUỘC SỐNG ⚠️</div>
+                <div class="stamp-qr-graphic" style="background:#dc2626;">QR VỠ</div>
+                <span class="stamp-size-tag">Kích thước: 1 x 1 cm</span>
+                <div class="stamp-brand-bottom" style="color:#dc2626;">TEM BẢO HÀNH TỰ HỦY</div>
             </div>
         </div>
 
@@ -117,10 +126,12 @@
                 <p><b>Đặc điểm:</b> Dải niêm phong thiết kế dán ngang cổ chai, khi mở sẽ hiện rõ chữ cảnh báo "VOID" hoặc vạch đứt.</p>
                 <p><b>Tác dụng:</b> Đảm bảo rượu ngoại, dược phẩm, dung dịch lỏng bên trong nguyên bản 100%, chưa bị tráo đổi.</p>
             </div>
+            <!-- MÔ PHỎNG MẪU TEM 4 -->
             <div class="stamp-mockup stamp-void">
-                <div class="stamp-title" style="color:#d97706;">🔒 NIÊM PHONG VOID 🔒</div>
-                <div class="stamp-qr-box" style="background:#d97706;">QR VOID</div>
-                <div class="stamp-sub">Hiện chữ khi bóc mở</div>
+                <div class="stamp-brand-top" style="color:#92400e;">GIẢI PHÁP CUỘC SỐNG</div>
+                <div class="stamp-qr-graphic" style="background:#d97706;">QR VOID</div>
+                <span class="stamp-size-tag">Kích thước: 1.5 x 3 cm</span>
+                <div class="stamp-brand-bottom" style="color:#b45309;">NIÊM PHONG CHỐNG MỞ</div>
             </div>
         </div>
 
@@ -131,10 +142,12 @@
                 <p><b>Đặc điểm:</b> Sử dụng mực phát quang cao cấp ẩn hoàn toàn dưới ánh sáng thường, chỉ rực sáng đổi màu dưới đèn UV chuyên dụng[cite: 7].</p>
                 <p><b>Tác dụng:</b> Cấp độ bảo mật tối cao tương đương tiêu chuẩn tiền tệ, giúp kiểm tra nhanh chóng và chống làm giả tuyệt đối.</p>
             </div>
+            <!-- MÔ PHỎNG MẪU TEM 5 -->
             <div class="stamp-mockup stamp-uv">
-                <div class="stamp-title" style="color:#38bdf8;">💡 PHÁT QUANG UV 💡</div>
-                <div class="stamp-qr-box" style="background:#8b5cf6;">QR UV</div>
-                <div class="stamp-sub" style="color:#94a3b8;">Rực sáng dưới tia cực tím</div>
+                <div class="stamp-brand-top" style="color:#38bdf8;">GIẢI PHÁP CUỘC SỐNG</div>
+                <div class="stamp-qr-graphic" style="background:#7c3aed;">QR UV</div>
+                <span class="stamp-size-tag" style="background:#1e293b; color:#38bdf8; border: 1px solid #38bdf8;">Kích thước: 2 x 2 cm</span>
+                <div class="stamp-brand-bottom" style="color:#a78bfa;">PHÁT QUANG TIA UV</div>
             </div>
         </div>
 
