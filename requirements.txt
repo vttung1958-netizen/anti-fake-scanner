@@ -1,7 +1,3 @@
-Flask
-gunicorn
-qrcode
-pandas
-openpyxl
-Pillow
-fpdf2
+Flask>=3.0.0
+qrcode>=7.4.2
+openpyxl>=3.1.2
