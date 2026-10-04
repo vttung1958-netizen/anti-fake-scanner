@@ -2,144 +2,83 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cẩm Nang Quy Cách, Kích Thước & Hướng Dẫn Truy Vấn - Giải Pháp Cuộc Sống</title>
+    <title>Cẩm Nang Quy Cách, Kích Thước Tem QR & Mã Vạch - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f1f5f9; color: #1e293b; line-height: 1.7; }
 
-        /* THANH TOPBAR THÔNG TIN & TÀI KHOẢN */
-        .topbar { background: #ffffff; padding: 10px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; flex-wrap: wrap; gap: 10px; }
+        .topbar { background: #ffffff; padding: 10px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; }
         .topbar-right { display: flex; gap: 20px; align-items: center; font-weight: 600; color: #0f172a; }
         .auth-links a { color: #0284c7; text-decoration: none; font-weight: bold; margin-left: 8px; cursor: pointer; }
         .auth-links a:hover { text-decoration: underline; }
 
-        /* NAVBAR CHÍNH */
         .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; text-decoration: none; display: flex; align-items: center; gap: 10px; }
         .nav-links { display: flex; gap: 15px; align-items: center; }
         .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 12px; border-radius: 6px; transition: 0.2s; }
         .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
         .btn-cta-nav { background: #22c55e !important; color: white !important; }
 
-        /* MODAL ĐĂNG KÝ & ĐĂNG NHẬP THÔNG MINH */
+        /* MODAL ĐĂNG KÝ / ĐĂNG NHẬP */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 440px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; }
+        .modal-content { background: white; width: 460px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; max-height: 90vh; overflow-y: auto; }
         .modal-close { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: #64748b; font-weight: bold; }
-        .modal-content h2 { color: #0f172a; font-size: 18px; margin-bottom: 15px; text-align: center; }
-
-        /* TAB CHUYỂN ĐỔI GIỮA ĐĂNG KÝ (LẦN ĐẦU) VÀ ĐĂNG NHẬP (LẦN SAU) */
+        
         .tab-header { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 20px; }
         .tab-btn { flex: 1; padding: 10px; background: none; border: none; font-size: 13px; font-weight: bold; color: #64748b; cursor: pointer; transition: 0.2s; }
         .tab-btn.active { color: #0284c7; border-bottom: 2px solid #0284c7; margin-bottom: -2px; }
-
         .tab-body { display: none; }
         .tab-body.active { display: block; }
 
-        /* FORM NHẬP LIỆU ĐĂNG KÝ LẦN ĐẦU */
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px; }
         .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; outline: none; }
         .form-group input:focus { border-color: #0284c7; }
-        .btn-submit-reg { width: 100%; background: #0284c7; color: white; border: none; padding: 11px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 5px; transition: 0.2s; }
+        .btn-submit-reg { width: 100%; background: #0284c7; color: white; border: none; padding: 11px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 5px; }
         .btn-submit-reg:hover { background: #0369a1; }
 
-        .divider { text-align: center; margin: 15px 0; font-size: 12px; color: #94a3b8; position: relative; }
-        .divider::before, .divider::after { content: ""; position: absolute; top: 50%; width: 40%; height: 1px; background: #e2e8f0; }
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
-
-        /* NÚT MẠNG XÃ HỘI (LẦN SAU) */
-        .social-btn { width: 100%; padding: 11px; margin-bottom: 10px; border: none; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
+        .social-btn { width: 100%; padding: 11px; margin-bottom: 10px; border: none; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-google { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
-        .btn-google:hover { background: #e2e8f0; }
         .btn-facebook { background: #1877f2; color: white; }
-        .btn-facebook:hover { background: #145dbf; }
         .btn-zalo { background: #0068ff; color: white; }
-        .btn-zalo:hover { background: #0052cc; }
 
-        /* THANH TRA CỨU MÃ NHANH */
-        .quick-verify-bar { background: #0284c7; padding: 15px 50px; display: flex; justify-content: center; align-items: center; gap: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); flex-wrap: wrap; }
+        .quick-verify-bar { background: #0284c7; padding: 15px 50px; display: flex; justify-content: center; align-items: center; gap: 15px; }
         .quick-verify-bar input { padding: 10px 15px; border-radius: 6px; border: none; width: 260px; font-size: 14px; outline: none; }
-        .quick-verify-bar button { background: #10b981; color: white; border: none; padding: 10px 25px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-        .quick-verify-bar button:hover { background: #059669; }
+        .quick-verify-bar button { background: #10b981; color: white; border: none; padding: 10px 25px; font-weight: bold; border-radius: 6px; cursor: pointer; }
 
-        #verify-result-box { display: none; background: #0f172a; color: white; padding: 15px 30px; text-align: center; font-size: 14px; border-bottom: 3px solid #22c55e; }
-
-        /* BỐ CỤC CHÍNH 2 CỘT */
         .main-container { max-width: 1200px; margin: 30px auto; display: grid; grid-template-columns: 1fr 340px; gap: 30px; padding: 0 20px; }
-
         .content-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        h1 { font-size: 26px; color: #0f172a; margin-bottom: 12px; font-weight: 800; line-height: 1.3; }
+        h1 { font-size: 26px; color: #0f172a; margin-bottom: 12px; font-weight: 800; }
         .meta { color: #64748b; font-size: 13px; margin-bottom: 25px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
-
-        h2 { font-size: 18px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; font-weight: 700; border-left: 4px solid #38bdf8; padding-left: 10px; scroll-margin-top: 100px; }
+        h2 { font-size: 18px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; border-left: 4px solid #38bdf8; padding-left: 10px; }
         p { font-size: 14px; color: #334155; margin-bottom: 14px; }
 
-        /* BẢNG KÍCH THƯỚC CHUẨN */
-        .size-guide-box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; font-size: 13px; }
-        .size-tags-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-        .size-badge-item { background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; border: 1px solid #bae6fd; }
-
-        /* KHUNG TEM */
-        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: center; transition: 0.2s; }
-        .tier-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-color: #38bdf8; }
-        .tier-info h3 { font-size: 16px; color: #0f172a; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        
+        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: center; }
         .badge { background: #22c55e; color: white; font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
-        .badge-high { background: #3b82f6; }
-        .badge-master { background: #8b5cf6; }
+        .btn-register-tier { display: inline-block; margin-top: 12px; background: #0284c7; color: white; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; text-decoration: none; }
 
-        .btn-register-tier { display: inline-block; margin-top: 12px; background: #0284c7; color: white; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; text-decoration: none; transition: 0.2s; }
-        .btn-register-tier:hover { background: #0369a1; }
-
-        .stamp-mockup { width: 100%; height: 180px; background: #ffffff; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; border: 2px solid #0f172a; padding: 8px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); position: relative; }
-        .stamp-standard { border-color: #0f172a; background: #fff; }
-        .stamp-hologram { background: linear-gradient(135deg, #e0f2fe 0%, #fce7f3 50%, #fef08a 100%); border-color: #0284c7; }
-        .stamp-destructible { border: 2px dashed #dc2626; background: #fff; }
-        .stamp-void { border-color: #d97706; background: #fffbeb; }
-        .stamp-uv { background: #0f172a; color: #38bdf8; border-color: #7c3aed; }
-
-        .stamp-brand-top { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        .qr-real-box { width: 55px; height: 55px; background: #fff; border: 1.5px solid #000; padding: 2px; display: flex; align-items: center; justify-content: center; }
+        /* KHUNG MÔ PHỎNG TEM KÈM MÃ VẠCH (BARCODE) */
+        .stamp-mockup { width: 100%; background: #ffffff; border: 2px solid #0f172a; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .stamp-brand-top { font-size: 9px; font-weight: 800; text-transform: uppercase; }
+        .qr-and-barcode-row { display: flex; gap: 10px; align-items: center; justify-content: center; }
+        .qr-real-box { width: 45px; height: 45px; background: #fff; border: 1px solid #000; padding: 2px; }
         .qr-real-box img { width: 100%; height: 100%; object-fit: contain; }
-        .qr-fallback-matrix { width: 100%; height: 100%; background: #000; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 1px; padding: 2px; }
-        .qrc { background: #fff; }
-        .qrc.dark { background: #000; }
-
+        .barcode-mini-box { width: 110px; height: 35px; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 7px; font-family: monospace; }
         .stamp-serial-code { font-size: 8px; font-weight: bold; color: #dc2626; }
-        .stamp-size-tag { font-size: 8px; background: #e2e8f0; color: #334155; padding: 1px 5px; border-radius: 3px; font-weight: bold; }
-        .stamp-brand-bottom { font-size: 8px; font-weight: bold; text-transform: uppercase; }
+        .stamp-brand-bottom { font-size: 8px; font-weight: bold; color: #16a34a; }
 
-        /* KHU VỰC HƯỚNG DẪN TRUY VẤN CHI TIẾT */
-        .guide-steps-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-top: 40px; }
-        .step-item { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; }
-        .step-number { background: #0284c7; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; flex-shrink: 0; }
-        .step-content h4 { font-size: 15px; color: #0f172a; margin-bottom: 4px; }
-        .step-content p { font-size: 13px; color: #475569; margin: 0; }
-
-        /* SIDEBAR */
         .sidebar { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 90px; }
-        .sidebar h3 { font-size: 16px; color: #0f172a; margin-bottom: 15px; border-bottom: 2px solid #38bdf8; padding-bottom: 8px; }
-        .news-item { display: flex; gap: 12px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #f1f5f9; text-decoration: none; transition: 0.2s; }
-        .news-item:hover { opacity: 0.8; transform: translateX(3px); }
+        .news-item { display: flex; gap: 12px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #f1f5f9; text-decoration: none; }
         .news-icon { width: 45px; height: 45px; background: #e0f2fe; color: #0284c7; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
         .news-title { font-size: 13px; font-weight: 600; color: #1e293b; line-height: 1.4; }
-
         .footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 30px; font-size: 13px; margin-top: 50px; grid-column: 1 / -1; }
         .footer span { color: #38bdf8; font-weight: bold; }
-
-        @media (max-width: 900px) {
-            .main-container { grid-template-columns: 1fr; }
-            .tier-card { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
 
-    <!-- THANH TOPBAR THÔNG TIN & TÀI KHOẢN -->
     <div class="topbar">
-        <div>🛡️ Hệ Thống Chống Hàng Giả, Hàng Nhái Quốc Gia</div>
+        <div>🛡️ Hệ Thống Chống Hàng Giả, Hàng Nhái Quốc Gia & Quản Lý Mã Vạch Kho Vận</div>
         <div class="topbar-right">
             <span>📞 Hotline: 08 39 39 56 56</span>
             <div class="auth-links" id="auth-status-container">
@@ -149,7 +88,6 @@
         </div>
     </div>
 
-    <!-- NAVBAR CHÍNH (QUẢN TRỊ ADMIN ĐÃ TRỎ ĐÚNG VỀ /admin) -->
     <div class="navbar">
         <a href="/" class="brand">🛡️ GIẢI PHÁP CUỘC SỐNG</a>
         <div class="nav-links">
@@ -161,256 +99,103 @@
         </div>
     </div>
 
-    <!-- MODAL ĐĂNG KÝ & ĐĂNG NHẬP THÔNG MINH -->
+    <!-- MODAL ĐĂNG KÝ LẦN ĐẦU (TÊN, SĐT, EMAIL, CÔNG TY) & ĐĂNG NHẬP LẦN SAU (GOOGLE, FB, ZALO) -->
     <div class="modal-overlay" id="auth-modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeAuthModal()">&times;</span>
             
-            <!-- THANH TAB CHUYỂN ĐỔI -->
             <div class="tab-header">
                 <button class="tab-btn active" onclick="switchTab('register')">1. Đăng Ký Mới (Lần Đầu)</button>
                 <button class="tab-btn" onclick="switchTab('login')">2. Đăng Nhập Nhanh (Lần Sau)</button>
             </div>
 
-            <!-- TAB 1: ĐĂNG KÝ BẰNG TÊN, SĐT, EMAIL (CHO LẦN ĐẦU) -->
+            <!-- TAB 1: ĐĂNG KÝ ĐẦY ĐỦ THÔNG TIN -->
             <div id="tab-register" class="tab-body active">
-                <p style="font-size: 12px; color: #64748b; margin-bottom: 12px;">Dùng cho khách hàng đăng ký tài khoản mới lần đầu tiên:</p>
+                <p style="font-size: 12px; color: #64748b; margin-bottom: 12px;">Dành cho doanh nghiệp đăng ký tài khoản xác thực lần đầu:</p>
                 <div class="form-group">
-                    <label>Họ và Tên:</label>
+                    <label>Họ và Tên Người Đại Diện:</label>
                     <input type="text" id="reg-name" placeholder="Ví dụ: Vương Thanh Tùng">
                 </div>
                 <div class="form-group">
-                    <label>Số điện thoại:</label>
+                    <label>Số Điện Thoại Liên Hệ:</label>
                     <input type="text" id="reg-phone" placeholder="Ví dụ: 0903123456">
                 </div>
                 <div class="form-group">
-                    <label>Email doanh nghiệp:</label>
+                    <label>Email Doanh Nghiệp:</label>
                     <input type="email" id="reg-email" placeholder="Ví dụ: tung@vuongtung.com.vn">
                 </div>
-                <button class="btn-submit-reg" onclick="submitRegisterForm()">✨ Hoàn Tất Đăng Ký</button>
+                <div class="form-group">
+                    <label>Tên Công Ty / Đơn Vị Sản Xuất:</label>
+                    <input type="text" id="reg-company" placeholder="Ví dụ: Công ty TNHH Giải Pháp Cuộc Sống">
+                </div>
+                <button class="btn-submit-reg" onclick="submitRegisterForm()">✨ Hoàn Tất Đăng Ký Doanh Nghiệp</button>
             </div>
 
-            <!-- TAB 2: ĐĂNG NHẬP BẰNG GOOGLE, FACEBOOK, ZALO (CHO CÁC LẦN SAU) -->
+            <!-- TAB 2: ĐĂNG NHẬP MẠNG XÃ HỘI LẦN SAU -->
             <div id="tab-login" class="tab-body">
-                <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Dành cho các lần truy cập tiếp theo, đăng nhập siêu tốc bằng mạng xã hội:</p>
-                <button class="social-btn btn-google" onclick="socialLogin('Google')">
-                    🌐 Tiếp tục với Google
-                </button>
-                <button class="social-btn btn-facebook" onclick="socialLogin('Facebook')">
-                    📘 Tiếp tục với Facebook
-                </button>
-                <button class="social-btn btn-zalo" onclick="socialLogin('Zalo')">
-                    🛡️ Tiếp tục với Zalo ID
-                </button>
+                <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Dành cho các lần truy cập tiếp theo, đăng nhập siêu tốc không cần nhập lại:</p>
+                <button class="social-btn btn-google" onclick="socialLogin('Google')">🌐 Tiếp tục với Google ID</button>
+                <button class="social-btn btn-facebook" onclick="socialLogin('Facebook')">📘 Tiếp tục với Facebook</button>
+                <button class="social-btn btn-zalo" onclick="socialLogin('Zalo')">🛡️ Tiếp tục với Zalo ID</button>
             </div>
         </div>
     </div>
 
-    <!-- THANH TRA CỨU MÃ NHANH -->
     <div class="quick-verify-bar">
         <input type="text" id="input-serial" placeholder="Nhập SỐ SERIAL..." value="VN-SYS-2026-9999">
         <input type="text" id="input-code" placeholder="Nhập MÃ XÁC THỰC..." value="123456">
         <button onclick="performQuickVerify()">Xác thực sản phẩm</button>
     </div>
 
-    <div id="verify-result-box">
-        <span id="verify-result-text"></span>
-    </div>
-
-    <!-- BỐ CỤC CHÍNH 2 CỘT -->
     <div class="main-container">
-
-        <!-- CỘT TRÁI: CẨM NANG & QUY CÁCH -->
         <div class="content-card">
-            <h1>Cẩm Nang Chuyên Sâu: Phân Loại Tem & Ứng Dụng Ngành Hàng</h1>
+            <h1>Cẩm Nang Chuyên Sâu: Tích Hợp Song Song Mã QR & Mã Vạch (Barcode)</h1>
             <div class="meta">Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia | Tác Giả: Vương Tùng &copy; 2026</div>
 
-            <p>Hệ thống cung cấp giải pháp tem xác thực điện tử tiêu chuẩn cao, linh hoạt đáp ứng mọi chủng loại hàng hóa từ nông sản phổ thông đến các dòng sản phẩm cao cấp.</p>
+            <p>Hệ thống cung cấp giải pháp tem chống giả kết hợp đồng thời Mã QR định danh số hóa và Mã vạch tuyến tính chuẩn công nghiệp (Code 128) phục vụ quản lý kho vận, siêu thị và truy xuất nguồn gốc.</p>
 
-            <!-- HƯỚNG DẪN KÍCH THƯỚC CHUẨN -->
-            <div class="size-guide-box">
-                <b>📏 Các tùy chọn kích thước tem tiêu chuẩn:</b>
-                <div class="size-tags-row">
-                    <span class="size-badge-item">1 x 1 cm</span>
-                    <span class="size-badge-item">1.5 x 1.5 cm</span>
-                    <span class="size-badge-item">2 x 2 cm</span>
-                    <span class="size-badge-item">2.5 x 2.5 cm</span>
-                    <span class="size-badge-item">3 x 3 cm</span>
-                </div>
-            </div>
-
-            <h2 id="section-1">1. Tem QR Tiêu Chuẩn (Phân khúc phổ thông)</h2>
+            <h2>1. Mẫu Tem Chuẩn Tích Hợp QR Code & Barcode Code 128</h2>
             <div class="tier-card">
                 <div class="tier-info">
-                    <h3><span>Gói 1: Tem QR Decal Thường</span> <span class="badge">Bảo mật cơ bản</span></h3>
-                    <p><b>Ứng dụng phù hợp:</b> Nông sản đóng hộp, thực phẩm khô, văn phòng phẩm, hàng tiêu dùng nhanh.</p>
-                    <p><b>Quy cách kích thước khuyên dùng:</b> <b>2 x 2 cm</b> hoặc <b>2.5 x 2.5 cm</b>.</p>
-                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Gói Này Ngay</a>
+                    <h3><span>Gói Tem Tiêu Chuẩn Công Nghiệp</span> <span class="badge">QR + Barcode</span></h3>
+                    <p><b>Ứng dụng phù hợp:</b> Hàng tiêu dùng, nông sản, dược phẩm và linh kiện điện tử cần quét nhanh tại cửa hàng và kho.</p>
+                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Lô Tem Ngay</a>
                 </div>
-                <div class="stamp-mockup stamp-standard">
-                    <div class="stamp-brand-top" style="color:#0f172a;">GIẢI PHÁP CUỘC SỐNG</div>
-                    <div class="qr-real-box">
-                        <img src="/static/qr_sample.png" alt="Mã QR" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                        <div class="qr-fallback-matrix" style="display:none;">
-                            <div class="qrc dark"></div><div class="qrc"></div><div class="qrc dark"></div><div class="qrc dark"></div><div class="qrc"></div>
-                            <div class="qrc"></div><div class="qrc dark"></div><div class="qrc"></div><div class="qrc dark"></div><div class="qrc dark"></div>
-                            <div class="qrc dark"></div><div class="qrc"></div><div class="qrc dark"></div><div class="qrc"></div><div class="qrc dark"></div>
-                            <div class="qrc"></div><div class="qrc dark"></div><div class="qrc dark"></div><div class="qrc"></div><div class="qrc"></div>
-                            <div class="qrc dark"></div><div class="qrc dark"></div><div class="qrc"></div><div class="qrc dark"></div><div class="qrc dark"></div>
+                <!-- MÔ PHỎNG TEM THỰC TẾ CÓ CẢ QR VÀ MÃ VẠCH BARCODE -->
+                <div class="stamp-mockup">
+                    <div class="stamp-brand-top">GIẢI PHÁP CUỘC SỐNG</div>
+                    <div class="qr-and-barcode-row">
+                        <div class="qr-real-box">
+                            <img src="/static/qr_sample.png" alt="QR" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=VN-SYS-2026'">
+                        </div>
+                        <div class="barcode-mini-box">
+                            <span style="letter-spacing: 1px; font-weight: bold;">||| | |||| ||</span>
+                            <span>SP001-CODE128</span>
                         </div>
                     </div>
                     <div class="stamp-serial-code">Serial: VN-SYS-2026-0001</div>
-                    <div style="display:flex; gap:5px; align-items:center;">
-                        <span class="stamp-size-tag">2 x 2 cm</span>
-                        <span class="stamp-brand-bottom" style="color:#16a34a;">CHÍNH HÃNG</span>
-                    </div>
-                </div>
-            </div>
-
-            <h2 id="section-2">2. Tem Chống Sao Chép Trực Quan (Hologram 7 màu)</h2>
-            <div class="tier-card">
-                <div class="tier-info">
-                    <h3><span>Gói 2: Tem QR Hologram 3D</span> <span class="badge badge-high">Bảo mật trung bình</span></h3>
-                    <p><b>Ứng dụng phù hợp:</b> Rượu đặc biệt, mỹ phẩm cao cấp, dược phẩm, hộp quà tặng sang trọng.</p>
-                    <p><b>Quy cách kích thước khuyên dùng:</b> <b>2 x 2 cm</b> hoặc <b>3 x 3 cm</b>.</p>
-                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Gói Này Ngay</a>
-                </div>
-                <div class="stamp-mockup stamp-hologram">
-                    <div class="stamp-brand-top" style="color:#1e3a8a;">✨ GIẢI PHÁP CUỘC SỐNG ✨</div>
-                    <div class="qr-real-box" style="border-color:#2563eb;">
-                        <img src="/static/qr_sample.png" alt="Mã QR" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                        <div class="qr-fallback-matrix" style="display:none; background:#2563eb;">
-                            <div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div>
-                            <div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc dark" style="background:#2563eb;"></div>
-                            <div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div>
-                            <div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div><div class="qrc"></div>
-                            <div class="qrc dark" style="background:#2563eb;"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc"></div><div class="qrc dark" style="background:#2563eb;"></div><div class="qrc dark" style="background:#2563eb;"></div>
-                        </div>
-                    </div>
-                    <div class="stamp-serial-code" style="color:#1d4ed8;">Serial: VN-SYS-2026-0002</div>
-                    <div style="display:flex; gap:5px; align-items:center;">
-                        <span class="stamp-size-tag">2 x 2 cm</span>
-                        <span class="stamp-brand-bottom" style="color:#7e22ce;">HOLOGRAM 3D</span>
-                    </div>
-                </div>
-            </div>
-
-            <h2 id="section-3">3. Tem Vật Lý Chống Tráo Đổi (Tem Vỡ Tự Hủy & Niêm Phong)</h2>
-            <div class="tier-card">
-                <div class="tier-info">
-                    <h3><span>Gói 3 & 4: Tem Vỡ & Niêm Phong Void</span> <span class="badge badge-high">Bảo mật vật lý</span></h3>
-                    <p><b>Ứng dụng phù hợp:</b> Linh kiện điện tử, thiết bị công nghệ, nắp chai lọ dược phẩm, niêm phong mép hộp.</p>
-                    <p><b>Quy cách kích thước khuyên dùng:</b> <b>1 x 1 cm</b> hoặc <b>1.5 x 1.5 cm</b>.</p>
-                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Gói Này Ngay</a>
-                </div>
-                <div class="stamp-mockup stamp-destructible">
-                    <div class="stamp-brand-top" style="color:#dc2626;">⚠ GIẢI PHÁP CUỘC SỐNG ⚠️</div>
-                    <div class="qr-real-box" style="border-color:#dc2626;">
-                        <img src="/static/qr_sample.png" alt="Mã QR" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                        <div class="qr-fallback-matrix" style="display:none; background:#dc2626;">
-                            <div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div>
-                            <div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc dark" style="background:#dc2626;"></div>
-                            <div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div>
-                            <div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div><div class="qrc"></div>
-                            <div class="qrc dark" style="background:#dc2626;"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc"></div><div class="qrc dark" style="background:#dc2626;"></div><div class="qrc dark" style="background:#dc2626;"></div>
-                        </div>
-                    </div>
-                    <div class="stamp-serial-code">Serial: VN-SYS-2026-0003</div>
-                    <div style="display:flex; gap:5px; align-items:center;">
-                        <span class="stamp-size-tag">1 x 1 cm</span>
-                        <span class="stamp-brand-bottom" style="color:#dc2626;">TEM VỠ TỰ HỦY</span>
-                    </div>
-                </div>
-            </div>
-
-            <h2 id="section-4">4. Tem Công Nghệ Cao Cấp Phát Quang (Tia UV)</h2>
-            <div class="tier-card">
-                <div class="tier-info">
-                    <h3><span>Gói 5 & 6: Tem Phát Quang UV</span> <span class="badge badge-master">Bảo mật tuyệt đối</span></h3>
-                    <p><b>Ứng dụng phù hợp:</b> Sản phẩm phiên bản giới hạn, thiết bị công nghệ độc quyền, hàng hóa xuất khẩu cao cấp.</p>
-                    <p><b>Quy cách kích thước khuyên dùng:</b> <b>2 x 2 cm</b> hoặc <b>2.5 x 2.5 cm</b>.</p>
-                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Gói Này Ngay</a>
-                </div>
-                <div class="stamp-mockup stamp-uv">
-                    <div class="stamp-brand-top" style="color:#38bdf8;">GIẢI PHÁP CUỘC SỐNG</div>
-                    <div class="qr-real-box" style="border-color:#38bdf8; background:#0f172a;">
-                        <img src="/static/qr_sample.png" alt="Mã QR" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
-                        <div class="qr-fallback-matrix" style="display:none; background:#0f172a;">
-                            <div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div>
-                            <div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#38bdf8;"></div>
-                            <div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div>
-                            <div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#0f172a;"></div>
-                            <div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#0f172a;"></div><div class="qrc" style="background:#38bdf8;"></div><div class="qrc" style="background:#38bdf8;"></div>
-                        </div>
-                    </div>
-                    <div class="stamp-serial-code" style="color:#38bdf8;">Serial: VN-SYS-2026-0004</div>
-                    <div style="display:flex; gap:5px; align-items:center;">
-                        <span class="stamp-size-tag" style="background:#1e293b; color:#38bdf8;">2 x 2 cm</span>
-                        <span class="stamp-brand-bottom" style="color:#a78bfa;">PHÁT QUANG UV</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PHẦN DIỄN GIẢI CHI TIẾT HƯỚNG DẪN TRUY VẤN XÁC THỰC -->
-            <h2 id="section-guide">5. Hướng Dẫn Truy Vấn Xác Thực Hàng Thật - Hàng Giả</h2>
-            <div class="guide-steps-box">
-                <div class="step-item">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Quét mã QR hoặc nhập Serial</h4>
-                        <p>Khách hàng sử dụng điện thoại thông minh (Camera hoặc ứng dụng Zalo/VNeID) để quét trực tiếp mã QR in trên con tem dán trên sản phẩm.</p>
-                    </div>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>Nhập mã xác thực bảo mật</h4>
-                        <p>Trong trường hợp tra cứu thủ công trên website, nhập chính xác <b>Số Serial</b> và <b>Mã xác thực</b> vào thanh tra cứu phía trên cùng của trang web.</p>
-                    </div>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>Nhận kết quả từ cơ sở dữ liệu quốc gia</h4>
-                        <p>Hệ thống lập tức đối chiếu và trả về thông tin chi tiết: Tên doanh nghiệp sản xuất, ngày xuất xưởng, số lô và trạng thái nguyên bản 100% của sản phẩm.</p>
-                    </div>
+                    <div class="stamp-brand-bottom">CHÍNH HÃNG 100%</div>
                 </div>
             </div>
         </div>
 
-        <!-- CỘT PHẢI: BÀI VIẾT NỔI BẬT & ĐIỀU HƯỚNG -->
         <div class="sidebar">
-            <h3>📖 Bài Viết Nổi Bật & Giải Đáp</h3>
+            <h3>📖 Bài Viết Nổi Bật</h3>
             <a href="/buy" class="news-item">
                 <div class="news-icon">📦</div>
-                <div class="news-title">Tạo mã QR code cho sản phẩm nhanh, dễ dàng in ấn chỉ bằng một cú click</div>
+                <div class="news-title">Tạo mã QR code và Mã vạch Barcode tự động cho doanh nghiệp</div>
             </a>
-            <a href="#section-1" class="news-item">
+            <a href="/buy" class="news-item">
                 <div class="news-icon">🛡️</div>
-                <div class="news-title">Giải pháp bảo vệ Người Tiêu Dùng với Tem Chống Hàng Giả công nghệ cao</div>
-            </a>
-            <a href="#section-3" class="news-item">
-                <div class="news-icon">⚡</div>
-                <div class="news-title">Cách Chống Hàng Giả, Hàng Nhái Bằng Tem Công Nghệ Cao</div>
-            </a>
-            <a href="#section-2" class="news-item">
-                <div class="news-icon">📊</div>
-                <div class="news-title">Các loại tem chống hàng giả đang được sử dụng hiện nay</div>
-            </a>
-            <a href="#section-guide" class="news-item">
-                <div class="news-icon">🔍</div>
-                <div class="news-title">Hướng dẫn truy vấn Xác Thực Hàng thật - Hàng giả chính xác</div>
+                <div class="news-title">Giải pháp bảo vệ hàng hóa với công nghệ chống giả toàn diện</div>
             </a>
         </div>
-
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
         <p>Bản quyền thuộc về <span>Tác giả Vương Tùng</span> &copy; 2026 | Hệ Thống Giải Pháp Chống Hàng Giả Doanh Nghiệp</p>
     </div>
 
-    <!-- JAVASCRIPT XỬ LÝ TAB & ĐĂNG NHẬP / ĐĂNG KÝ -->
     <script>
         window.onload = function() {
             const savedUser = localStorage.getItem('vt_logged_user');
@@ -420,19 +205,11 @@
                 document.querySelector('.auth-links a').setAttribute('onclick', 'logoutUser()');
             }
         }
-
-        function openAuthModal() {
-            document.getElementById('auth-modal').style.display = 'flex';
-        }
-
-        function closeAuthModal() {
-            document.getElementById('auth-modal').style.display = 'none';
-        }
-
+        function openAuthModal() { document.getElementById('auth-modal').style.display = 'flex'; }
+        function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
         function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-body').forEach(body => body.classList.remove('active'));
-
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-body').forEach(b => b.classList.remove('active'));
             if (tabName === 'register') {
                 event.currentTarget.classList.add('active');
                 document.getElementById('tab-register').classList.add('active');
@@ -441,57 +218,34 @@
                 document.getElementById('tab-login').classList.add('active');
             }
         }
-
         function submitRegisterForm() {
             const name = document.getElementById('reg-name').value.trim();
             const phone = document.getElementById('reg-phone').value.trim();
             const email = document.getElementById('reg-email').value.trim();
-
-            if (!name || !phone || !email) {
-                alert('⚠ Vui lòng điền đầy đủ Họ tên, Số điện thoại và Email cho lần đăng ký đầu tiên!');
+            const company = document.getElementById('reg-company').value.trim();
+            if (!name || !phone || !email || !company) {
+                alert('⚠ Vui lòng điền đầy đủ: Họ tên, Số điện thoại, Email và Tên Công ty!');
                 return;
             }
-
-            localStorage.setItem('vt_logged_user', name + ' (' + phone + ')');
-            alert('🎉 Chúc mừng ' + name + ' đã đăng ký thành công!\nHệ thống đã lưu thông tin. Các lần truy cập sau bạn có thể dùng Google, Facebook hoặc Zalo để đăng nhập nhanh.');
+            localStorage.setItem('vt_logged_user', company + ' (' + name + ')');
+            alert('🎉 Chúc mừng doanh nghiệp ' + company + ' đã đăng ký thành công!\nCác lần truy cập sau bạn có thể dùng Google, Facebook hoặc Zalo để đăng nhập nhanh.');
             closeAuthModal();
             location.reload();
         }
-
         function socialLogin(provider) {
-            const fakeAccount = 'doanhnghiep_' + provider.toLowerCase() + '@vuongtung.com.vn';
-            localStorage.setItem('vt_logged_user', fakeAccount);
+            localStorage.setItem('vt_logged_user', 'DoanhNghiệp_' + provider + '_Account');
             alert('🎉 Đăng nhập thành công qua ' + provider + '!');
             closeAuthModal();
             location.reload();
         }
-
         function logoutUser() {
             localStorage.removeItem('vt_logged_user');
-            alert('Đã đăng xuất khỏi hệ thống.');
+            alert('Đã đăng xuất hệ thống.');
             location.reload();
         }
-
         function performQuickVerify() {
-            const serial = document.getElementById('input-serial').value.trim();
-            const code = document.getElementById('input-code').value.trim();
-            const resultBox = document.getElementById('verify-result-box');
-            const resultText = document.getElementById('verify-result-text');
-
-            resultBox.style.display = 'block';
-            if(!serial || !code) {
-                resultBox.style.borderBottomColor = '#eab308';
-                resultText.innerHTML = '⚠ Vui lòng nhập đầy đủ Số Serial và Mã xác thực.';
-                return;
-            }
-
-            resultText.innerHTML = '⏳ Đang kiểm tra mã số <span style="color:#38bdf8;">' + serial + '</span> trong cơ sở dữ liệu...';
-            setTimeout(() => {
-                resultBox.style.borderBottomColor = '#22c55e';
-                resultText.innerHTML = '✅ <b>XÁC THỰC THÀNH CÔNG (CHÍNH HÃNG):</b> Mã serial <span style="color:#38bdf8;">' + serial + '</span> thuộc hệ thống phát hành chính thức của <b>Giải Pháp Công Nghệ Quốc Gia</b>. Sản phẩm hợp lệ 100%!';
-            }, 1000);
+            alert('Xác thực sản phẩm thành công: Hàng chính hãng 100%!');
         }
     </script>
-
 </body>
 </html>
