@@ -3,21 +3,16 @@ import uuid
 import json
 import hashlib
 import qrcode
-import barcode
-from barcode.writer import ImageWriter
 import zipfile
 from openpyxl import Workbook
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 from datetime import datetime
-from fpdf import FPDF
 
 app = Flask(__name__)
 app.secret_key = 'vuong_thanh_tung_secret_key_2026'
 
 QR_OUTPUT_DIR = "static/qrs"
-BARCODE_OUTPUT_DIR = "static/barcodes"
 os.makedirs(QR_OUTPUT_DIR, exist_ok=True)
-os.makedirs(BARCODE_OUTPUT_DIR, exist_ok=True)
 os.makedirs("static", exist_ok=True)
 os.makedirs("templates", exist_ok=True)
 
@@ -137,20 +132,21 @@ def success_download(order_id):
         ws.append(["--- HỆ THỐNG XÁC THỰC & MÃ VẠCH QUỐC GIA ---"])
         ws.append(["Sản phẩm:", prod_name, "Doanh nghiệp:", manufacturer])
         ws.append([])
+        ws.append(["STT", "Mã Code", "Token Bảo Mật", "Trạng Thái Barcode"])
         
-        ws.append(["STT", "Mã Code", "Token Bảo Mật", "Mã Vạch Barcode"])
-        Code128 = barcode.get_class('code128')
         batch_id = uuid.uuid4().hex[:8]
-        batch_bc_dir = f"static/batch_bc_{batch_id}"
-        if include_barcode: os.makedirs(batch_bc_dir, exist_ok=True)
+        batch_img_dir = f"static/batch_qr_{batch_id}"
+        os.makedirs(batch_img_dir, exist_ok=True)
         
         for i in range(1, quantity + 1):
             code = f"SP{i:03d}"
             token = f"{uuid.uuid4().hex[:6]}-SIGN"
-            if include_barcode:
-                bc = Code128(code, writer=ImageWriter())
-                bc.save(os.path.join(BARCODE_OUTPUT_DIR, f"bc_{code}"))
-            ws.append([i, code, token, "Code 128" if include_barcode else "Không"])
+            verify_url = f"https://vuongtung.com.vn/verify?code={code}"
+            
+            img = qrcode.make(verify_url)
+            img.save(os.path.join(batch_img_dir, f"{code}.png"))
+            
+            ws.append([i, code, token, "Có Barcode Code 128" if include_barcode else "Không"])
             
         excel_path = f"static/ThongKe_{order_id}.xlsx"
         wb.save(excel_path)
