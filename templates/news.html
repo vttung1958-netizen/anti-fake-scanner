@@ -2,10 +2,10 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Cẩm Nang Quy Cách, Kích Thước Tem QR & Mã Vạch - Giải Pháp Cuộc Sống</title>
+    <title>Cẩm Nang Chuyên Sâu: Tiêu Chuẩn Tem, Mã QR & Mã Vạch Quốc Tế - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f1f5f9; color: #1e293b; line-height: 1.7; }
+        body { background: #f1f5f9; color: #1e293b; line-height: 1.8; }
 
         .topbar { background: #ffffff; padding: 10px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; }
         .topbar-right { display: flex; gap: 20px; align-items: center; font-weight: 600; color: #0f172a; }
@@ -33,9 +33,7 @@
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px; }
         .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; outline: none; }
-        .form-group input:focus { border-color: #0284c7; }
         .btn-submit-reg { width: 100%; background: #0284c7; color: white; border: none; padding: 11px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 5px; }
-        .btn-submit-reg:hover { background: #0369a1; }
 
         .social-btn { width: 100%; padding: 11px; margin-bottom: 10px; border: none; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-google { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
@@ -48,16 +46,17 @@
 
         .main-container { max-width: 1200px; margin: 30px auto; display: grid; grid-template-columns: 1fr 340px; gap: 30px; padding: 0 20px; }
         .content-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        h1 { font-size: 26px; color: #0f172a; margin-bottom: 12px; font-weight: 800; }
+        h1 { font-size: 24px; color: #0f172a; margin-bottom: 10px; font-weight: 800; line-height: 1.4; }
         .meta { color: #64748b; font-size: 13px; margin-bottom: 25px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
-        h2 { font-size: 18px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; border-left: 4px solid #38bdf8; padding-left: 10px; }
-        p { font-size: 14px; color: #334155; margin-bottom: 14px; }
+        h2 { font-size: 17px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; border-left: 4px solid #38bdf8; padding-left: 10px; }
+        p { font-size: 14px; color: #334155; margin-bottom: 14px; text-align: justify; }
+        ul { margin-left: 20px; margin-bottom: 15px; font-size: 14px; color: #334155; }
+        li { margin-bottom: 8px; }
 
-        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: center; }
+        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin: 25px 0; display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: center; }
         .badge { background: #22c55e; color: white; font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
         .btn-register-tier { display: inline-block; margin-top: 12px; background: #0284c7; color: white; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; text-decoration: none; }
 
-        /* KHUNG MÔ PHỎNG TEM KÈM MÃ VẠCH (BARCODE) */
         .stamp-mockup { width: 100%; background: #ffffff; border: 2px solid #0f172a; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
         .stamp-brand-top { font-size: 9px; font-weight: 800; text-transform: uppercase; }
         .qr-and-barcode-row { display: flex; gap: 10px; align-items: center; justify-content: center; }
@@ -99,41 +98,24 @@
         </div>
     </div>
 
-    <!-- MODAL ĐĂNG KÝ LẦN ĐẦU (TÊN, SĐT, EMAIL, CÔNG TY) & ĐĂNG NHẬP LẦN SAU (GOOGLE, FB, ZALO) -->
+    <!-- MODAL ĐĂNG KÝ / ĐĂNG NHẬP -->
     <div class="modal-overlay" id="auth-modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeAuthModal()">&times;</span>
-            
             <div class="tab-header">
                 <button class="tab-btn active" onclick="switchTab('register')">1. Đăng Ký Mới (Lần Đầu)</button>
                 <button class="tab-btn" onclick="switchTab('login')">2. Đăng Nhập Nhanh (Lần Sau)</button>
             </div>
-
-            <!-- TAB 1: ĐĂNG KÝ ĐẦY ĐỦ THÔNG TIN -->
             <div id="tab-register" class="tab-body active">
-                <p style="font-size: 12px; color: #64748b; margin-bottom: 12px;">Dành cho doanh nghiệp đăng ký tài khoản xác thực lần đầu:</p>
-                <div class="form-group">
-                    <label>Họ và Tên Người Đại Diện:</label>
-                    <input type="text" id="reg-name" placeholder="Ví dụ: Vương Thanh Tùng">
-                </div>
-                <div class="form-group">
-                    <label>Số Điện Thoại Liên Hệ:</label>
-                    <input type="text" id="reg-phone" placeholder="Ví dụ: 0903123456">
-                </div>
-                <div class="form-group">
-                    <label>Email Doanh Nghiệp:</label>
-                    <input type="email" id="reg-email" placeholder="Ví dụ: tung@vuongtung.com.vn">
-                </div>
-                <div class="form-group">
-                    <label>Tên Công Ty / Đơn Vị Sản Xuất:</label>
-                    <input type="text" id="reg-company" placeholder="Ví dụ: Công ty TNHH Giải Pháp Cuộc Sống">
-                </div>
-                <button class="btn-submit-reg" onclick="submitRegisterForm()">✨ Hoàn Tất Đăng Ký Doanh Nghiệp</button>
+                <p style="font-size: 12px; color: #64748b; margin-bottom: 12px;">Dành cho doanh nghiệp kê khai thông tin lần đầu:</p>
+                <div class="form-group"><label>Họ và Tên Người Đại Diện:</label><input type="text" id="reg-name" placeholder="Ví dụ: Vương Thanh Tùng"></div>
+                <div class="form-group"><label>Số Điện Thoại:</label><input type="text" id="reg-phone" placeholder="Ví dụ: 0903123456"></div>
+                <div class="form-group"><label>Email Doanh Nghiệp:</label><input type="email" id="reg-email" placeholder="Ví dụ: tung@vuongtung.com.vn"></div>
+                <div class="form-group"><label>Tên Công Ty:</label><input type="text" id="reg-company" placeholder="Ví dụ: Công ty TNHH Giải Pháp Cuộc Sống"></div>
+                <button class="btn-submit-reg" onclick="submitRegisterForm()">✨ Hoàn Tất Đăng Ký</button>
             </div>
-
-            <!-- TAB 2: ĐĂNG NHẬP MẠNG XÃ HỘI LẦN SAU -->
             <div id="tab-login" class="tab-body">
-                <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Dành cho các lần truy cập tiếp theo, đăng nhập siêu tốc không cần nhập lại:</p>
+                <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Đăng nhập siêu tốc cho các lần tiếp theo:</p>
                 <button class="social-btn btn-google" onclick="socialLogin('Google')">🌐 Tiếp tục với Google ID</button>
                 <button class="social-btn btn-facebook" onclick="socialLogin('Facebook')">📘 Tiếp tục với Facebook</button>
                 <button class="social-btn btn-zalo" onclick="socialLogin('Zalo')">🛡️ Tiếp tục với Zalo ID</button>
@@ -149,19 +131,33 @@
 
     <div class="main-container">
         <div class="content-card">
-            <h1>Cẩm Nang Chuyên Sâu: Tích Hợp Song Song Mã QR & Mã Vạch (Barcode)</h1>
+            <h1>Cẩm Nang Chuyên Sâu: Chuẩn Mực Qu Dịnh Danh, Mã Vạch Toàn Cầu Và Trách Nhiệm Pháp Lý Của Doanh Nghiệp</h1>
             <div class="meta">Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia | Tác Giả: Vương Tùng &copy; 2026</div>
 
-            <p>Hệ thống cung cấp giải pháp tem chống giả kết hợp đồng thời Mã QR định danh số hóa và Mã vạch tuyến tính chuẩn công nghiệp (Code 128) phục vụ quản lý kho vận, siêu thị và truy xuất nguồn gốc.</p>
+            <p>Trong bối cảnh kinh tế số và hội nhập toàn cầu, việc ứng dụng công nghệ định danh sản phẩm không chỉ là công cụ quản lý nội bộ mà đã trở thành tiêu chuẩn bắt buộc nhằm minh bạch hóa chuỗi cung ứng, bảo vệ quyền lợi hợp pháp của nhà sản xuất chân chính và củng cố niềm tin tuyệt đối cho người tiêu dùng.</p>
 
-            <h2>1. Mẫu Tem Chuẩn Tích Hợp QR Code & Barcode Code 128</h2>
+            <h2>1. Triết Lý Và Nguyên Tắc Sử Dụng Tem Chống Giả Toàn Cầu</h2>
+            <p>Các quốc gia phát triển trên thế giới đều áp dụng nguyên tắc <b>"Minh bạch tận gốc - Truy vết toàn trình"</b> đối với mọi hàng hóa lưu thông trên thị trường. Tem chống giả tích hợp mã định danh không đơn thuần là một mảnh giấy niêm phong, mà là "chứng minh thư số" của sản phẩm với các nguyên tắc cốt lõi:</p>
+            <ul>
+                <li><b>Tính Duy Nhất (Uniqueness):</b> Mỗi con tem mang một mã chuỗi ký tự mã hóa và chữ ký số độc lập, không có bản sao thứ hai.</li>
+                <li><b>Bất Biến & Chống Sao Chép:</b> Ứng dụng công nghệ chống chụp ảnh, chống in offset thông thường (như màng Hologram 7 màu, mực phát quang UV, công nghệ vỡ cấu trúc).</li>
+                <li><b>Trách Nhiệm Giải Trình (Accountability):</b> Nhà sản xuất buộc phải chịu trách nhiệm pháp lý cao nhất về chất lượng khi thông tin doanh nghiệp được gắn chặt vào mã tem điện tử.</li>
+            </ul>
+
+            <h2>2. Hệ Thống Các Loại Mã Vạch (Barcode) Và Mã QR Hiện Hành</h2>
+            <p>Để tối ưu hóa quy trình từ nhà máy, kho vận logistics đến quầy thanh toán siêu thị, hệ thống chuẩn hóa quốc tế đang kết hợp song song hai dòng mã chủ đạo:</p>
+            <ul>
+                <li><b>Mã Vạch Tuyến Tính (Linear Barcode - Tiêu chuẩn Code 128 / EAN-13):</b> Là chuẩn mã vạch truyền thống dạng các vạch sọc đen trắng, được ứng dụng phổ biến trong việc quản lý mã SKU, quét kiểm kê kho vận tốc độ cao và thanh toán tại các điểm bán lẻ (POS).</li>
+                <li><b>Mã Phản Hồi Nhanh (QR Code động kết hợp Token bảo mật):</b> Chứa lượng dữ liệu lớn, cho phép người tiêu dùng trực tiếp dùng điện thoại thông minh quét kiểm tra nguồn gốc xuất xứ, ngày sản xuất, số lô và trạng thái xác thực chính hãng ngay lập tức.</li>
+            </ul>
+
+            <!-- MÔ PHỎNG TEM THỰC TẾ -->
             <div class="tier-card">
                 <div class="tier-info">
-                    <h3><span>Gói Tem Tiêu Chuẩn Công Nghiệp</span> <span class="badge">QR + Barcode</span></h3>
-                    <p><b>Ứng dụng phù hợp:</b> Hàng tiêu dùng, nông sản, dược phẩm và linh kiện điện tử cần quét nhanh tại cửa hàng và kho.</p>
-                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Lô Tem Ngay</a>
+                    <h3><span>Mẫu Tem Tiêu Chuẩn Công Nghiệp Song Song</span> <span class="badge">QR + Barcode</span></h3>
+                    <p><b>Giải pháp tích hợp:</b> Kết hợp hoàn hảo giữa mã vạch Code 128 cho kho vận và mã QR động chống giả cho người tiêu dùng.</p>
+                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Cấp Phát Lô Tem Ngay</a>
                 </div>
-                <!-- MÔ PHỎNG TEM THỰC TẾ CÓ CẢ QR VÀ MÃ VẠCH BARCODE -->
                 <div class="stamp-mockup">
                     <div class="stamp-brand-top">GIẢI PHÁP CUỘC SỐNG</div>
                     <div class="qr-and-barcode-row">
@@ -177,6 +173,9 @@
                     <div class="stamp-brand-bottom">CHÍNH HÃNG 100%</div>
                 </div>
             </div>
+
+            <h2>3. Trách Nhiệm Của Nhà Sản Xuất Và Niềm Tin Của Người Mua Hàng</h2>
+            <p>Khi nhà sản xuất chủ động dán tem định danh và tích hợp mã vạch cho sản phẩm của mình, họ đang cam kết danh dự và tuân thủ pháp luật trước cộng đồng. Ngược lại, người tiêu dùng khi mua sắm chỉ cần một thao tác quét mã đơn giản là có thể loại bỏ hoàn toàn rủi ro mua phải hàng giả, hàng nhái kém chất lượng, an tâm tuyệt đối với đồng tiền mình bỏ ra.</p>
         </div>
 
         <div class="sidebar">
@@ -224,23 +223,23 @@
             const email = document.getElementById('reg-email').value.trim();
             const company = document.getElementById('reg-company').value.trim();
             if (!name || !phone || !email || !company) {
-                alert('⚠ Vui lòng điền đầy đủ: Họ tên, Số điện thoại, Email và Tên Công ty!');
+                alert('⚠ Vui lòng điền đầy đủ thông tin đăng ký!');
                 return;
             }
             localStorage.setItem('vt_logged_user', company + ' (' + name + ')');
-            alert('🎉 Chúc mừng doanh nghiệp ' + company + ' đã đăng ký thành công!\nCác lần truy cập sau bạn có thể dùng Google, Facebook hoặc Zalo để đăng nhập nhanh.');
+            alert('🎉 Đăng ký thành công doanh nghiệp ' + company + '!');
             closeAuthModal();
             location.reload();
         }
         function socialLogin(provider) {
-            localStorage.setItem('vt_logged_user', 'DoanhNghiệp_' + provider + '_Account');
+            localStorage.setItem('vt_logged_user', 'DoanhNghiệp_' + provider);
             alert('🎉 Đăng nhập thành công qua ' + provider + '!');
             closeAuthModal();
             location.reload();
         }
         function logoutUser() {
             localStorage.removeItem('vt_logged_user');
-            alert('Đã đăng xuất hệ thống.');
+            alert('Đã đăng xuất.');
             location.reload();
         }
         function performQuickVerify() {
