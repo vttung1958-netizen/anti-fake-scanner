@@ -2,45 +2,56 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Bảng Điều Khiển Quản Trị Hệ Thống - Giải Pháp Cuộc Sống</title>
+    <title>Quản Trị Hệ Thống & Cấu Hình Giá - Giải Pháp Cuộc Sống</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #0f172a; color: #f8fafc; line-height: 1.6; padding: 30px; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 20px 30px; border-radius: 12px; margin-bottom: 30px; border-bottom: 4px solid #38bdf8; }
-        .admin-header h1 { font-size: 20px; color: #38bdf8; }
-        .admin-nav { display: flex; gap: 15px; align-items: center; }
-        .admin-nav a { color: #cbd5e1; text-decoration: none; font-size: 13px; font-weight: bold; padding: 8px 14px; border-radius: 6px; background: #334155; transition: 0.2s; }
-        .admin-nav a:hover { background: #0284c7; color: white; }
-        .btn-logout { background: #dc2626 !important; color: white !important; }
-        .section-box { background: #1e293b; padding: 25px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .section-box h2 { font-size: 18px; color: #38bdf8; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: #0f172a; color: #f8fafc; padding: 30px; }
+        .header { background: #1e293b; padding: 20px 30px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #38bdf8; margin-bottom: 25px; }
+        .header h1 { color: #38bdf8; font-size: 20px; }
+        .nav a { background: #334155; color: white; padding: 8px 14px; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: bold; margin-left: 10px; }
+        .nav a.logout { background: #dc2626; }
+        .box { background: #1e293b; padding: 25px; border-radius: 12px; margin-bottom: 25px; }
+        .box h2 { color: #38bdf8; font-size: 16px; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #334155; }
-        th { background: #0f172a; color: #38bdf8; font-weight: 600; }
-        tr:hover { background: #262f45; }
-        .badge-pending { background: #d97706; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-        .badge-paid { background: #16a34a; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-        .btn-action { background: #0284c7; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 12px; }
-        .btn-action:hover { background: #0369a1; }
+        th { background: #0f172a; color: #38bdf8; }
+        .badge-paid { background: #16a34a; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .badge-pending { background: #d97706; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .btn { background: #0284c7; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 12px; display: inline-block; }
         .config-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .config-item { display: flex; flex-direction: column; }
-        .config-item label { font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
-        .config-item input { padding: 10px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; font-size: 14px; }
+        .config-item label { font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+        .config-item input { background: #0f172a; border: 1px solid #334155; color: white; padding: 10px; border-radius: 6px; font-size: 14px; }
         .btn-save { background: #22c55e; color: white; border: none; padding: 12px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 15px; }
-        .btn-save:hover { background: #16a34a; }
     </style>
 </head>
 <body>
-    <div class="admin-header">
-        <h1>🛡️ HỆ THỐNG QUẢN TRỊ VIÊN - GIẢI PHÁP CUỘC SỐNG</h1>
-        <div class="admin-nav">
+    <div class="header">
+        <h1>🛡️ QUẢN TRỊ VIÊN HỆ THỐNG - ĐIỀU HÀNH & CẤU HÌNH</h1>
+        <div class="nav">
             <a href="/">Trang Chủ</a>
-            <a href="/buy">Cổng Đặt Tem</a>
-            <a href="/admin/logout" class="btn-logout">🚪 Đăng Xuất Admin</a>
+            <a href="/buy">Đặt Tem</a>
+            <a href="/admin/logout" class="logout">Đăng Xuất</a>
         </div>
     </div>
 
-    <div class="section-box">
+    <div class="box">
+        <h2>⚙️ Quản Trị Cấu Hình Giá & Phụ Phí Tem (Admin Toàn Quyền Thay Đổi)</h2>
+        <form action="/admin/update_pricing" method="POST">
+            <div class="config-grid">
+                <div class="config-item"><label>Giá Cơ Bản (VNĐ):</label><input type="number" name="base_price" value="{{ config.base_price }}"></div>
+                <div class="config-item"><label>Phụ Phí Hologram:</label><input type="number" name="hologram_fee" value="{{ config.hologram_fee }}"></div>
+                <div class="config-item"><label>Phụ Phí Tem Vỡ:</label><input type="number" name="destructible_seal_fee" value="{{ config.destructible_seal_fee }}"></div>
+                <div class="config-item"><label>Phụ Phí Niêm Phong Void:</label><input type="number" name="void_bottle_fee" value="{{ config.void_bottle_fee }}"></div>
+                <div class="config-item"><label>Phụ Phí UV 1 Sóng:</label><input type="number" name="uv_1wave_fee" value="{{ config.uv_1wave_fee }}"></div>
+                <div class="config-item"><label>Phụ Phí UV 2 Sóng:</label><input type="number" name="uv_2wave_fee" value="{{ config.uv_2wave_fee }}"></div>
+                <div class="config-item"><label>Phụ Phí Mã Vạch Barcode:</label><input type="number" name="barcode_addon_fee" value="{{ config.barcode_addon_fee }}"></div>
+            </div>
+            <button type="submit" class="btn-save">💾 Lưu Cập Nhật Biểu Giá</button>
+        </form>
+    </div>
+
+    <div class="box">
         <h2>📦 Quản Lý Đơn Hàng Cấp Phát Lô Tem & Mã Vạch</h2>
         <table>
             <thead>
@@ -49,7 +60,7 @@
                     <th>Doanh Nghiệp</th>
                     <th>Sản Phẩm</th>
                     <th>Số Lượng</th>
-                    <th>Công Nghệ & Barcode</th>
+                    <th>Tích Hợp Barcode</th>
                     <th>Tổng Tiền</th>
                     <th>Trạng Thái</th>
                     <th>Thao Tác</th>
@@ -63,10 +74,7 @@
                         <td>{{ o.manufacturer }}</td>
                         <td>{{ o.prod_name }}</td>
                         <td>{{ "{:,}".format(o.quantity) }}</td>
-                        <td>
-                            {{ o.print_type }}
-                            {% if o.include_barcode %}<br><span style="color: #38bdf8; font-size: 11px;">+ Barcode Code 128</span>{% endif %}
-                        </td>
+                        <td>{{ "Có (Code 128)" if o.include_barcode else "Không" }}</td>
                         <td style="color: #22c55e; font-weight: bold;">{{ "{:,}".format(o.total_price) }} VNĐ</td>
                         <td>
                             {% if o.status == 'paid' %}<span class="badge-paid">Đã thanh toán</span>
@@ -74,9 +82,9 @@
                         </td>
                         <td>
                             {% if o.status != 'paid' %}
-                                <a href="/admin/approve/{{ order_id }}" class="btn-action">✔ Duyệt Thanh Toán</a>
+                                <a href="/admin/approve/{{ order_id }}" class="btn">✔ Duyệt Thanh Toán</a>
                             {% else %}
-                                <a href="/success/{{ order_id }}" class="btn-action" style="background:#16a34a;">📥 Tải Gói Tem (ZIP)</a>
+                                <a href="/success/{{ order_id }}" class="btn" style="background:#16a34a;">📥 Tải Gói ZIP</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -86,22 +94,6 @@
                 {% endif %}
             </tbody>
         </table>
-    </div>
-
-    <div class="section-box">
-        <h2>⚙️ Cấu Hình Biểu Giá & Phụ Phí Tem (Bao gồm Barcode)</h2>
-        <form action="/admin/update_pricing" method="POST">
-            <div class="config-grid">
-                <div class="config-item"><label>Giá Cơ Bản (VNĐ):</label><input type="number" name="base_price" value="{{ config.base_price }}"></div>
-                <div class="config-item"><label>Phụ Phí Hologram:</label><input type="number" name="hologram_fee" value="{{ config.hologram_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí Tem Vỡ:</label><input type="number" name="destructible_seal_fee" value="{{ config.destructible_seal_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí Niêm Phong Void:</label><input type="number" name="void_bottle_fee" value="{{ config.void_bottle_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí UV 1 Sóng:</label><input type="number" name="uv_1wave_fee" value="{{ config.uv_1wave_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí UV 2 Sóng:</label><input type="number" name="uv_2wave_fee" value="{{ config.uv_2wave_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí Barcode Addon:</label><input type="number" name="barcode_addon_fee" value="{{ config.barcode_addon_fee }}"></div>
-            </div>
-            <button type="submit" class="btn-save">💾 Lưu Cấu Hình Biểu Giá</button>
-        </form>
     </div>
 </body>
 </html>
