@@ -5,7 +5,7 @@
     <title>Cẩm Nang Chuyên Sâu: Tiêu Chuẩn Định Danh, Mã Vạch & Mẫu Tem Độc Quyền - Giải Pháp Cuộc Sống</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f1f5f9; color: #1e293b; line-height: 1.8; }
+        body { background: #f1f5f9; color: #1e293b; line-height: 1.8; scroll-behavior: smooth; }
 
         .topbar { background: #ffffff; padding: 10px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; }
         .topbar-right { display: flex; gap: 20px; align-items: center; font-weight: 600; color: #0f172a; }
@@ -47,7 +47,7 @@
         .content-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         h1 { font-size: 24px; color: #0f172a; margin-bottom: 10px; font-weight: 800; line-height: 1.4; }
         .meta { color: #64748b; font-size: 13px; margin-bottom: 25px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
-        h2 { font-size: 17px; color: #0f172a; margin-top: 30px; margin-bottom: 12px; border-left: 4px solid #38bdf8; padding-left: 10px; }
+        h2 { font-size: 17px; color: #0f172a; margin-top: 35px; margin-bottom: 12px; border-left: 4px solid #38bdf8; padding-left: 10px; scroll-margin-top: 100px; }
         p { font-size: 14px; color: #334155; margin-bottom: 14px; text-align: justify; }
         ul { margin-left: 20px; margin-bottom: 15px; font-size: 14px; color: #334155; }
         li { margin-bottom: 8px; }
@@ -56,26 +56,19 @@
         .badge { background: #22c55e; color: white; font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
         .btn-register-tier { display: inline-block; margin-top: 15px; background: #0284c7; color: white; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: bold; text-decoration: none; }
 
-        /* THIẾT KẾ MẪU TEM ĐỘC QUYỀN (HOA VĂN GUILLOCHE & SANG TRỌNG) */
         .stamps-showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
-        
         .exclusive-stamp { background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #e0f2fe 100%); border: 2.5px solid #047857; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; box-shadow: 0 6px 15px rgba(4, 120, 87, 0.12); position: relative; overflow: hidden; }
         .exclusive-stamp::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle, rgba(56,189,248,0.1) 10%, transparent 10%), radial-gradient(circle, rgba(16,185,129,0.1) 10%, transparent 10%); background-size: 20px 20px; opacity: 0.5; pointer-events: none; }
 
         .stamp-header-title { font-size: 10px; font-weight: 900; color: #b91c1c; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px dashed #fca5a5; padding-bottom: 3px; width: 100%; }
-        
         .qr-barcode-cluster { display: flex; gap: 12px; align-items: center; justify-content: center; z-index: 1; }
-        .qr-cluster-col { display: flex; flex-direction: column; gap: 4px; align-items: center; }
-
         .qr-box-custom { width: 50px; height: 50px; background: #fff; border: 1.5px solid #0f172a; padding: 2px; border-radius: 4px; }
         .qr-box-custom img { width: 100%; height: 100%; object-fit: contain; }
-        
         .barcode-box-custom { width: 105px; height: 34px; background: #0f172a; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 7.5px; font-family: monospace; border-radius: 3px; }
-        
         .stamp-serial-custom { font-size: 9px; font-weight: bold; color: #1e293b; background: rgba(255,255,255,0.8); padding: 2px 8px; border-radius: 4px; z-index: 1; border: 1px solid #cbd5e1; }
         .stamp-footer-custom { font-size: 8.5px; font-weight: 900; color: #047857; letter-spacing: 1px; z-index: 1; }
 
-        /* SIDEBAR PHÂN MỤC CHUYÊN SÂU */
+        /* SIDEBAR PHÂN MỤC CHUYÊN SÂU TRỎ ĐÚNG NỘI DUNG */
         .sidebar { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 90px; }
         .sidebar h3 { font-size: 15px; color: #0f172a; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; font-weight: 700; }
         .news-item { display: flex; gap: 10px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9; text-decoration: none; align-items: flex-start; }
@@ -144,25 +137,50 @@
 
     <div class="main-container">
         <div class="content-card">
-            <h1>Cẩm Nang Chuyên Sâu: Thiết Kế Hoa Văn Độc Quyền & Tiêu Chuẩn Tem Nhãn Thông Minh</h1>
+            <h1>Cẩm Nang Chuyên Sâu: Tiêu Chuẩn Định Danh, Mã Vạch & Mẫu Tem Độc Quyền</h1>
             <div class="meta">Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia | Tác Giả: Vương Tùng &copy; 2026</div>
 
-            <p>Thay vì sử dụng các mẫu hoa văn truyền thống đại trà, doanh nghiệp hoàn toàn có thể chủ động thiết kế bộ hoa văn nền chống giả độc quyền (Guilloche Pattern) kết hợp màu sắc nhận diện riêng. Điều này vừa nâng tầm thẩm mỹ bao bì, vừa tạo rào cản kỹ thuật tuyệt đối trước các hành vi làm giả.</p>
+            <p>Hệ thống kiến thức chuyên khảo tổng hợp toàn diện các tiêu chuẩn kỹ thuật quốc tế và trong nước về công nghệ tem chống giả, hệ thống mã vạch định danh và quy cách thiết kế bao bì sản phẩm.</p>
 
-            <h2>1. Ý Tưởng Thiết Kế Hoa Văn & Bố Cục Tem Độc Quyền</h2>
-            <p>Bộ tem nhãn thông minh của hệ thống cho phép tùy biến linh hoạt theo hai phong cách thiết kế ưu việt:</p>
+            <!-- MỤC 1: THIẾT KẾ HOA VĂN NỀN CHỐNG GIẢ ĐỘC QUYỀN (GUILLOCHE) -->
+            <h2 id="section-guilloche">1. Thiết Kế Hoa Văn Nền Chống Giả Độc Quyền (Guilloche)</h2>
+            <p>Hoa văn Guilloche là nghệ thuật tạo ra các đường nét hình học phức tạp, đan xen và lượn sóng liên tục bằng toán học đồ họa. Trong ngành in ấn bảo mật cao, đây là công nghệ cốt lõi giúp:</p>
             <ul>
-                <li><b>Hoa Văn Nền Đan Xen Bảo Mật (Guilloche Waves):</b> Sử dụng các đường vân sóng phức tạp tạo hiệu ứng quang học đổi màu, chống tuyệt đối các công nghệ sao chép bằng máy scan hay chụp ảnh thông thường.</li>
-                <li><b>Bố Trí Tích Hợp Song Song (QR & Barcode):</b> Kết hợp gọn gàng giữa mã QR động xác thực nhanh trên smartphone và mã vạch tuyến tính Code 128 dành riêng cho hệ thống kho vận logistics.</li>
+                <li><b>Chống Sao Chép Bằng Máy Scan / Photocopy:</b> Các dòng máy in màu hoặc thiết bị quét thông thường khi sao chụp sẽ bị vỡ nét, tạo ra các dải màu loang lổ (moire pattern) dễ dàng nhận diện bằng mắt thường.</li>
+                <li><b>Tạo Dấu Ấn Nhận Diện Riêng:</b> Doanh nghiệp có thể lồng ghép logo, tên thương hiệu hoặc các họa tiết độc quyền chìm vào bên trong nền tem, khẳng định sở hữu trí tuệ hợp pháp.</li>
             </ul>
 
-            <!-- MÔ PHỎNG MẪU TEM ĐỘC QUYỀN (HOA VĂN & BỐ TRÍ NGANG/DỌC) -->
+            <!-- MỤC 2: CÁC LOẠI TEM HIỆN HÀNH TRÊN THẾ GIỚI VÀ TRONG NƯỚC -->
+            <h2 id="section-types">2. Các Loại Tem Hiện Hành Trên Thế Giới Và Trong Nước</h2>
+            <p>Thị trường lưu thông hàng hóa hiện nay ghi nhận sự phổ biến của các dòng tem chuyên dụng sau:</p>
+            <ul>
+                <li><b>Tem Hologram 7 Màu (Phát quang quang phổ):</b> Thay đổi màu sắc theo góc nhìn, không thể làm giả bằng công nghệ in offset thông thường.</li>
+                <li><b>Tem Vỡ Bảo Hành (Destructible Vinyl Seal):</b> Chất liệu giòn, tự vỡ vụn thành mảnh nhỏ khi có lực bóc tác, ngăn chặn triệt để việc bóc tem từ sản phẩm cũ dán sang sản phẩm mới.</li>
+                <li><b>Tem Niêm Phong Void / Bạc:</b> Khi bị bóc, lớp keo sẽ để lại chữ "VOID" hoặc hoa văn cảnh báo trên bề mặt bao bì, bảo vệ nguyên vẹn niêm phong của thiết bị điện tử, dược phẩm và hộp quà cao cấp.</li>
+            </ul>
+
+            <!-- MỤC 3: HỆ THỐNG MÃ VẠCH CƠ BẢN: CODE 128 VÀ EAN STANDARD -->
+            <h2 id="section-barcode">3. Hệ Thống Mã Vạch Cơ Bản: Code 128 và EAN Standard</h2>
+            <p>Mã vạch tuyến tính là xương sống trong quản lý chuỗi cung ứng logistics toàn cầu:</p>
+            <ul>
+                <li><b>Chuẩn Code 128:</b> Khả năng mã hóa mật độ cao toàn bộ bảng mã ASCII (bao gồm cả chữ cái và số), được ứng dụng rộng rãi trong quản lý mã SKU kho bãi, vận đơn chuyển phát và y tế.</li>
+                <li><b>Chuẩn EAN-13 / UPC:</b> Mã vạch tiêu chuẩn quốc tế được in trên hầu hết bao bì hàng hóa tiêu dùng siêu thị, giúp máy quét POS tính tiền tự động và truy xuất thông tin nhà sản xuất tức thì.</li>
+            </ul>
+
+            <!-- MỤC 4: QUY CÁCH BỐ TRÍ TEM DẠNG NGANG VÀ DẠNG DỌC CHO BAO BÌ -->
+            <h2 id="section-layout">4. Quy Cách Bố Trí Tem Dạng Ngang Và Dạng Dọc Cho Bao Bì</h2>
+            <p>Việc sắp xếp bố cục trên tem đòi hỏi sự chính xác tuyệt đối để phù hợp với hình dáng thực tế của bao bì sản phẩm:</p>
+            <ul>
+                <li><b>Bố Trí Dạng Ngang:</b> Mã QR nằm một bên, mã vạch Code 128 nằm một bên. Thích hợp cho các mặt phẳng rộng như hộp bánh kẹo, hộp thiết bị điện tử.</li>
+                <li><b>Bố Trí Dạng Dọc:</b> Mã QR đặt ở trên, mã vạch đặt phía dưới. Thiết kế tối ưu cho các loại chai lọ hình trụ (mỹ phẩm, dược phẩm, thực phẩm chức năng) có diện tích bề ngang hạn chế.</li>
+            </ul>
+
+            <!-- MÔ PHỎNG MẪU TEM THỰC TẾ -->
             <div class="tier-card">
-                <h3><span>Mẫu Tem Độc Quyền Thiết Kế Riêng Cho Doanh Nghiệp</span> <span class="badge">Bảo Mật Cao</span></h3>
-                <p>Mô phỏng thực tế mẫu tem với hoa văn nền hiện đại, sắc nét và chuyên nghiệp:</p>
+                <h3><span>Mô Phỏng Mẫu Tem Độc Quyền (Nguyên Bản Ngang & Dọc)</span> <span class="badge">Chuẩn Công Nghiệp</span></h3>
+                <p>Doanh nghiệp có thể lựa chọn quy cách bố trí phù hợp nhất với sản phẩm của mình:</p>
                 
                 <div class="stamps-showcase-grid">
-                    <!-- Mẫu Độc Quyền Ngang -->
                     <div class="exclusive-stamp">
                         <div class="stamp-header-title">🛡️ TEM CHỐNG HÀNG GIẢ CHÍNH HÃNG</div>
                         <div class="qr-barcode-cluster">
@@ -174,11 +192,10 @@
                                 <span>VT-2026-CODE128</span>
                             </div>
                         </div>
-                        <div class="stamp-serial-custom">Serial: VT-SYS-2026-9991</div>
+                        <div class="stamp-serial-custom">Serial: VT-SYS-2026-9991 (Ngang)</div>
                         <div class="stamp-footer-custom">GIẢI PHÁP CUỘC SỐNG - 100% SECURE</div>
                     </div>
 
-                    <!-- Mẫu Độc Quyền Dọc -->
                     <div class="exclusive-stamp" style="width: 155px; margin: 0 auto;">
                         <div class="stamp-header-title" style="font-size: 9px;">🛡️ TEM CHỐNG GIẢ</div>
                         <div class="qr-barcode-cluster" style="flex-direction: column; gap: 6px;">
@@ -190,34 +207,31 @@
                                 <span>VT-CODE128</span>
                             </div>
                         </div>
-                        <div class="stamp-serial-custom" style="font-size: 8px;">Serial: VT-2026-9992</div>
+                        <div class="stamp-serial-custom" style="font-size: 8px;">Serial: VT-2026-9992 (Dọc)</div>
                         <div class="stamp-footer-custom" style="font-size: 7.5px;">BẢO MẬT TUYỆT ĐỐI</div>
                     </div>
                 </div>
 
                 <a href="/buy" class="btn-register-tier">📦 Đăng Ký Cấp Phát & Thiết Kế Lô Tem Độc Quyền Ngay</a>
             </div>
-
-            <h2>2. Lợi Ích Vượt Trội Của Tem Hoa Văn Độc Quyền</h2>
-            <p>Việc sở hữu một mẫu tem có hoa văn thiết kế riêng giúp doanh nghiệp khẳng định vị thế thương hiệu, bảo vệ sản phẩm độc quyền trên thị trường và tạo sự an tâm tuyệt đối cho khách hàng khi quét mã kiểm tra.</p>
         </div>
 
-        <!-- CỘT BÊN PHẢI: PHÂN MỤC CHUYÊN SÂU -->
+        <!-- CỘT BÊN PHẢI: TRỎ ĐÚNG VỊ TRÍ ID TRONG TRANG -->
         <div class="sidebar">
             <h3>📑 Danh Mục Cẩm Nang</h3>
-            <a href="/buy" class="news-item">
+            <a href="#section-guilloche" class="news-item">
                 <div class="news-icon">🎨</div>
                 <div class="news-title">Thiết kế hoa văn nền chống giả độc quyền (Guilloche)</div>
             </a>
-            <a href="/buy" class="news-item">
+            <a href="#section-types" class="news-item">
                 <div class="news-icon">🌐</div>
                 <div class="news-title">Các loại tem hiện hành trên thế giới và trong nước</div>
             </a>
-            <a href="/buy" class="news-item">
+            <a href="#section-barcode" class="news-item">
                 <div class="news-icon">📊</div>
                 <div class="news-title">Hệ thống mã vạch cơ bản: Code 128 và EAN Standard</div>
             </a>
-            <a href="/buy" class="news-item">
+            <a href="#section-layout" class="news-item">
                 <div class="news-icon">📐</div>
                 <div class="news-title">Quy cách bố trí tem dạng ngang và dạng dọc cho bao bì</div>
             </a>
