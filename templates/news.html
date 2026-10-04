@@ -19,7 +19,6 @@
         .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
         .btn-cta-nav { background: #22c55e !important; color: white !important; }
 
-        /* MODAL ĐĂNG KÝ / ĐĂNG NHẬP */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 460px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; max-height: 90vh; overflow-y: auto; }
         .modal-close { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: #64748b; font-weight: bold; }
@@ -53,16 +52,24 @@
         ul { margin-left: 20px; margin-bottom: 15px; font-size: 14px; color: #334155; }
         li { margin-bottom: 8px; }
 
-        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin: 25px 0; display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: center; }
+        .tier-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin: 25px 0; }
         .badge { background: #22c55e; color: white; font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
-        .btn-register-tier { display: inline-block; margin-top: 12px; background: #0284c7; color: white; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; text-decoration: none; }
+        .btn-register-tier { display: inline-block; margin-top: 15px; background: #0284c7; color: white; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: bold; text-decoration: none; }
 
-        .stamp-mockup { width: 100%; background: #ffffff; border: 2px solid #0f172a; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        /* KHU VỰC HIỂN THỊ ĐA DẠNG MẪU TEM (NGANG & DỌC) */
+        .stamps-showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+        
+        .stamp-mockup { background: #ffffff; border: 2px solid #0f172a; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .stamp-mockup.vertical { width: 150px; margin: 0 auto; padding: 15px; }
+
         .stamp-brand-top { font-size: 9px; font-weight: 800; text-transform: uppercase; }
         .qr-and-barcode-row { display: flex; gap: 10px; align-items: center; justify-content: center; }
+        .qr-and-barcode-col { display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; }
+
         .qr-real-box { width: 45px; height: 45px; background: #fff; border: 1px solid #000; padding: 2px; }
         .qr-real-box img { width: 100%; height: 100%; object-fit: contain; }
-        .barcode-mini-box { width: 110px; height: 35px; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 7px; font-family: monospace; }
+        .barcode-mini-box { width: 100px; height: 32px; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 7px; font-family: monospace; }
+        
         .stamp-serial-code { font-size: 8px; font-weight: bold; color: #dc2626; }
         .stamp-brand-bottom { font-size: 8px; font-weight: bold; color: #16a34a; }
 
@@ -131,51 +138,62 @@
 
     <div class="main-container">
         <div class="content-card">
-            <h1>Cẩm Nang Chuyên Sâu: Chuẩn Mực Qu Dịnh Danh, Mã Vạch Toàn Cầu Và Trách Nhiệm Pháp Lý Của Doanh Nghiệp</h1>
+            <h1>Cẩm Nang Chuyên Sâu: Chuẩn Mực Định Danh, Mã Vạch Toàn Cầu Và Tùy Biến Quy Cách Tem Nhãn</h1>
             <div class="meta">Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia | Tác Giả: Vương Tùng &copy; 2026</div>
 
-            <p>Trong bối cảnh kinh tế số và hội nhập toàn cầu, việc ứng dụng công nghệ định danh sản phẩm không chỉ là công cụ quản lý nội bộ mà đã trở thành tiêu chuẩn bắt buộc nhằm minh bạch hóa chuỗi cung ứng, bảo vệ quyền lợi hợp pháp của nhà sản xuất chân chính và củng cố niềm tin tuyệt đối cho người tiêu dùng.</p>
+            <p>Trong sản xuất và đóng gói, việc lựa chọn kích thước cùng kiểu bố trí tem (dạng hàng ngang hoặc hàng dọc) đóng vai trò cốt lõi để tem nhãn vừa vặn hoàn hảo với bao bì sản phẩm, đồng thời tối ưu hóa việc quét mã QR và mã vạch.</p>
 
-            <h2>1. Triết Lý Và Nguyên Tắc Sử Dụng Tem Chống Giả Toàn Cầu</h2>
-            <p>Các quốc gia phát triển trên thế giới đều áp dụng nguyên tắc <b>"Minh bạch tận gốc - Truy vết toàn trình"</b> đối với mọi hàng hóa lưu thông trên thị trường. Tem chống giả tích hợp mã định danh không đơn thuần là một mảnh giấy niêm phong, mà là "chứng minh thư số" của sản phẩm với các nguyên tắc cốt lõi:</p>
+            <h2>1. Tiêu Chuẩn Thiết Kế Tem: Đa Dạng Bố Trí Ngang & Dọc</h2>
+            <p>Tùy theo bề mặt hàng hóa (chai lọ hình trụ, hộp giấy vuông hay vỉ thuốc nhỏ), doanh nghiệp có thể linh hoạt chọn quy cách bố trí:</p>
             <ul>
-                <li><b>Tính Duy Nhất (Uniqueness):</b> Mỗi con tem mang một mã chuỗi ký tự mã hóa và chữ ký số độc lập, không có bản sao thứ hai.</li>
-                <li><b>Bất Biến & Chống Sao Chép:</b> Ứng dụng công nghệ chống chụp ảnh, chống in offset thông thường (như màng Hologram 7 màu, mực phát quang UV, công nghệ vỡ cấu trúc).</li>
-                <li><b>Trách Nhiệm Giải Trình (Accountability):</b> Nhà sản xuất buộc phải chịu trách nhiệm pháp lý cao nhất về chất lượng khi thông tin doanh nghiệp được gắn chặt vào mã tem điện tử.</li>
+                <li><b>Bố trí Hàng Ngang:</b> Phù hợp cho mặt phẳng rộng, hộp sản phẩm lớn, hiển thị song song mã QR chống giả và mã vạch Code 128 rõ ràng.</li>
+                <li><b>Bố trí Hàng Dọc:</b> Tối ưu tuyệt đối cho các loại bao bì dài, thân chai lọ thuôn gọn, giúp tiết kiệm diện tích bề ngang mà vẫn đảm bảo độ sắc nét khi quét.</li>
             </ul>
 
-            <h2>2. Hệ Thống Các Loại Mã Vạch (Barcode) Và Mã QR Hiện Hành</h2>
-            <p>Để tối ưu hóa quy trình từ nhà máy, kho vận logistics đến quầy thanh toán siêu thị, hệ thống chuẩn hóa quốc tế đang kết hợp song song hai dòng mã chủ đạo:</p>
-            <ul>
-                <li><b>Mã Vạch Tuyến Tính (Linear Barcode - Tiêu chuẩn Code 128 / EAN-13):</b> Là chuẩn mã vạch truyền thống dạng các vạch sọc đen trắng, được ứng dụng phổ biến trong việc quản lý mã SKU, quét kiểm kê kho vận tốc độ cao và thanh toán tại các điểm bán lẻ (POS).</li>
-                <li><b>Mã Phản Hồi Nhanh (QR Code động kết hợp Token bảo mật):</b> Chứa lượng dữ liệu lớn, cho phép người tiêu dùng trực tiếp dùng điện thoại thông minh quét kiểm tra nguồn gốc xuất xứ, ngày sản xuất, số lô và trạng thái xác thực chính hãng ngay lập tức.</li>
-            </ul>
-
-            <!-- MÔ PHỎNG TEM THỰC TẾ -->
+            <!-- MÔ PHỎNG CÁC KIỂU BỐ TRÍ TEM (NGANG VÀ DỌC) -->
             <div class="tier-card">
-                <div class="tier-info">
-                    <h3><span>Mẫu Tem Tiêu Chuẩn Công Nghiệp Song Song</span> <span class="badge">QR + Barcode</span></h3>
-                    <p><b>Giải pháp tích hợp:</b> Kết hợp hoàn hảo giữa mã vạch Code 128 cho kho vận và mã QR động chống giả cho người tiêu dùng.</p>
-                    <a href="/buy" class="btn-register-tier">📦 Đăng Ký Cấp Phát Lô Tem Ngay</a>
-                </div>
-                <div class="stamp-mockup">
-                    <div class="stamp-brand-top">GIẢI PHÁP CUỘC SỐNG</div>
-                    <div class="qr-and-barcode-row">
-                        <div class="qr-real-box">
-                            <img src="/static/qr_sample.png" alt="QR" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=VN-SYS-2026'">
+                <h3><span>Mẫu Quy Cách Bố Trí Tem Thực Tế Cho Doanh Nghiệp</span> <span class="badge">Ngang & Dọc</span></h3>
+                <p>Doanh nghiệp có thể tự do chọn lựa kiểu dáng phù hợp nhất với chủng loại bao bì sản phẩm của mình.</p>
+                
+                <div class="stamps-showcase-grid">
+                    <!-- Kiểu 1: Hàng Ngang -->
+                    <div class="stamp-mockup">
+                        <div class="stamp-brand-top">GIẢI PHÁP CUỘC SỐNG</div>
+                        <div class="qr-and-barcode-row">
+                            <div class="qr-real-box">
+                                <img src="/static/qr_sample.png" alt="QR" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=VN-SYS-2026'">
+                            </div>
+                            <div class="barcode-mini-box">
+                                <span style="font-weight: bold;">||| | |||| ||</span>
+                                <span>SP001-CODE128</span>
+                            </div>
                         </div>
-                        <div class="barcode-mini-box">
-                            <span style="letter-spacing: 1px; font-weight: bold;">||| | |||| ||</span>
-                            <span>SP001-CODE128</span>
-                        </div>
+                        <div class="stamp-serial-code">Serial: VN-SYS-2026-0001 (Ngang)</div>
+                        <div class="stamp-brand-bottom">CHÍNH HÃNG 100%</div>
                     </div>
-                    <div class="stamp-serial-code">Serial: VN-SYS-2026-0001</div>
-                    <div class="stamp-brand-bottom">CHÍNH HÃNG 100%</div>
+
+                    <!-- Kiểu 2: Hàng Dọc -->
+                    <div class="stamp-mockup vertical">
+                        <div class="stamp-brand-top">GIẢI PHÁP CUỘC SỐNG</div>
+                        <div class="qr-and-barcode-col">
+                            <div class="qr-real-box">
+                                <img src="/static/qr_sample.png" alt="QR" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=VN-SYS-2026'">
+                            </div>
+                            <div class="barcode-mini-box" style="width: 100px;">
+                                <span style="font-weight: bold;">||| | |||| ||</span>
+                                <span>SP001-CODE128</span>
+                            </div>
+                        </div>
+                        <div class="stamp-serial-code">Serial: VN-SYS-2026-0002 (Dọc)</div>
+                        <div class="stamp-brand-bottom">CHÍNH HÃNG 100%</div>
+                    </div>
                 </div>
+
+                <a href="/buy" class="btn-register-tier">📦 Đăng Ký Đặt In Lô Tem Ngay Theo Kích Thước Riêng</a>
             </div>
 
-            <h2>3. Trách Nhiệm Của Nhà Sản Xuất Và Niềm Tin Của Người Mua Hàng</h2>
-            <p>Khi nhà sản xuất chủ động dán tem định danh và tích hợp mã vạch cho sản phẩm của mình, họ đang cam kết danh dự và tuân thủ pháp luật trước cộng đồng. Ngược lại, người tiêu dùng khi mua sắm chỉ cần một thao tác quét mã đơn giản là có thể loại bỏ hoàn toàn rủi ro mua phải hàng giả, hàng nhái kém chất lượng, an tâm tuyệt đối với đồng tiền mình bỏ ra.</p>
+            <h2>2. Tầm Quan Trọng Của Việc Lựa Chọn Kích Thước Tem Phù Hợp</h2>
+            <p>Việc áp dụng đa dạng các kích thước (từ tem nhỏ 0.8x1.3 cm cho linh kiện điện tử đến 3x3 cm hoặc lớn hơn cho thùng hàng) giúp nhà sản xuất chủ động hoàn toàn trong khâu dán nhãn, nâng cao tính thẩm mỹ và khẳng định uy tín thương hiệu trên thị trường.</p>
         </div>
 
         <div class="sidebar">
@@ -185,7 +203,7 @@
                 <div class="news-title">Tạo mã QR code và Mã vạch Barcode tự động cho doanh nghiệp</div>
             </a>
             <a href="/buy" class="news-item">
-                <div class="news-icon">🛡️</div>
+                <div class="news-icon">🛡️️</div>
                 <div class="news-title">Giải pháp bảo vệ hàng hóa với công nghệ chống giả toàn diện</div>
             </a>
         </div>
