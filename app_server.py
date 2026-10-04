@@ -205,7 +205,7 @@ def update_pricing():
             "void_bottle_fee": int(request.form.get('void_bottle_fee', 250)),
             "uv_1wave_fee": int(request.form.get('uv_1wave_fee', 350)),
             "uv_2wave_fee": int(request.form.get('uv_2wave_fee', 550)),
-            "size_fee_25": int(request.min(int(request.form.get('size_fee_25', 50)), 50)),
+            "size_fee_25": int(request.form.get('size_fee_25', 50)),
             "size_fee_35": int(request.form.get('size_fee_35', 120)),
             "barcode_addon_fee": int(request.form.get('barcode_addon_fee', 100))
         }
