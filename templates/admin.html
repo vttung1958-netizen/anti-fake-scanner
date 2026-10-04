@@ -23,6 +23,7 @@
         .config-item label { font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
         .config-item input { background: #0f172a; border: 1px solid #334155; color: white; padding: 10px; border-radius: 6px; font-size: 14px; }
         .btn-save { background: #22c55e; color: white; border: none; padding: 12px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 15px; }
+        .btn-save:hover { background: #16a34a; }
     </style>
 </head>
 <body>
@@ -35,22 +36,45 @@
         </div>
     </div>
 
+    <!-- KHUNG CẤU HÌNH GIÁ VÀ PHỤ PHÍ -->
     <div class="box">
         <h2>⚙️ Quản Trị Cấu Hình Giá & Phụ Phí Tem (Admin Toàn Quyền Thay Đổi)</h2>
         <form action="/admin/update_pricing" method="POST">
             <div class="config-grid">
-                <div class="config-item"><label>Giá Cơ Bản (VNĐ):</label><input type="number" name="base_price" value="{{ config.base_price }}"></div>
-                <div class="config-item"><label>Phụ Phí Hologram:</label><input type="number" name="hologram_fee" value="{{ config.hologram_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí Tem Vỡ:</label><input type="number" name="destructible_seal_fee" value="{{ config.destructible_seal_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí Niêm Phong Void:</label><input type="number" name="void_bottle_fee" value="{{ config.void_bottle_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí UV 1 Sóng:</label><input type="number" name="uv_1wave_fee" value="{{ config.uv_1wave_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí UV 2 Sóng:</label><input type="number" name="uv_2wave_fee" value="{{ config.uv_2wave_fee }}"></div>
-                <div class="config-item"><label>Phụ Phí Mã Vạch Barcode:</label><input type="number" name="barcode_addon_fee" value="{{ config.barcode_addon_fee }}"></div>
+                <div class="config-item">
+                    <label>Giá Cơ Bản (VNĐ):</label>
+                    <input type="number" name="base_price" value="{{ config.base_price }}">
+                </div>
+                <div class="config-item">
+                    <label>Phụ Phí Hologram:</label>
+                    <input type="number" name="hologram_fee" value="{{ config.hologram_fee }}">
+                </div>
+                <div class="config-item">
+                    <label>Phụ Phí Tem Vỡ:</label>
+                    <input type="number" name="destructible_seal_fee" value="{{ config.destructible_seal_fee }}">
+                </div>
+                <div class="config-item">
+                    <label>Phụ Phí Niêm Phong Void:</label>
+                    <input type="number" name="void_bottle_fee" value="{{ config.void_bottle_fee }}">
+                </div>
+                <div class="config-item">
+                    <label>Phụ Phí UV 1 Sóng:</label>
+                    <input type="number" name="uv_1wave_fee" value="{{ config.uv_1wave_fee }}">
+                </div>
+                <div class="config-item">
+                    <label>Phụ Phí UV 2 Sóng:</label>
+                    <input type="number" name="uv_2wave_fee" value="{{ config.uv_2wave_fee }}">
+                </div>
+                <div class="config-item">
+                    <label>Phụ Phí Mã Vạch Barcode:</label>
+                    <input type="number" name="barcode_addon_fee" value="{{ config.barcode_addon_fee }}">
+                </div>
             </div>
             <button type="submit" class="btn-save">💾 Lưu Cập Nhật Biểu Giá</button>
         </form>
     </div>
 
+    <!-- KHUNG QUẢN LÝ ĐƠN HÀNG -->
     <div class="box">
         <h2>📦 Quản Lý Đơn Hàng Cấp Phát Lô Tem & Mã Vạch</h2>
         <table>
@@ -77,8 +101,11 @@
                         <td>{{ "Có (Code 128)" if o.include_barcode else "Không" }}</td>
                         <td style="color: #22c55e; font-weight: bold;">{{ "{:,}".format(o.total_price) }} VNĐ</td>
                         <td>
-                            {% if o.status == 'paid' %}<span class="badge-paid">Đã thanh toán</span>
-                            {% else %}<span class="badge-pending">Chờ thanh toán</span>{% endif %}
+                            {% if o.status == 'paid' %}
+                                <span class="badge-paid">Đã thanh toán</span>
+                            {% else %}
+                                <span class="badge-pending">Chờ thanh toán</span>
+                            {% endif %}
                         </td>
                         <td>
                             {% if o.status != 'paid' %}
@@ -90,7 +117,7 @@
                     </tr>
                     {% endfor %}
                 {% else %}
-                    <tr><td colspan="8" style="text-align: center; color: #94a3b8;">Chưa có đơn hàng nào.</td></tr>
+                    <tr><td colspan="8" style="text-align: center; color: #94a3b8;">Chưa có đơn hàng nào trên hệ thống.</td></tr>
                 {% endif %}
             </tbody>
         </table>
