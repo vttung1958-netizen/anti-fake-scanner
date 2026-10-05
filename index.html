@@ -2,96 +2,52 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Giải Pháp Chống Hàng Giả Quốc Gia - Enterprise Shield</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kho Phần Mềm Tiện Ích - Vương Thanh Tùng</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f8fafc; color: #1e293b; line-height: 1.6; }
-
-        /* THANH ĐIỀU HƯỚNG CHUẨN CÔNG NGHỆ CAO */
-        .navbar { background: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .navbar .brand { font-size: 20px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 6px; transition: 0.2s; }
-        .nav-links a:hover, .nav-links a.active { color: white; background: #334155; }
-        
-        .btn-cta-nav { background: #22c55e !important; color: white !important; }
-        .btn-cta-nav:hover { background: #16a34a !important; }
-
-        /* HERO BANNER CHÍNH */
-        .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 80px 20px; text-align: center; border-bottom: 5px solid #38bdf8; }
-        .hero h1 { font-size: 36px; margin-bottom: 15px; color: #f8fafc; font-weight: 800; }
-        .hero p { font-size: 16px; color: #94a3b8; max-width: 700px; margin: 0 auto 30px auto; }
-        
-        .hero-btns { display: flex; justify-content: center; gap: 15px; }
-        .btn-main { background: #22c55e; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px; box-shadow: 0 4px 15px rgba(34,197,94,0.4); transition: 0.2s; }
-        .btn-main:hover { background: #16a34a; transform: translateY(-2px); }
-        .btn-sec { background: #334155; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px; transition: 0.2s; }
-        .btn-sec:hover { background: #475569; }
-
-        /* KHU VỰC TÍNH NĂNG & TIỆN ÍCH */
-        .container { max-width: 1100px; margin: 50px auto; padding: 0 20px; }
-        .section-title { text-align: center; font-size: 26px; color: #0f172a; margin-bottom: 40px; font-weight: 700; }
-        
-        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 50px; }
-        .feature-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid #38bdf8; transition: 0.3s; }
-        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .feature-card h3 { font-size: 18px; color: #0f172a; margin-bottom: 12px; }
-        .feature-card p { font-size: 14px; color: #64748b; }
-
-        /* FOOTER */
-        .footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 30px; font-size: 14px; margin-top: 60px; border-top: 1px solid #1e293b; }
-        .footer span { color: #38bdf8; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0F172A; color: #F8FAFC; margin: 0; padding: 40px 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { color: #38BDF8; margin-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: rgba(30, 41, 59, 0.7); border: 1px solid #334155; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: space-between; }
+        .card h3 { color: #F43F5E; margin-top: 0; }
+        .btn { display: inline-block; background-color: #0284C7; color: white; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 6px; text-align: center; margin-top: 15px; transition: background 0.2s; }
+        .btn:hover { background-color: #0369A1; }
+        footer { text-align: center; margin-top: 50px; font-style: italic; color: #94A3B8; border-top: 1px solid #334155; padding-top: 20px; }
     </style>
 </head>
 <body>
-
-    <!-- THANH MENU ĐIỀU HƯỚNG -->
-    <div class="navbar">
-        <div class="brand">
-            🛡️ GIẢI PHÁP CUỘC SỐNG
-        </div>
-        <div class="nav-links">
-            <a href="/" class="active">Trang Chủ</a>
-            <a href="/buy">Cấp Phát Lô Tem</a>
-            <a href="/news">Thông Tin Chuyên Đề</a>
-            <a href="/admin">Quản Trị Admin</a>
-            <a href="/buy" class="btn-cta-nav">Đăng Ký Tem Ngay</a>
-        </div>
-    </div>
-
-    <!-- HERO BANNER -->
-    <div class="hero">
-        <h1>Hệ Thống Xác Thực & Chống Hàng Giả Quốc Gia</h1>
-        <p>Giải pháp công nghệ cao tích hợp mã hóa phần cứng, mã vạch bảo mật và mã QR chống sao chép dành riêng cho doanh nghiệp chính hãng Việt Nam.</p>
-        <div class="hero-btns">
-            <a href="/buy" class="btn-main">🚀 Đăng Ký Mua & Cấp Phát Tem</a>
-            <a href="/news" class="btn-sec">📖 Xem Cẩm Nang Pháp Lý</a>
-        </div>
-    </div>
-
-    <!-- KHU VỰC TIỆN ÍCH CHÍNH -->
     <div class="container">
-        <h2 class="section-title">Ưu Điểm Vượt Trội Của Hệ Thống</h2>
-        <div class="features-grid">
-            <div class="feature-card" style="border-top-color: #22c55e;">
-                <h3>🛡️ Chống Sao Chép Tuyệt Đối</h3>
-                <p>Mỗi con tem tích hợp mã định danh phần cứng và mã hóa đa lớp, ngăn chặn hoàn toàn việc in sao chép hoặc làm giả tem thương mại.</p>
+        <header>
+            <h1>Kho Phần Mềm Ứng Dụng & Tiện Ích</h1>
+            <p>Trang thông tin và phân phối các giải pháp phần mềm tối ưu hệ thống và giáo dục.</p>
+        </header>
+
+        <div class="grid">
+            <!-- Phần mềm 1 -->
+            <div class="card">
+                <div>
+                    <h3>Antivirus & Cyber Cleaner Pro v2.1</h3>
+                    <p>Công cụ dọn dẹp rác hệ thống (Temp, Prefetch), quét tiến trình và bảo mật chuyên sâu cho Windows.</p>
+                </div>
+                <a href="ĐƯỜNG_LINK_GOOGLE_DRIVE_PHẦN_MỀM_1" target="_blank" class="btn">Tải Về (.Zip)</a>
             </div>
-            <div class="feature-card" style="border-top-color: #38bdf8;">
-                <h3>📊 Quản Lý & Định Giá Tức Thì</h3>
-                <p>Quản trị viên có thể dễ dàng thay đổi đơn giá tem, kích thước và phụ phí trực tiếp trên giao diện web mà không cần khởi động lại hệ thống.</p>
-            </div>
-            <div class="feature-card" style="border-top-color: #f59e0b;">
-                <h3>📑 Kê Khai & Pháp Lý Minh Bạch</h3>
-                <p>Tích hợp sẵn bộ luật hình sự, nghị định xử phạt vi phạm hành chính và biểu mẫu kê khai cam kết pháp lý chuẩn chỉnh cho doanh nghiệp.</p>
+
+            <!-- Phần mềm 2 -->
+            <div class="card">
+                <div>
+                    <h3>Phần Mềm Ôn Luyện Toán Tiểu Học</h3>
+                    <p>Công cụ hỗ trợ học sinh từ lớp 1 đến lớp 5 luyện tập toán tư duy, có tích hợp chấm điểm và giao diện trực quan.</p>
+                </div>
+                <a href="ĐƯỜNG_LINK_GOOGLE_DRIVE_PHẦN_MỀM_2" target="_blank" class="btn">Tải Về (.Zip)</a>
             </div>
         </div>
-    </div>
 
-    <!-- CHÂN TRANG -->
-    <div class="footer">
-        <p>Bản quyền thuộc về <span>Tác giả Vương Tùng</span> &copy; 2026 | Giải Pháp Chống Hàng Giả Doanh Nghiệp</p>
+        <footer>
+            <p>Kiến trúc sư & Nhà phát triển: Đại tá Vương Thanh Tùng | Năm 2026</p>
+            <p>Liên hệ đăng ký bản quyền & Hỗ trợ: vttung1958@gmail.com | Agribank: 1500215038690</p>
+        </footer>
     </div>
-
 </body>
 </html>
